@@ -10,7 +10,7 @@
 
 `SafetyCircuitEnv` implements the main AI safety demo. It samples profiles such as benign, ambiguous, harmful, jailbreak, OOD benign, and OOD jailbreak.
 
-`BioSafetyEnv` implements the synthetic biosafety/DNA order-screening demo. It samples benign research, ambiguous orders, regulated toy motifs, scale-up requests, and dual-use request profiles.
+`BioSafetyEnv` implements the synthetic biosafety/DNA order-screening demo. It samples benign research, ambiguous orders, mock screening hits, scale-up requests, and dual-use request profiles.
 
 ## Mechanistic Core
 

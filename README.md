@@ -23,7 +23,7 @@ VeriGrad RL is an open-source mechanistic interpretability and AI safety lab for
 
 The main demo uses a transparent synthetic residual-stream circuit. The policy chooses interventions such as blocking harmful features, preserving helpful features, detecting jailbreak pressure, or asking clarifying questions. The verifier scores safety, utility retention, mechanistic targeting, sparsity, and off-target activation damage.
 
-It also includes an interactive biosafety/DNA order-screening playground built with synthetic risk features and toy sequence IDs. The demo is defensive and non-operational: it does not include real pathogen sequences, protocols, or actionable wet-lab content.
+It also includes an interactive biosafety/DNA order-screening playground built with synthetic risk features and non-sensitive mock screening fingerprints. The demo is defensive and non-operational: it does not include real pathogen sequences, protocols, or actionable wet-lab content.
 
 ## Why VeriGrad RL?
 
@@ -81,7 +81,7 @@ python3 scripts/quality_gate.py
 | --- | --- |
 | Environments | `SafetyCircuitEnv`, arithmetic smoke test, string transform toy env |
 | Mechanistic core | Synthetic residual stream, named features, activation interventions, causal attribution |
-| Biosafety demo | Synthetic DNA-order triage, toy sequence IDs, live slider playground |
+| Biosafety demo | Synthetic DNA-order triage, mock screening fingerprints, live slider playground |
 | RL loop | Rollout collection, feature-based softmax policy, REINFORCE trainer, moving baseline |
 | Verifiers | Structured rewards with pass/fail reasons and metric components |
 | Evals | Safety rate, utility rate, mechanistic alignment, over-refusal, jailbreak success, off-target damage |

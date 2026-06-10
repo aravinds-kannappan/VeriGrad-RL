@@ -9,7 +9,7 @@ It is intentionally defensive and non-operational:
 - no biological optimization instructions,
 - no sequence-design assistance.
 
-Instead, it uses toy sequence IDs and synthetic risk features:
+Instead, it uses non-sensitive mock screening fingerprints and synthetic risk features:
 
 - `sequence_risk`
 - `capability_risk`

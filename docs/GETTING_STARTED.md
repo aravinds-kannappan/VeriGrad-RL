@@ -49,7 +49,7 @@ python3 -m verigrad_rl.cli train \
   --run-dir runs/biosafety-demo
 ```
 
-The biosafety environment uses synthetic risk features and toy sequence IDs. It is a defensive triage demo, not an operational biology system.
+The biosafety environment uses synthetic risk features and non-sensitive mock screening fingerprints. It is a defensive triage demo, not an operational biology system.
 
 ## Regenerate Figures and Notebook
 

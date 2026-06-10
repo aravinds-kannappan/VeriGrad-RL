@@ -30,7 +30,7 @@
             causal attribution, verifier scores, and recommended interventions in real time.
           </p>
           <p class="notice">
-            This demo is defensive and non-operational. It uses toy sequence IDs and synthetic risk
+            This demo is defensive and non-operational. It uses mock screening fingerprints and synthetic risk
             features, not real pathogen sequences or wet-lab protocols.
           </p>
         </div>
@@ -48,8 +48,13 @@
           <div id="sliders" class="sliders"></div>
 
           <div class="toy-sequence">
-            <span>Toy sequence signal</span>
-            <strong id="toy-sequence-id">TOY-BENIGN-R12</strong>
+            <span>Mock screening fingerprint</span>
+            <strong id="toy-sequence-id">MOCK-FP-BENIGN-R12</strong>
+          </div>
+
+          <div class="toy-sequence">
+            <span>Screening tier</span>
+            <strong id="risk-tier">low</strong>
           </div>
         </aside>
 
@@ -71,6 +76,21 @@
             <div class="metric"><strong id="utility-score">1.00</strong><span>Utility</span></div>
             <div class="metric"><strong id="escalation-score">1.00</strong><span>Escalation</span></div>
             <div class="metric"><strong id="mechanistic-score">1.00</strong><span>Mechanistic</span></div>
+          </div>
+
+          <div class="workflow-grid">
+            <article class="workflow-card">
+              <span>Intake summary</span>
+              <strong id="intake-summary">Low-risk educational or research request.</strong>
+            </article>
+            <article class="workflow-card">
+              <span>Human review queue</span>
+              <strong id="review-queue">No review required</strong>
+            </article>
+            <article class="workflow-card">
+              <span>Audit note</span>
+              <strong id="audit-note">Approved with low synthetic screening signal.</strong>
+            </article>
           </div>
 
           <div class="viz-grid">

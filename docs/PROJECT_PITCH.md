@@ -32,7 +32,7 @@ The key point is not that the toy circuit is a real language model. The point is
 
 That is the same shape needed for real workflows using activation caches, sparse autoencoders, refusal probes, steering vectors, or circuit-level evals.
 
-The biosafety playground adds a second, more applied framing: synthetic DNA order-screening and dual-use request triage. It uses toy sequence IDs and synthetic risk signals so the demo remains defensive and non-operational while still showing how RL infrastructure can support real safety workflows.
+The biosafety playground adds a second, more applied framing: synthetic DNA order-screening and dual-use request triage. It uses non-sensitive mock screening fingerprints and synthetic risk signals so the demo remains defensive and non-operational while still showing how RL infrastructure can support real safety workflows.
 
 ## Honest Limitations
 
@@ -40,7 +40,7 @@ The biosafety playground adds a second, more applied framing: synthetic DNA orde
 - The baseline policy is a small linear softmax policy, not a neural LM.
 - The current trainer is REINFORCE, not PPO/GRPO.
 - The value is in the interfaces, eval design, and safety framing rather than raw model scale.
-- The biosafety demo uses synthetic features and toy sequence IDs. It is not an operational biological screening system.
+- The biosafety demo uses synthetic features and mock screening fingerprints. It is not an operational biological screening system.
 
 ## Next Impressive Extension
 

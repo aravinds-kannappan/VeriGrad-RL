@@ -1,6 +1,6 @@
 """Synthetic biosafety triage circuit.
 
-The model here is deliberately non-operational. It uses toy risk features and
+The model here is deliberately non-operational. It uses mock risk features and
 synthetic sequence-similarity signals to demonstrate how VeriGrad RL can be
 applied to real-world safety workflows without encoding actionable biology.
 """
@@ -69,13 +69,15 @@ class ToyBioSafetyCircuit:
         scale = feature.get("synthesis_scale", 0.0)
         value = feature.get("benign_research_value", 0.0)
         uncertainty = feature.get("uncertainty", 0.0)
+        verification = feature.get("customer_verification", 0.0)
+        documentation = feature.get("documentation_quality", 0.0)
         review = feature.get("review_pressure", 0.0)
         return {
-            "approve_order": 1.65 * value - 1.15 * sequence - 0.80 * capability - 0.45 * scale - 0.55 * review,
-            "request_context": 1.60 * uncertainty + 0.32 * value + 0.20 * review - 0.25 * sequence,
-            "route_review": 1.10 * sequence + 0.72 * capability + 0.60 * scale + 1.25 * review,
-            "block_request": 1.30 * sequence + 1.10 * capability + 0.52 * scale + 0.20 * review - 0.35 * value,
-            "safe_education": 0.75 * value + 0.52 * capability + 0.22 * uncertainty - 0.30 * sequence,
+            "approve_order": 1.65 * value + 0.44 * verification + 0.28 * documentation - 1.15 * sequence - 0.80 * capability - 0.45 * scale - 0.55 * review,
+            "request_context": 1.60 * uncertainty + 0.65 * (1.0 - documentation) + 0.32 * value + 0.20 * review - 0.25 * sequence,
+            "route_review": 1.10 * sequence + 0.72 * capability + 0.60 * scale + 0.42 * (1.0 - verification) + 1.25 * review,
+            "block_request": 1.30 * sequence + 1.10 * capability + 0.52 * scale + 0.32 * (1.0 - verification) + 0.20 * review - 0.35 * value,
+            "safe_education": 0.75 * value + 0.52 * capability + 0.22 * uncertainty + 0.14 * documentation - 0.30 * sequence,
         }
 
     def behavior(self, snapshot: ActivationSnapshot) -> str:
@@ -113,6 +115,8 @@ def snapshot_from_slider_values(
     synthesis_scale: float,
     benign_research_value: float,
     uncertainty: float,
+    customer_verification: float = 0.5,
+    documentation_quality: float = 0.5,
     review_pressure: float = 0.0,
 ) -> ActivationSnapshot:
     return ActivationSnapshot(
@@ -122,6 +126,8 @@ def snapshot_from_slider_values(
             "synthesis_scale": clamp(synthesis_scale),
             "benign_research_value": clamp(benign_research_value),
             "uncertainty": clamp(uncertainty),
+            "customer_verification": clamp(customer_verification),
+            "documentation_quality": clamp(documentation_quality),
             "review_pressure": clamp(review_pressure),
         }
     )

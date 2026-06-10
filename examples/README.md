@@ -42,4 +42,4 @@ What it demonstrates:
 - safe handling of ambiguous, benign, regulated, and dual-use profiles,
 - eval metrics for risky approval, false blocking, review load, and escalation accuracy.
 
-This example uses toy sequence IDs and synthetic features. It does not contain real pathogen sequences or wet-lab protocols.
+This example uses non-sensitive mock screening fingerprints and synthetic features. It does not contain real pathogen sequences or wet-lab protocols.
