@@ -1,0 +1,12 @@
+{
+  "name": "verigrad-rl",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Static docs site for VeriGrad RL.",
+  "scripts": {
+    "build": "node scripts/build_site.mjs"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

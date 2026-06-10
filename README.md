@@ -190,13 +190,23 @@ See [ROADMAP.md](ROADMAP.md).
 
 ## Deploy the Interactive Site
 
-The docs are static and can run on GitHub Pages. The repo also includes `vercel.json`, so it can be imported into Vercel as a static project.
+The docs are static and can run on GitHub Pages. For Vercel, the repo includes
+`vercel.json` and a tiny Node build step that copies `docs/` into `public/`, which
+is the production output directory.
 
 Expected routes:
 
 - `/` -> project site
 - `/biosafety` -> interactive biosafety playground
 - `/assets/*` -> generated SVG assets
+
+Vercel settings:
+
+- Framework Preset: controlled by `vercel.json` as `Other`
+- Root Directory: leave empty
+- Build Command: controlled by `vercel.json` as `node scripts/build_site.mjs`
+- Install Command: controlled by `vercel.json` as an empty command, so dependency install is skipped
+- Output Directory: controlled by `vercel.json` as `public`
 
 ## Contributing
 

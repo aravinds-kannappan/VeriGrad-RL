@@ -37,7 +37,8 @@ docs/biosafety.html
 
 ## Vercel
 
-The repo includes `vercel.json`.
+The repo includes `vercel.json`. Production deploys run `node scripts/build_site.mjs`, which
+copies the static `docs/` site into Vercel's `public/` output directory.
 
 Expected routes:
 
@@ -48,6 +49,6 @@ Expected routes:
 To deploy through Vercel:
 
 1. Import `aravinds-kannappan/VeriGrad-RL`.
-2. Use the default static project settings.
-3. Keep the repository root as the project root.
-4. Vercel will use `vercel.json` rewrites to serve the docs site.
+2. Set Framework Preset to `Other`.
+3. Keep Root Directory empty.
+4. Let `vercel.json` control the build command and output directory.

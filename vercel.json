@@ -1,11 +1,12 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "buildCommand": "node scripts/build_site.mjs",
+  "installCommand": "",
+  "outputDirectory": "public",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
-    { "source": "/", "destination": "/docs/index.html" },
-    { "source": "/biosafety", "destination": "/docs/biosafety.html" },
-    { "source": "/styles.css", "destination": "/docs/styles.css" },
-    { "source": "/biosafety.js", "destination": "/docs/biosafety.js" },
-    { "source": "/assets/(.*)", "destination": "/docs/assets/$1" }
+    { "source": "/docs/:path*", "destination": "/:path*" }
   ]
 }
