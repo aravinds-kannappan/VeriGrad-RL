@@ -1,0 +1,32 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "verigrad-rl"
+version = "0.1.0"
+description = "Verifiable-reward RL lab for text agents."
+readme = "README.md"
+requires-python = ">=3.9"
+license = {text = "MIT"}
+authors = [{name = "VeriGrad RL contributors"}]
+keywords = ["reinforcement-learning", "language-agents", "evals", "verifiers", "post-training"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "License :: OSI Approved :: MIT License",
+  "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[project.scripts]
+verigrad = "verigrad_rl.cli:main"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "ruff>=0.6"]
+ml = ["torch>=2.3"]
+
+[tool.setuptools.packages.find]
+include = ["verigrad_rl*"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py39"
