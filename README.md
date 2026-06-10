@@ -2,6 +2,8 @@
 
 VeriGrad RL is a compact open-source lab for building and testing RL post-training workflows for text agents with verifiable rewards.
 
+Project site: [GitHub Pages-ready docs](https://aravinds-kannappan.github.io/VeriGrad-RL/)
+
 The project is designed to demonstrate the engineering surface area that makes RL research useful in practice: environment interfaces, rollout pipelines, reward/verifier separation, training loops, evaluation harnesses, monitoring, and reward-hacking checks.
 
 ## Why this exists
@@ -67,6 +69,8 @@ docs/            Architecture and extension notes.
 ```
 
 See [docs/PROJECT_PITCH.md](docs/PROJECT_PITCH.md) for how to explain the project in an interview and where to take it next.
+
+The notebook walkthrough lives at [notebooks/VeriGrad_RL_walkthrough.ipynb](notebooks/VeriGrad_RL_walkthrough.ipynb).
 
 ## Roadmap
 

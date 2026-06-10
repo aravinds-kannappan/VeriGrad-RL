@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 300" role="img" aria-labelledby="title desc">
+  <title id="title">Verifier reward pipeline</title>
+  <desc id="desc">A text action is parsed, checked for format, scored for exactness, and logged with diagnostic metadata.</desc>
+  <style>
+    .bg { fill: #fffdf7; }
+    .step { fill: #ffffff; stroke: #475569; stroke-width: 2; }
+    .pass { fill: #dcfce7; stroke: #15803d; }
+    .fail { fill: #fee2e2; stroke: #b91c1c; }
+    .text { fill: #172554; font: 700 17px system-ui, sans-serif; text-anchor: middle; }
+    .sub { fill: #475569; font: 13px system-ui, sans-serif; text-anchor: middle; }
+    .arrow { stroke: #475569; stroke-width: 2.5; fill: none; marker-end: url(#arrow); }
+  </style>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#475569"/></marker></defs>
+  <rect class="bg" width="900" height="300"/>
+  <rect class="step" x="40" y="90" width="145" height="90" rx="6"/>
+  <text class="text" x="112" y="128">Text action</text><text class="sub" x="112" y="153">"14"</text>
+  <rect class="step" x="235" y="90" width="145" height="90" rx="6"/>
+  <text class="text" x="307" y="128">Format check</text><text class="sub" x="307" y="153">integer only</text>
+  <rect class="step" x="430" y="90" width="145" height="90" rx="6"/>
+  <text class="text" x="502" y="128">Exact check</text><text class="sub" x="502" y="153">compare answer</text>
+  <rect class="pass" x="625" y="45" width="210" height="75" rx="6"/>
+  <text class="text" x="730" y="75">Pass</text><text class="sub" x="730" y="99">reward = 1.0, reason = exact_match</text>
+  <rect class="fail" x="625" y="165" width="210" height="75" rx="6"/>
+  <text class="text" x="730" y="195">Fail</text><text class="sub" x="730" y="219">shaped reward + diagnostics</text>
+  <path class="arrow" d="M185 135 H233"/>
+  <path class="arrow" d="M380 135 H428"/>
+  <path class="arrow" d="M575 125 C595 105 600 90 623 83"/>
+  <path class="arrow" d="M575 145 C595 165 600 195 623 202"/>
+</svg>

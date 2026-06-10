@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="VeriGrad RL is a verifiable-reward RL lab for text-agent post-training workflows.">
+    <title>VeriGrad RL</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="#">VeriGrad RL</a>
+        <div class="nav-links">
+          <a href="#features">Features</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#demo">Demo</a>
+          <a href="#notebook">Notebook</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero">
+        <div class="hero-inner">
+          <p class="eyebrow">Verifiable-reward RL for text agents</p>
+          <h1>VeriGrad RL</h1>
+          <p class="lede">
+            A compact open-source lab for post-training workflows: environments, rollouts,
+            structured verifiers, policy-gradient training, evals, logs, and reward-hacking checks.
+          </p>
+          <div class="actions">
+            <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View source</a>
+            <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/notebooks/VeriGrad_RL_walkthrough.ipynb">Open notebook</a>
+            <a class="button" href="project_pitch.html">Project pitch</a>
+          </div>
+        </div>
+      </section>
+
+      <section id="features" class="section">
+        <h2>Built like RL infrastructure, not a notebook experiment.</h2>
+        <p>
+          The default task is intentionally simple, but the engineering shape is the important part:
+          train and eval splits, machine-readable verifier outcomes, reproducible run artifacts,
+          and checks for reward bugs before trusting the learning curve.
+        </p>
+        <div class="grid">
+          <article class="feature">
+            <h3>Verifier-first rewards</h3>
+            <p>Rewards return pass/fail status, reason codes, and diagnostic metadata for debugging.</p>
+          </article>
+          <article class="feature">
+            <h3>Rollout pipeline</h3>
+            <p>Tasks, actions, logprobs, rewards, and failure reasons are collected as typed transitions.</p>
+          </article>
+          <article class="feature">
+            <h3>Reliable evals</h3>
+            <p>Greedy evaluation on train and held-out splits keeps sample-time training separate from measurement.</p>
+          </article>
+          <article class="feature">
+            <h3>Monitoring</h3>
+            <p>JSONL metrics, config snapshots, summaries, and reward-hacking probes are local and inspectable.</p>
+          </article>
+          <article class="feature">
+            <h3>No dependency wall</h3>
+            <p>The baseline trainer runs with the Python standard library so reviewers can execute it immediately.</p>
+          </article>
+          <article class="feature">
+            <h3>Extensible core</h3>
+            <p>The policy can be swapped for a PyTorch or language-model backend without changing envs and evals.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="architecture" class="section">
+        <h2>System loop</h2>
+        <p>
+          VeriGrad RL keeps the boundaries explicit: environments generate tasks, policies produce text,
+          verifiers score behavior, trainers update policies, and monitors check whether the reward itself is trustworthy.
+        </p>
+        <figure class="figure">
+          <img src="assets/system_diagram.svg" alt="VeriGrad RL system diagram">
+        </figure>
+        <figure class="figure">
+          <img src="assets/reward_pipeline.svg" alt="Verifier reward pipeline">
+        </figure>
+      </section>
+
+      <section id="demo" class="section">
+        <h2>Fast local demo</h2>
+        <p>
+          A 50-episode smoke run reaches exact verifier behavior on both train and held-out arithmetic tasks.
+        </p>
+        <pre><code>python3 -m verigrad_rl.cli train --episodes 50 --eval-every 25 --run-dir runs/demo
+python3 -m verigrad_rl.cli eval --checkpoint runs/demo/policy.json --tasks 100
+python3 -m unittest discover -s tests</code></pre>
+        <div class="metrics">
+          <div class="metric"><strong>1.00</strong><span>Train accuracy</span></div>
+          <div class="metric"><strong>1.00</strong><span>Eval accuracy</span></div>
+          <div class="metric"><strong>0</strong><span>Reward-hacking findings</span></div>
+          <div class="metric"><strong>9</strong><span>Unit tests</span></div>
+        </div>
+        <figure class="figure">
+          <img src="assets/training_curve.svg" alt="Training and held-out evaluation accuracy over 50 episodes">
+        </figure>
+      </section>
+
+      <section id="notebook" class="section">
+        <h2>Notebook walkthrough</h2>
+        <p>
+          The notebook gives a GitHub-renderable tour with figures, reproducible commands, and the core training flow.
+        </p>
+        <div class="actions">
+          <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/notebooks/VeriGrad_RL_walkthrough.ipynb">Open the notebook</a>
+          <a class="button" href="architecture.html">Architecture notes</a>
+          <a class="button" href="project_pitch.html">Interview pitch</a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      VeriGrad RL is MIT licensed and built for inspectable RL post-training experiments.
+    </footer>
+  </body>
+</html>

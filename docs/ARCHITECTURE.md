@@ -1,5 +1,7 @@
 # Architecture
 
+This page is part of the GitHub Pages-friendly documentation for [VeriGrad RL](index.html).
+
 VeriGrad RL separates the moving pieces that tend to get tangled in RL post-training systems.
 
 ## Core flow

@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Project Pitch | VeriGrad RL</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="index.html">VeriGrad RL</a>
+        <div class="nav-links">
+          <a href="index.html#features">Features</a>
+          <a href="index.html#demo">Demo</a>
+          <a href="architecture.html">Architecture</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
+        </div>
+      </nav>
+    </header>
+    <main class="section">
+      <h1>Project Pitch</h1>
+      <p class="lede">
+        VeriGrad RL is an open-source demonstration of RL infrastructure for language-model-style agents.
+      </p>
+      <h2>What it showcases</h2>
+      <div class="grid">
+        <article class="feature"><h3>Research to system</h3><p>Turns a reward-learning idea into a runnable training loop with logs and checkpoints.</p></article>
+        <article class="feature"><h3>Debuggable rewards</h3><p>Separates rewards from verifiers so failures can be inspected and tested.</p></article>
+        <article class="feature"><h3>Generalization checks</h3><p>Measures train and held-out behavior separately with deterministic evals.</p></article>
+        <article class="feature"><h3>Reward-hacking probes</h3><p>Tests malformed actions, blank outputs, and false-positive verifier behavior.</p></article>
+        <article class="feature"><h3>Reusable interfaces</h3><p>Environment, rollout, eval, and monitoring layers can support larger LM backends.</p></article>
+        <article class="feature"><h3>Operational hygiene</h3><p>Config snapshots, JSONL metrics, and CI checks keep experiments reproducible.</p></article>
+      </div>
+      <h2>Next impressive extension</h2>
+      <p>
+        Add a code-repair environment where the prompt includes a broken Python function and tests,
+        the action is a patch candidate, and the verifier runs tests in a sandbox.
+      </p>
+    </main>
+    <footer class="footer">VeriGrad RL is built to make RL experiments easier to trust.</footer>
+  </body>
+</html>

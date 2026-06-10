@@ -1,5 +1,7 @@
 # Project Pitch
 
+This page is part of the GitHub Pages-friendly documentation for [VeriGrad RL](index.html).
+
 VeriGrad RL is an open-source demonstration of RL infrastructure for language-model-style agents.
 
 ## What it showcases

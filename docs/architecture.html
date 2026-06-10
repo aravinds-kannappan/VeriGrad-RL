@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Architecture | VeriGrad RL</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="index.html">VeriGrad RL</a>
+        <div class="nav-links">
+          <a href="index.html#features">Features</a>
+          <a href="index.html#architecture">Architecture</a>
+          <a href="index.html#demo">Demo</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
+        </div>
+      </nav>
+    </header>
+    <main class="section">
+      <h1>Architecture</h1>
+      <p class="lede">
+        VeriGrad RL separates the moving pieces that tend to get tangled in RL post-training systems.
+      </p>
+      <figure class="figure">
+        <img src="assets/system_diagram.svg" alt="VeriGrad RL system diagram">
+      </figure>
+      <h2>Core flow</h2>
+      <ol>
+        <li>An environment samples a task.</li>
+        <li>A policy maps the task prompt to a text action.</li>
+        <li>A verifier scores the action and returns structured reward metadata.</li>
+        <li>Rollout collection stores the transition.</li>
+        <li>The trainer updates the policy using reward advantage.</li>
+        <li>Evaluators run deterministic policy checks on train and held-out splits.</li>
+        <li>Monitors probe the verifier for false positives and false negatives.</li>
+      </ol>
+      <h2>Design choices</h2>
+      <div class="grid">
+        <article class="feature"><h3>Environment ownership</h3><p>Environments own task generation and hidden answer metadata.</p></article>
+        <article class="feature"><h3>Structured rewards</h3><p>Verifiers explain failures with machine-readable reason codes.</p></article>
+        <article class="feature"><h3>Deterministic evals</h3><p>Evals use greedy policy behavior while training samples actions.</p></article>
+      </div>
+    </main>
+    <footer class="footer">MIT licensed. Built for inspectable RL post-training experiments.</footer>
+  </body>
+</html>
