@@ -15,13 +15,13 @@
   <rect class="box" x="40" y="105" width="150" height="95" rx="6"/>
   <text class="text" x="115" y="145">Environment</text><text class="sub" x="115" y="170">sample task</text>
   <rect class="box" x="240" y="105" width="150" height="95" rx="6"/>
-  <text class="text" x="315" y="145">Policy</text><text class="sub" x="315" y="170">sample action</text>
+  <text class="text" x="315" y="145">Policy</text><text class="sub" x="315" y="170">choose intervention</text>
   <rect class="accent" x="440" y="105" width="150" height="95" rx="6"/>
-  <text class="text" x="515" y="145">Verifier</text><text class="sub" x="515" y="170">reward + reason</text>
+  <text class="text" x="515" y="145">Circuit</text><text class="sub" x="515" y="170">activation patch</text>
   <rect class="box" x="640" y="105" width="150" height="95" rx="6"/>
   <text class="text" x="715" y="145">Trainer</text><text class="sub" x="715" y="170">policy gradient</text>
   <rect class="warn" x="340" y="250" width="280" height="70" rx="6"/>
-  <text class="text" x="480" y="280">Monitoring + Evals</text><text class="sub" x="480" y="303">accuracy, failures, reward hacking probes</text>
+  <text class="text" x="480" y="280">Verifier + Evals</text><text class="sub" x="480" y="303">safety, utility, causal faithfulness</text>
   <path class="arrow" d="M190 152 H238"/>
   <path class="arrow" d="M390 152 H438"/>
   <path class="arrow" d="M590 152 H638"/>

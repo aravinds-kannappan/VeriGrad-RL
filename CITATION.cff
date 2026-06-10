@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+title: VeriGrad RL
+message: If you use VeriGrad RL in research or demos, please cite this repository.
+type: software
+authors:
+  - family-names: Kannappan
+    given-names: Aravind
+repository-code: https://github.com/aravinds-kannappan/VeriGrad-RL
+license: MIT
+version: 0.2.0

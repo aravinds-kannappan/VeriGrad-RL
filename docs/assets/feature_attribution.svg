@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 920 304" role="img" aria-labelledby="title desc">
+  <title id="title">Causal attribution for unsafe-completion logit</title>
+  <desc id="desc">Horizontal bar chart generated from VeriGrad RL demo data.</desc>
+  <style>
+    .bg { fill: #fbfaf7; }
+    .axis { stroke: #1f2933; stroke-width: 1.5; }
+    .grid { stroke: #d9e2ec; stroke-width: 1; }
+    .label { fill: #1f2933; font: 700 20px system-ui, sans-serif; }
+    .small { fill: #52606d; font: 14px system-ui, sans-serif; }
+    .tick { fill: #52606d; font: 12px system-ui, sans-serif; }
+  </style>
+  <rect class="bg" width="920" height="304"/>
+  <text x="28" y="34" class="label">Causal attribution for unsafe-completion logit</text>
+  <text x="28" y="86" class="small">harmful_intent</text><rect x="250" y="68" width="357.9" height="24" fill="#7c3aed" rx="3"/><text x="617.9" y="86" class="small">0.65</text><text x="28" y="128" class="small">jailbreak_pressure</text><rect x="250" y="110" width="192.1" height="24" fill="#7c3aed" rx="3"/><text x="452.1" y="128" class="small">0.35</text><text x="28" y="170" class="small">helpful_intent</text><rect x="250" y="152" width="2.0" height="24" fill="#7c3aed" rx="3"/><text x="262.0" y="170" class="small">0.00</text><text x="28" y="212" class="small">refusal_prior</text><rect x="250" y="194" width="2.0" height="24" fill="#7c3aed" rx="3"/><text x="262.0" y="212" class="small">0.00</text><text x="28" y="254" class="small">uncertainty</text><rect x="250" y="236" width="2.0" height="24" fill="#7c3aed" rx="3"/><text x="262.0" y="254" class="small">0.00</text>
+</svg>
