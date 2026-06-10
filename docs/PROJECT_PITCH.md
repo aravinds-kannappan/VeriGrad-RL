@@ -2,38 +2,47 @@
 
 This page is part of the GitHub Pages-friendly documentation for [VeriGrad RL](index.html).
 
-VeriGrad RL is an open-source demonstration of RL infrastructure for language-model-style agents.
+VeriGrad RL is an open-source mechanistic interpretability and AI safety project. It trains RL policies to choose activation-level interventions, then evaluates whether those interventions are behaviorally safe, useful, and mechanistically faithful.
 
-## What it showcases
+## What It Showcases
 
-- Turning an RL research idea into a working training loop.
-- Separating rewards from verifiers so failures can be debugged.
-- Building environment interfaces that can support toy policies today and larger LM agents later.
-- Measuring train and held-out behavior separately.
-- Logging reproducible runs with configs, metrics, summaries, and checkpoints.
-- Testing reward-hacking failure modes before trusting learning curves.
+- Turning a safety research idea into a runnable RL training system.
+- Modeling internal features explicitly with a synthetic residual stream.
+- Using activation patching as the action space.
+- Separating behavioral safety from mechanistic faithfulness.
+- Detecting over-broad interventions that look safe but damage benign utility.
+- Tracking jailbreak success and over-refusal separately.
+- Logging reproducible runs with configs, metrics, summaries, checkpoints, and CI.
 
-## Suggested interview framing
+## Suggested Interview Framing
 
-The key point is not that arithmetic is hard. The point is that the system has the bones of a post-training platform:
+The key point is not that the toy circuit is a real language model. The point is that the project has the shape of a mechanistic safety platform:
 
-- sample tasks,
+- sample safety-relevant tasks,
+- expose interpretable internal features,
+- choose interventions,
+- apply activation patches,
+- score behavior and causal targeting,
 - collect rollouts,
-- score text actions with structured verifiers,
-- update a policy,
-- evaluate generalization,
-- inspect failure reasons,
-- check the verifier for false positives,
-- save reproducible artifacts.
+- train with RL,
+- evaluate safety, utility, over-refusal, and jailbreak robustness,
+- inspect reward components and failure reasons.
 
-That is the same shape needed for more serious environments such as code repair, browser tasks, theorem proving, tool-use agents, or sandboxed research workflows.
+That is the same shape needed for real workflows using activation caches, sparse autoencoders, refusal probes, steering vectors, or circuit-level evals.
 
-## Honest limitations
+## Honest Limitations
 
-- The default policy is a small linear baseline, not a neural LM.
-- The arithmetic environment is a verifier and infrastructure demo, not a benchmark.
-- Larger environments should add grouped rollouts, off-policy data storage, and model-specific logprob plumbing.
+- The default circuit is synthetic and transparent, not a real transformer.
+- The baseline policy is a small linear softmax policy, not a neural LM.
+- The current trainer is REINFORCE, not PPO/GRPO.
+- The value is in the interfaces, eval design, and safety framing rather than raw model scale.
 
-## Next impressive extension
+## Next Impressive Extension
 
-Add a `CodeRepairEnv` where the prompt includes a broken Python function and tests, the action is a patch candidate, and the verifier runs the tests in a sandbox. That would directly extend the same reward/eval/monitoring interfaces to a more realistic agentic RL setting.
+Connect the environment to real model activations:
+
+- cache residual streams from an open model,
+- decompose activations with sparse autoencoders,
+- identify refusal, harmful-intent, and helpfulness features,
+- train intervention policies that steer unsafe directions while preserving benign capabilities,
+- evaluate jailbreak robustness and over-refusal on held-out prompt families.

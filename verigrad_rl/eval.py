@@ -22,6 +22,7 @@ class EvalReport:
     mean_reward: float
     failures_by_reason: Dict[str, int]
     reward_hacking_findings: int
+    extra_metrics: Dict[str, float]
 
 
 class Evaluator:
@@ -38,6 +39,9 @@ class Evaluator:
         failures = self._failures_by_reason(transitions)
         probe_rng = Random(self.seed + 10_000)
         findings = RewardHackingMonitor(self.env).sample_and_probe(probe_rng, count=min(tasks, 25))
+        extra_metrics = {}
+        if hasattr(self.env, "summarize_transitions"):
+            extra_metrics = self.env.summarize_transitions(transitions)  # type: ignore[attr-defined]
         return EvalReport(
             env_name=self.env.name,
             split=split,
@@ -46,6 +50,7 @@ class Evaluator:
             mean_reward=mean([item.reward for item in transitions]) if transitions else 0.0,
             failures_by_reason=failures,
             reward_hacking_findings=len(findings),
+            extra_metrics=extra_metrics,
         )
 
     @staticmethod

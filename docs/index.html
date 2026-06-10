@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="VeriGrad RL is a verifiable-reward RL lab for text-agent post-training workflows.">
+    <meta name="description" content="VeriGrad RL is a mechanistic interpretability and AI safety lab for verifiable RL post-training workflows.">
     <title>VeriGrad RL</title>
     <link rel="stylesheet" href="styles.css">
   </head>
@@ -24,11 +24,12 @@
     <main>
       <section class="hero">
         <div class="hero-inner">
-          <p class="eyebrow">Verifiable-reward RL for text agents</p>
+          <p class="eyebrow">Mechanistic interpretability for AI safety RL</p>
           <h1>VeriGrad RL</h1>
           <p class="lede">
-            A compact open-source lab for post-training workflows: environments, rollouts,
-            structured verifiers, policy-gradient training, evals, logs, and reward-hacking checks.
+            An open-source lab where RL policies learn activation-level safety interventions,
+            then get audited for safety, utility retention, mechanistic faithfulness, over-refusal,
+            and jailbreak robustness.
           </p>
           <div class="actions">
             <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View source</a>
@@ -39,36 +40,36 @@
       </section>
 
       <section id="features" class="section">
-        <h2>Built like RL infrastructure, not a notebook experiment.</h2>
+        <h2>Built for safety research, not just reward curves.</h2>
         <p>
-          The default task is intentionally simple, but the engineering shape is the important part:
-          train and eval splits, machine-readable verifier outcomes, reproducible run artifacts,
-          and checks for reward bugs before trusting the learning curve.
+          The main environment is a synthetic residual-stream circuit. Actions are interventions:
+          block harmful features, preserve helpful features, detect jailbreak pressure, or ask
+          clarifying questions. The verifier checks whether the intervention is safe and causally targeted.
         </p>
         <div class="grid">
           <article class="feature">
-            <h3>Verifier-first rewards</h3>
-            <p>Rewards return pass/fail status, reason codes, and diagnostic metadata for debugging.</p>
+            <h3>Mechanistic rewards</h3>
+            <p>Rewards combine safety, utility, causal targeting, sparsity, and off-target activation damage.</p>
           </article>
           <article class="feature">
-            <h3>Rollout pipeline</h3>
-            <p>Tasks, actions, logprobs, rewards, and failure reasons are collected as typed transitions.</p>
+            <h3>Activation patching</h3>
+            <p>Named residual-stream features make every intervention inspectable and reproducible.</p>
           </article>
           <article class="feature">
-            <h3>Reliable evals</h3>
-            <p>Greedy evaluation on train and held-out splits keeps sample-time training separate from measurement.</p>
+            <h3>Causal attribution</h3>
+            <p>Counterfactual feature ablations identify which internal features drive unsafe behavior.</p>
           </article>
           <article class="feature">
-            <h3>Monitoring</h3>
-            <p>JSONL metrics, config snapshots, summaries, and reward-hacking probes are local and inspectable.</p>
+            <h3>Safety evals</h3>
+            <p>Eval reports track safety, utility, over-refusal, jailbreak success, and mechanistic alignment.</p>
           </article>
           <article class="feature">
-            <h3>No dependency wall</h3>
-            <p>The baseline trainer runs with the Python standard library so reviewers can execute it immediately.</p>
+            <h3>Reward-hacking checks</h3>
+            <p>Verifier probes catch malformed actions, false negatives, and over-broad safety interventions.</p>
           </article>
           <article class="feature">
             <h3>Extensible core</h3>
-            <p>The policy can be swapped for a PyTorch or language-model backend without changing envs and evals.</p>
+            <p>The circuit can be swapped for real model activation caches without changing rollouts and evals.</p>
           </article>
         </div>
       </section>
@@ -76,40 +77,43 @@
       <section id="architecture" class="section">
         <h2>System loop</h2>
         <p>
-          VeriGrad RL keeps the boundaries explicit: environments generate tasks, policies produce text,
-          verifiers score behavior, trainers update policies, and monitors check whether the reward itself is trustworthy.
+          VeriGrad RL keeps the boundaries explicit: environments expose latent safety circuits,
+          policies choose interventions, verifiers score behavior and causal faithfulness, and evals
+          distinguish safety from blanket refusal.
         </p>
         <figure class="figure">
           <img src="assets/system_diagram.svg" alt="VeriGrad RL system diagram">
         </figure>
         <figure class="figure">
-          <img src="assets/reward_pipeline.svg" alt="Verifier reward pipeline">
+          <img src="assets/reward_pipeline.svg" alt="Mechanistic safety verifier pipeline">
         </figure>
       </section>
 
       <section id="demo" class="section">
-        <h2>Fast local demo</h2>
+        <h2>Mechanistic safety demo</h2>
         <p>
-          A 50-episode smoke run reaches exact verifier behavior on both train and held-out arithmetic tasks.
+          A 3,000-episode run learns targeted activation interventions that preserve helpfulness,
+          avoid over-refusal, and block jailbreak-style unsafe behavior.
         </p>
-        <pre><code>python3 -m verigrad_rl.cli train --episodes 50 --eval-every 25 --run-dir runs/demo
-python3 -m verigrad_rl.cli eval --checkpoint runs/demo/policy.json --tasks 100
+        <pre><code>python3 -m verigrad_rl.cli train --env safety-circuit --episodes 3000 --temperature 1.5 --learning-rate 0.12 --run-dir runs/safety-demo
+python3 -m verigrad_rl.cli eval --env safety-circuit --checkpoint runs/safety-demo/policy.json --tasks 200
 python3 -m unittest discover -s tests</code></pre>
         <div class="metrics">
-          <div class="metric"><strong>1.00</strong><span>Train accuracy</span></div>
-          <div class="metric"><strong>1.00</strong><span>Eval accuracy</span></div>
-          <div class="metric"><strong>0</strong><span>Reward-hacking findings</span></div>
-          <div class="metric"><strong>9</strong><span>Unit tests</span></div>
+          <div class="metric"><strong>1.00</strong><span>Safety rate</span></div>
+          <div class="metric"><strong>1.00</strong><span>Mechanistic alignment</span></div>
+          <div class="metric"><strong>0.00</strong><span>Jailbreak success</span></div>
+          <div class="metric"><strong>12</strong><span>Unit tests</span></div>
         </div>
         <figure class="figure">
-          <img src="assets/training_curve.svg" alt="Training and held-out evaluation accuracy over 50 episodes">
+          <img src="assets/safety_dashboard.svg" alt="Safety, utility, mechanistic alignment, over-refusal, and jailbreak success during training">
         </figure>
       </section>
 
       <section id="notebook" class="section">
         <h2>Notebook walkthrough</h2>
         <p>
-          The notebook gives a GitHub-renderable tour with figures, reproducible commands, and the core training flow.
+          The notebook gives a GitHub-renderable tour with figures, reproducible commands,
+          activation patches, safety metrics, and the core training flow.
         </p>
         <div class="actions">
           <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/notebooks/VeriGrad_RL_walkthrough.ipynb">Open the notebook</a>

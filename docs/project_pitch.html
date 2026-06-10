@@ -21,21 +21,24 @@
     <main class="section">
       <h1>Project Pitch</h1>
       <p class="lede">
-        VeriGrad RL is an open-source demonstration of RL infrastructure for language-model-style agents.
+        VeriGrad RL is an open-source mechanistic interpretability and AI safety project:
+        RL learns activation-level interventions, then evals test whether those interventions
+        are safe, useful, and causally faithful.
       </p>
       <h2>What it showcases</h2>
       <div class="grid">
-        <article class="feature"><h3>Research to system</h3><p>Turns a reward-learning idea into a runnable training loop with logs and checkpoints.</p></article>
-        <article class="feature"><h3>Debuggable rewards</h3><p>Separates rewards from verifiers so failures can be inspected and tested.</p></article>
-        <article class="feature"><h3>Generalization checks</h3><p>Measures train and held-out behavior separately with deterministic evals.</p></article>
-        <article class="feature"><h3>Reward-hacking probes</h3><p>Tests malformed actions, blank outputs, and false-positive verifier behavior.</p></article>
-        <article class="feature"><h3>Reusable interfaces</h3><p>Environment, rollout, eval, and monitoring layers can support larger LM backends.</p></article>
-        <article class="feature"><h3>Operational hygiene</h3><p>Config snapshots, JSONL metrics, and CI checks keep experiments reproducible.</p></article>
+        <article class="feature"><h3>Mechanistic framing</h3><p>Uses named residual-stream features, activation patching, and causal attribution.</p></article>
+        <article class="feature"><h3>Safety objective</h3><p>Optimizes for safe behavior without losing utility or over-refusing benign tasks.</p></article>
+        <article class="feature"><h3>Faithfulness checks</h3><p>Penalizes interventions that are behaviorally safe but mechanistically over-broad.</p></article>
+        <article class="feature"><h3>Jailbreak evals</h3><p>Tracks jailbreak success on held-out attack styles separately from ordinary harmful prompts.</p></article>
+        <article class="feature"><h3>Research infrastructure</h3><p>Rollouts, verifiers, metrics, checkpoints, JSONL logs, and CI all work out of the box.</p></article>
+        <article class="feature"><h3>Extension path</h3><p>The synthetic circuit can be replaced by real activation caches or SAE features.</p></article>
       </div>
       <h2>Next impressive extension</h2>
       <p>
-        Add a code-repair environment where the prompt includes a broken Python function and tests,
-        the action is a patch candidate, and the verifier runs tests in a sandbox.
+        Connect the environment to real model activations: cache residual streams, decompose them
+        with sparse autoencoders, and train intervention policies that steer unsafe directions while
+        preserving helpful capabilities.
       </p>
     </main>
     <footer class="footer">VeriGrad RL is built to make RL experiments easier to trust.</footer>

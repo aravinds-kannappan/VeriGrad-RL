@@ -84,6 +84,8 @@ class Trainer:
             "train_mean_reward": train_report.mean_reward,
             "eval_mean_reward": eval_report.mean_reward,
             "reward_hacking_findings": eval_report.reward_hacking_findings,
+            "train_extra_metrics": train_report.extra_metrics,
+            "eval_extra_metrics": eval_report.extra_metrics,
         }
         self.logger.write_summary(summary)
         return summary
@@ -107,4 +109,6 @@ class Trainer:
             "eval_accuracy": eval_report.accuracy,
             "train_failures": train_report.failures_by_reason,
             "eval_failures": eval_report.failures_by_reason,
+            "train_extra_metrics": train_report.extra_metrics,
+            "eval_extra_metrics": eval_report.extra_metrics,
         }

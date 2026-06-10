@@ -14,3 +14,4 @@ jobs:
           python-version: "3.11"
       - run: python -m unittest discover -s tests
       - run: python -m verigrad_rl.cli train --episodes 50 --eval-every 25 --eval-tasks 20 --run-dir runs/ci
+      - run: python -m verigrad_rl.cli train --env safety-circuit --episodes 120 --eval-every 60 --eval-tasks 30 --temperature 1.5 --run-dir runs/safety-ci

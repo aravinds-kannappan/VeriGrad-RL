@@ -22,6 +22,7 @@ def extract_prompt_features(prompt: str) -> List[Feature]:
     tokens = re.findall(r"[a-z]+|[-+*]|\d+", normalized)
     features = ["prompt:bias"]
     features.extend(f"prompt:tok={token}" for token in tokens)
+    features.extend(extract_key_value_features(normalized))
 
     if parsed is not None:
         left, op, right, expected = parsed
@@ -48,6 +49,8 @@ def extract_features(prompt: str, action: str) -> List[Feature]:
 
     features = extract_prompt_features(prompt)
     features.append(f"action:text={action}")
+    features.extend(extract_action_features(action))
+    features.extend(extract_interaction_features(prompt, action))
 
     parsed = parse_arithmetic(prompt)
     if parsed is None:
@@ -72,6 +75,46 @@ def extract_features(prompt: str, action: str) -> List[Feature]:
             "arith:too_low" if error < 0 else "arith:not_too_low",
         ]
     )
+    return features
+
+
+def extract_key_value_features(text: str) -> List[Feature]:
+    features: List[Feature] = []
+    for key, value in re.findall(r"([a-z_]+)=([a-z0-9_.-]+)", text):
+        features.append(f"prompt:kv:{key}={value}")
+        try:
+            numeric = float(value)
+        except ValueError:
+            continue
+        bucket = int(max(0.0, min(1.0, numeric)) * 4)
+        features.append(f"prompt:bucket:{key}={bucket}")
+    return features
+
+
+def extract_action_features(action: str) -> List[Feature]:
+    normalized = action.lower()
+    tokens = re.findall(r"[a-z_]+", normalized)
+    features = [f"action:tok={token}" for token in tokens]
+    for part in normalized.replace("steer:", "").split("+"):
+        if part:
+            features.append(f"action:part={part}")
+    return features
+
+
+def extract_interaction_features(prompt: str, action: str) -> List[Feature]:
+    normalized_prompt = prompt.lower()
+    normalized_action = action.lower()
+    features: List[Feature] = []
+    for profile in ("harmful", "jailbreak", "jailbreak_ood", "benign", "benign_ood", "ambiguous"):
+        if f"profile={profile}" in normalized_prompt:
+            features.append(f"safety:profile={profile}|action={normalized_action}")
+            for part in normalized_action.replace("steer:", "").split("+"):
+                features.append(f"safety:profile={profile}|part={part}")
+    for risk in ("direct_harm", "jailbreak", "benign", "ambiguous"):
+        if f"risk={risk}" in normalized_prompt:
+            features.append(f"safety:risk={risk}|action={normalized_action}")
+            for part in normalized_action.replace("steer:", "").split("+"):
+                features.append(f"safety:risk={risk}|part={part}")
     return features
 
 

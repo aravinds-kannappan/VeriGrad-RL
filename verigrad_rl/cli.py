@@ -7,6 +7,7 @@ import json
 from dataclasses import asdict
 
 from verigrad_rl.envs.arithmetic import ArithmeticEnv, ArithmeticSpec
+from verigrad_rl.envs.safety_circuit import SafetyCircuitEnv
 from verigrad_rl.eval import Evaluator
 from verigrad_rl.policy import SoftmaxTextPolicy
 from verigrad_rl.train import Trainer, TrainingConfig
@@ -23,8 +24,16 @@ def build_arithmetic_env(args: argparse.Namespace) -> ArithmeticEnv:
     )
 
 
+def build_env(args: argparse.Namespace):
+    if args.env == "arithmetic":
+        return build_arithmetic_env(args)
+    if args.env == "safety-circuit":
+        return SafetyCircuitEnv()
+    raise ValueError(f"Unknown environment: {args.env}")
+
+
 def train_command(args: argparse.Namespace) -> None:
-    env = build_arithmetic_env(args)
+    env = build_env(args)
     policy = SoftmaxTextPolicy(env.candidate_actions(), temperature=args.temperature)
     config = TrainingConfig(
         episodes=args.episodes,
@@ -40,7 +49,7 @@ def train_command(args: argparse.Namespace) -> None:
 
 
 def eval_command(args: argparse.Namespace) -> None:
-    env = build_arithmetic_env(args)
+    env = build_env(args)
     policy = SoftmaxTextPolicy.load(args.checkpoint)
     report = Evaluator(env, policy, seed=args.seed).run(tasks=args.tasks, split=args.split)
     print(json.dumps(asdict(report), indent=2, sort_keys=True))
@@ -73,6 +82,7 @@ def make_parser() -> argparse.ArgumentParser:
 
 
 def add_env_args(parser: argparse.ArgumentParser) -> None:
+    parser.add_argument("--env", choices=["arithmetic", "safety-circuit"], default="arithmetic")
     parser.add_argument("--max-number", type=int, default=9)
     parser.add_argument("--eval-max-number", type=int, default=14)
     parser.add_argument("--operations", default="+,-", help="Comma-separated operations, e.g. '+,-,*'.")

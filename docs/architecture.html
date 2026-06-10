@@ -21,26 +21,28 @@
     <main class="section">
       <h1>Architecture</h1>
       <p class="lede">
-        VeriGrad RL separates the moving pieces that tend to get tangled in RL post-training systems.
+        VeriGrad RL separates the moving pieces that tend to get tangled in safety-oriented
+        RL post-training systems: behavior, reward, internal mechanisms, and evals.
       </p>
       <figure class="figure">
         <img src="assets/system_diagram.svg" alt="VeriGrad RL system diagram">
       </figure>
       <h2>Core flow</h2>
       <ol>
-        <li>An environment samples a task.</li>
-        <li>A policy maps the task prompt to a text action.</li>
-        <li>A verifier scores the action and returns structured reward metadata.</li>
+        <li>A safety environment samples a task with hidden residual-stream features.</li>
+        <li>A policy chooses an activation intervention.</li>
+        <li>The circuit applies the patch and predicts behavior.</li>
+        <li>A verifier scores safety, utility, mechanistic targeting, sparsity, and off-target damage.</li>
         <li>Rollout collection stores the transition.</li>
         <li>The trainer updates the policy using reward advantage.</li>
-        <li>Evaluators run deterministic policy checks on train and held-out splits.</li>
-        <li>Monitors probe the verifier for false positives and false negatives.</li>
+        <li>Evaluators run deterministic checks on train, OOD benign, and jailbreak splits.</li>
+        <li>Monitors probe the verifier for false positives, false negatives, and reward hacking.</li>
       </ol>
       <h2>Design choices</h2>
       <div class="grid">
-        <article class="feature"><h3>Environment ownership</h3><p>Environments own task generation and hidden answer metadata.</p></article>
-        <article class="feature"><h3>Structured rewards</h3><p>Verifiers explain failures with machine-readable reason codes.</p></article>
-        <article class="feature"><h3>Deterministic evals</h3><p>Evals use greedy policy behavior while training samples actions.</p></article>
+        <article class="feature"><h3>Named internals</h3><p>The synthetic circuit exposes interpretable features such as harmful intent, helpful intent, jailbreak pressure, refusal prior, and uncertainty.</p></article>
+        <article class="feature"><h3>Structured rewards</h3><p>Verifiers explain failures with machine-readable reason codes and metric components.</p></article>
+        <article class="feature"><h3>Deterministic evals</h3><p>Evals use greedy policy behavior while training samples interventions.</p></article>
       </div>
     </main>
     <footer class="footer">MIT licensed. Built for inspectable RL post-training experiments.</footer>

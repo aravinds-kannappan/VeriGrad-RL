@@ -12,7 +12,7 @@
     .tick { fill: #52606d; font: 12px system-ui, sans-serif; text-anchor: end; }
   </style>
   <rect class="bg" width="860" height="420" rx="0"/>
-  <text x="70" y="25" class="label">Training learns exact verifier behavior in 50 episodes</text>
+  <text x="70" y="25" class="label">Arithmetic smoke test: verifier behavior in 50 episodes</text>
   <line x1="70" y1="40.0" x2="830" y2="40.0" class="grid"/>
 <line x1="70" y1="120.0" x2="830" y2="120.0" class="grid"/>
 <line x1="70" y1="200.0" x2="830" y2="200.0" class="grid"/>
@@ -25,7 +25,7 @@
 <text x="30" y="365.0" class="tick">0.00</text>
   <line x1="70" y1="360" x2="830" y2="360" class="axis"/>
   <line x1="70" y1="40" x2="70" y2="360" class="axis"/>
-  <path d="M146.0,360.0 L222.0,360.0 L298.0,360.0 L374.0,40.0 L450.0,40.0 L526.0,40.0 L602.0,40.0 L678.0,40.0 L754.0,40.0 L830.0,40.0" class="train"/>
+  <path d="M146.0,360.0 L222.0,360.0 L298.0,360.0 L374.0,40.0 L450.0,52.8 L526.0,46.4 L602.0,40.0 L678.0,40.0 L754.0,40.0 L830.0,40.0" class="train"/>
   <path d="M146.0,360.0 L222.0,360.0 L298.0,360.0 L374.0,40.0 L450.0,40.0 L526.0,40.0 L602.0,40.0 L678.0,40.0 L754.0,40.0 L830.0,40.0" class="eval"/>
   <text x="630" y="78" class="small">Train accuracy</text>
   <line x1="590" y1="73" x2="620" y2="73" class="train"/>
