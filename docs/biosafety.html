@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Interactive biosafety triage playground for VeriGrad RL.">
+    <title>Biosafety Playground | VeriGrad RL</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav" aria-label="Primary navigation">
+        <a class="brand" href="index.html">VeriGrad RL</a>
+        <div class="nav-links">
+          <a href="index.html#features">Features</a>
+          <a href="index.html#demo">Demo</a>
+          <a href="biosafety.html">Biosafety Playground</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
+        </div>
+      </nav>
+    </header>
+
+    <main>
+      <section class="hero playground-hero">
+        <div class="hero-inner">
+          <p class="eyebrow">Interactive biosafety triage</p>
+          <h1>DNA order-screening sandbox</h1>
+          <p class="lede">
+            Move synthetic risk-feature sliders and watch the triage circuit update logits,
+            causal attribution, verifier scores, and recommended interventions in real time.
+          </p>
+          <p class="notice">
+            This demo is defensive and non-operational. It uses toy sequence IDs and synthetic risk
+            features, not real pathogen sequences or wet-lab protocols.
+          </p>
+        </div>
+      </section>
+
+      <section class="playground-shell">
+        <aside class="control-panel" aria-label="Synthetic biosafety features">
+          <div class="preset-row">
+            <button class="preset active" data-preset="benign">Benign research</button>
+            <button class="preset" data-preset="ambiguous">Ambiguous order</button>
+            <button class="preset" data-preset="regulated">Screening hit</button>
+            <button class="preset" data-preset="dualUse">Dual-use request</button>
+          </div>
+
+          <div id="sliders" class="sliders"></div>
+
+          <div class="toy-sequence">
+            <span>Toy sequence signal</span>
+            <strong id="toy-sequence-id">TOY-BENIGN-R12</strong>
+          </div>
+        </aside>
+
+        <section class="playground-output" aria-label="Biosafety triage output">
+          <div class="decision-band">
+            <div>
+              <p class="eyebrow">Recommended intervention</p>
+              <h2 id="recommended-action">approve_low_risk</h2>
+              <p id="decision-explanation">Safe low-risk request with high benign research value.</p>
+            </div>
+            <div class="score-ring">
+              <span id="reward-score">0.00</span>
+              <small>verifier reward</small>
+            </div>
+          </div>
+
+          <div class="metrics grid-compact">
+            <div class="metric"><strong id="safety-score">1.00</strong><span>Safety</span></div>
+            <div class="metric"><strong id="utility-score">1.00</strong><span>Utility</span></div>
+            <div class="metric"><strong id="escalation-score">1.00</strong><span>Escalation</span></div>
+            <div class="metric"><strong id="mechanistic-score">1.00</strong><span>Mechanistic</span></div>
+          </div>
+
+          <div class="viz-grid">
+            <article class="viz-panel">
+              <h3>Behavior logits</h3>
+              <div id="logit-bars" class="bars"></div>
+            </article>
+            <article class="viz-panel">
+              <h3>Causal attribution</h3>
+              <div id="attribution-bars" class="bars"></div>
+            </article>
+          </div>
+
+          <article class="viz-panel full">
+            <h3>Intervention comparison</h3>
+            <div id="action-table" class="action-table"></div>
+          </article>
+        </section>
+      </section>
+    </main>
+
+    <footer class="footer">
+      Built as a safe, synthetic demo of biosafety triage infrastructure.
+    </footer>
+
+    <script src="biosafety.js"></script>
+  </body>
+</html>

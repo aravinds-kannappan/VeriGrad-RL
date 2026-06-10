@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+- Added synthetic biosafety/DNA order-screening triage environment.
+- Added interactive browser playground with sliders, logits, attribution, and verifier reward.
+- Added Vercel static deployment config.
+- Added biosafety tests, examples, docs, and CI smoke run.
+
 ## 0.2.0
 
 - Added `SafetyCircuitEnv` for mechanistic AI safety experiments.

@@ -7,6 +7,7 @@
 - Add grouped rollouts for intervention selection.
 - Add a small PyTorch policy backend behind the existing policy interface.
 - Add benchmark JSON fixtures for reproducible eval suites.
+- Expand the biosafety playground with saved scenarios and sharable URLs.
 
 ## Mechanistic Interpretability
 
@@ -29,3 +30,4 @@
 - Add adversarial prompt generators.
 - Add sleeper-agent style eval profiles.
 - Add robust helpfulness preservation under distribution shift.
+- Add additional defensive safety domains such as chemical synthesis triage and cyber abuse triage without operational harmful details.

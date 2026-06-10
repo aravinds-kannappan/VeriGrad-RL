@@ -9,6 +9,7 @@
   </p>
   <p>
     <a href="https://aravinds-kannappan.github.io/VeriGrad-RL/">Website</a>
+    · <a href="https://aravinds-kannappan.github.io/VeriGrad-RL/biosafety.html">Biosafety Playground</a>
     · <a href="notebooks/VeriGrad_RL_walkthrough.ipynb">Notebook</a>
     · <a href="docs/ARCHITECTURE.md">Architecture</a>
     · <a href="examples/README.md">Examples</a>
@@ -21,6 +22,8 @@
 VeriGrad RL is an open-source mechanistic interpretability and AI safety lab for RL post-training workflows. It trains policies to choose activation-level interventions, then evaluates whether those interventions are behaviorally safe, useful, and mechanistically faithful.
 
 The main demo uses a transparent synthetic residual-stream circuit. The policy chooses interventions such as blocking harmful features, preserving helpful features, detecting jailbreak pressure, or asking clarifying questions. The verifier scores safety, utility retention, mechanistic targeting, sparsity, and off-target activation damage.
+
+It also includes an interactive biosafety/DNA order-screening playground built with synthetic risk features and toy sequence IDs. The demo is defensive and non-operational: it does not include real pathogen sequences, protocols, or actionable wet-lab content.
 
 ## Why VeriGrad RL?
 
@@ -55,6 +58,17 @@ python3 -m verigrad_rl.cli eval \
   --tasks 200
 ```
 
+Try the biosafety triage environment:
+
+```bash
+python3 -m verigrad_rl.cli train \
+  --env biosafety \
+  --episodes 1500 \
+  --temperature 1.4 \
+  --learning-rate 0.10 \
+  --run-dir runs/biosafety-demo
+```
+
 Run the local quality gate:
 
 ```bash
@@ -67,6 +81,7 @@ python3 scripts/quality_gate.py
 | --- | --- |
 | Environments | `SafetyCircuitEnv`, arithmetic smoke test, string transform toy env |
 | Mechanistic core | Synthetic residual stream, named features, activation interventions, causal attribution |
+| Biosafety demo | Synthetic DNA-order triage, toy sequence IDs, live slider playground |
 | RL loop | Rollout collection, feature-based softmax policy, REINFORCE trainer, moving baseline |
 | Verifiers | Structured rewards with pass/fail reasons and metric components |
 | Evals | Safety rate, utility rate, mechanistic alignment, over-refusal, jailbreak success, off-target damage |
@@ -133,6 +148,7 @@ It includes code and outputs for:
 
 ```bash
 python3 examples/train_safety_circuit.py
+python3 examples/train_biosafety.py
 python3 examples/train_arithmetic.py
 ```
 
@@ -152,6 +168,8 @@ verigrad_rl/
   monitors.py    Logging and reward-hacking checks.
   cli.py         Train/eval command line entrypoint.
 docs/            GitHub Pages site, architecture notes, project pitch.
+docs/biosafety.html
+                 Interactive biosafety triage playground.
 examples/        Runnable scripts.
 notebooks/       Research-style walkthrough.
 tests/           Standard-library tests.
@@ -170,6 +188,16 @@ The synthetic circuit is the small-scale version. The natural next steps are:
 
 See [ROADMAP.md](ROADMAP.md).
 
+## Deploy the Interactive Site
+
+The docs are static and can run on GitHub Pages. The repo also includes `vercel.json`, so it can be imported into Vercel as a static project.
+
+Expected routes:
+
+- `/` -> project site
+- `/biosafety` -> interactive biosafety playground
+- `/assets/*` -> generated SVG assets
+
 ## Contributing
 
 Contributions are welcome. Start with:
@@ -177,6 +205,7 @@ Contributions are welcome. Start with:
 - [CONTRIBUTING.md](CONTRIBUTING.md)
 - [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
 - [SECURITY.md](SECURITY.md)
+- [docs/BIOSAFETY_PLAYGROUND.md](docs/BIOSAFETY_PLAYGROUND.md)
 
 Good first additions:
 

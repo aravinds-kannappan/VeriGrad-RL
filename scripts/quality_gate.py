@@ -41,6 +41,24 @@ def main() -> int:
             "--run-dir",
             "runs/safety-quality-gate",
         ],
+        [
+            sys.executable,
+            "-m",
+            "verigrad_rl.cli",
+            "train",
+            "--env",
+            "biosafety",
+            "--episodes",
+            "120",
+            "--eval-every",
+            "60",
+            "--eval-tasks",
+            "30",
+            "--temperature",
+            "1.4",
+            "--run-dir",
+            "runs/biosafety-quality-gate",
+        ],
     ]
     for command in commands:
         print("+", " ".join(command))

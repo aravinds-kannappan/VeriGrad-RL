@@ -1,5 +1,10 @@
 """Train the default arithmetic agent."""
 
+import sys
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
 from verigrad_rl.envs import ArithmeticEnv
 from verigrad_rl.policy import SoftmaxTextPolicy
 from verigrad_rl.train import Trainer, TrainingConfig

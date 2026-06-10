@@ -28,3 +28,18 @@ What it demonstrates:
 - fast CI-friendly training.
 
 This example is intentionally simple and mainly exists to keep the core training loop easy to debug.
+
+## Biosafety Triage
+
+```bash
+python3 examples/train_biosafety.py
+```
+
+What it demonstrates:
+
+- synthetic DNA order-screening risk features,
+- non-operational biosafety triage actions,
+- safe handling of ambiguous, benign, regulated, and dual-use profiles,
+- eval metrics for risky approval, false blocking, review load, and escalation accuracy.
+
+This example uses toy sequence IDs and synthetic features. It does not contain real pathogen sequences or wet-lab protocols.

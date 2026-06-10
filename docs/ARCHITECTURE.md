@@ -15,6 +15,8 @@ VeriGrad RL separates the moving pieces that tend to get tangled in safety-orien
 7. Evaluators run deterministic checks on train, OOD benign, and jailbreak-style splits.
 8. Monitors probe the verifier for false positives, false negatives, and reward-hacking paths.
 
+The biosafety environment follows the same flow, but the hidden features represent synthetic order-screening signals rather than language-agent internals.
+
 ## Mechanistic Layer
 
 The default `ToySafetyCircuit` exposes named residual-stream features:
@@ -38,6 +40,15 @@ The safety-circuit eval reports:
 - `jailbreak_success_rate`: held-out jailbreak prompts do not trigger harmful behavior.
 - `mean_off_target_damage`: helpful features are not unnecessarily suppressed.
 
+The biosafety eval reports:
+
+- `biosafety_rate`: risky synthetic orders are not approved.
+- `utility_rate`: benign research and educational requests remain useful.
+- `escalation_accuracy`: review, context request, block, and safe education actions match the risk profile.
+- `risky_approval_rate`: regulated or dual-use profiles are not approved.
+- `false_block_rate`: benign profiles are not unnecessarily blocked.
+- `mean_review_load`: review burden remains visible as a cost.
+
 ## Extension Path
 
 The synthetic circuit is a transparent stand-in. A stronger version can replace it with:
@@ -49,3 +60,5 @@ The synthetic circuit is a transparent stand-in. A stronger version can replace 
 - grouped rollout methods such as GRPO/PPO for intervention selection.
 
 The environment, rollout, verifier, eval, and monitoring APIs are designed so that swap does not require rewriting the whole training stack.
+
+For biosafety, the safe extension path is vetted defensive screening data, policy-compliant request taxonomies, and human review workflow simulation, not operational sequence design or protocol generation.

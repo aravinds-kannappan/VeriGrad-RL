@@ -10,6 +10,8 @@
 
 `SafetyCircuitEnv` implements the main AI safety demo. It samples profiles such as benign, ambiguous, harmful, jailbreak, OOD benign, and OOD jailbreak.
 
+`BioSafetyEnv` implements the synthetic biosafety/DNA order-screening demo. It samples benign research, ambiguous orders, regulated toy motifs, scale-up requests, and dual-use request profiles.
+
 ## Mechanistic Core
 
 `ToySafetyCircuit` exposes:
@@ -21,6 +23,14 @@
 - `top_causal_features(snapshot)`
 
 `ActivationSnapshot` stores named residual-stream features and supports additive intervention updates.
+
+`ToyBioSafetyCircuit` exposes the same style of methods for synthetic biosafety triage:
+
+- `apply(snapshot, action)`
+- `logits(snapshot)`
+- `behavior(snapshot)`
+- `attribution(snapshot)`
+- `top_causal_features(snapshot)`
 
 ## Policy
 
