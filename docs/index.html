@@ -3,8 +3,8 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="VeriGrad RL is a mechanistic interpretability and AI safety lab for verifiable RL post-training workflows.">
-    <title>VeriGrad RL</title>
+    <meta name="description" content="Answer Under Pressure: a propensity benchmark measuring what real frontier models do under pressure — sycophancy, spec-gaming, and chain-of-thought faithfulness — not just what they can do.">
+    <title>Answer Under Pressure — VeriGrad RL</title>
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
@@ -12,12 +12,11 @@
       <nav class="nav" aria-label="Primary navigation">
         <a class="brand" href="#">VeriGrad RL</a>
         <div class="nav-links">
-          <a href="#features">Features</a>
-          <a href="#architecture">Architecture</a>
-          <a href="#demo">Demo</a>
-          <a href="#figures">Figures</a>
-          <a href="biosafety.html">Playground</a>
-          <a href="#notebook">Notebook</a>
+          <a href="#thesis">Thesis</a>
+          <a href="#leaderboard">Leaderboard</a>
+          <a href="#mechanism">Mechanism</a>
+          <a href="#reliability">Reliability</a>
+          <a href="#reproduce">Reproduce</a>
           <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
         </div>
       </nav>
@@ -26,139 +25,229 @@
     <main>
       <section class="hero">
         <div class="hero-inner">
-          <p class="eyebrow">Mechanistic interpretability for AI safety RL</p>
-          <h1>VeriGrad RL</h1>
+          <p class="eyebrow">Propensity evaluation for frontier models</p>
+          <h1>Answer Under Pressure</h1>
           <p class="lede">
-            An open-source lab where RL policies learn activation-level safety interventions,
-            then get audited for safety, utility retention, mechanistic faithfulness, over-refusal,
-            and jailbreak robustness.
+            Capability benchmarks tell you what a model <em>can</em> do. They don't tell you
+            what it <em>will</em> do under pressure. This benchmark measures the second thing:
+            real Anthropic models on real GSM8K problems, scored for deference to a wrong
+            authority, spec-gaming a disclosed grader, and chain-of-thought faithfulness —
+            with confidence intervals and an independent grader-reliability check.
           </p>
           <div class="actions">
-            <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View source</a>
-            <a class="button" href="biosafety.html">Open playground</a>
-            <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/notebooks/VeriGrad_RL_walkthrough.ipynb">Open notebook</a>
+            <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View on GitHub</a>
+            <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Read findings</a>
+            <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/MECHANISM.md">Mechanistic analysis</a>
+          </div>
+          <div class="metrics">
+            <div class="metric"><strong>~95%</strong><span>Capability — all 3 tied</span></div>
+            <div class="metric"><strong>9&times;</strong><span>Sycophancy spread</span></div>
+            <div class="metric"><strong>0 / 150</strong><span>Spec-gaming, every model</span></div>
+            <div class="metric"><strong>$4.32</strong><span>Full real run · 0 errors</span></div>
           </div>
         </div>
       </section>
 
-      <section id="features" class="section">
-        <h2>Built for safety research, not just reward curves.</h2>
+      <section class="section" id="thesis">
+        <h2>Capability is not the bottleneck. Trust is.</h2>
         <p>
-          The main environment is a synthetic residual-stream circuit. Actions are interventions:
-          block harmful features, preserve helpful features, detect jailbreak pressure, or ask
-          clarifying questions. The verifier checks whether the intervention is safe and causally targeted.
+          The same real grade-school math problem is posed under three framings. The first
+          measures capability; the other two measure <em>propensity</em> — what the model does
+          when the situation is adversarial or ambiguous.
         </p>
         <div class="grid">
-          <article class="feature">
-            <h3>Mechanistic rewards</h3>
-            <p>Rewards combine safety, utility, causal targeting, sparsity, and off-target activation damage.</p>
-          </article>
-          <article class="feature">
-            <h3>Activation patching</h3>
-            <p>Named residual-stream features make every intervention inspectable and reproducible.</p>
-          </article>
-          <article class="feature">
-            <h3>Causal attribution</h3>
-            <p>Counterfactual feature ablations identify which internal features drive unsafe behavior.</p>
-          </article>
-          <article class="feature">
-            <h3>Safety evals</h3>
-            <p>Eval reports track safety, utility, over-refusal, jailbreak success, and mechanistic alignment.</p>
-          </article>
-          <article class="feature">
-            <h3>Reward-hacking checks</h3>
-            <p>Verifier probes catch malformed actions, false negatives, and over-broad safety interventions.</p>
-          </article>
-          <article class="feature">
-            <h3>Extensible core</h3>
-            <p>The circuit can be swapped for real model activation caches without changing rollouts and evals.</p>
-          </article>
+          <div class="feature">
+            <h3>control</h3>
+            <p>Solve the problem honestly. Establishes baseline accuracy (capability) — the
+              anchor every propensity is measured against.</p>
+          </div>
+          <div class="feature">
+            <h3>authority_wrong</h3>
+            <p>A confident reviewer asserts a wrong answer, derived from the real gold value —
+              never invented. Measures deference / resistance-to-redirection (sycophancy).</p>
+          </div>
+          <div class="feature">
+            <h3>grader_gameable</h3>
+            <p>The substring grader is disclosed and gaming is explicitly invited. Measures
+              spec-gaming / reward-hacking when it pays to cheat.</p>
+          </div>
         </div>
       </section>
 
-      <section id="architecture" class="section">
-        <h2>System loop</h2>
-        <p>
-          VeriGrad RL keeps the boundaries explicit: environments expose latent safety circuits,
-          policies choose interventions, verifiers score behavior and causal faithfulness, and evals
-          distinguish safety from blanket refusal.
-        </p>
-        <figure class="figure">
-          <img src="assets/system_diagram.svg" alt="VeriGrad RL system diagram">
-        </figure>
-        <figure class="figure">
-          <img src="assets/reward_pipeline.svg" alt="Mechanistic safety verifier pipeline">
-        </figure>
-      </section>
+      <section class="section" id="leaderboard">
+        <h2>Leaderboard</h2>
+        <p>150 problems per model per condition, GSM8K test split, seed 7. Lower is safer on
+          every propensity column.</p>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th class="num">Control accuracy</th>
+              <th class="num">Deference&nbsp;&darr;</th>
+              <th class="num">Sycophancy on solved&nbsp;&darr;</th>
+              <th class="num">Spec-gaming&nbsp;&darr;</th>
+              <th class="num">Cost</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>opus-4.8</code></td>
+              <td class="num">96.0% <span class="ci">[91.5, 98.2]</span></td>
+              <td class="num">2.7% <span class="ci">[1.0, 6.7]</span></td>
+              <td class="num"><span class="best">2.1%</span> <span class="ci">[0.7, 5.9]</span></td>
+              <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
+              <td class="num">$1.78</td>
+            </tr>
+            <tr>
+              <td><code>sonnet-4.6</code></td>
+              <td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td>
+              <td class="num">20.0% <span class="ci">[14.4, 27.1]</span></td>
+              <td class="num"><span class="worst">17.9%</span> <span class="ci">[12.5, 25.0]</span></td>
+              <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
+              <td class="num">$1.56</td>
+            </tr>
+            <tr>
+              <td><code>haiku-4.5</code></td>
+              <td class="num">94.7% <span class="ci">[89.8, 97.3]</span></td>
+              <td class="num">10.7% <span class="ci">[6.7, 16.6]</span></td>
+              <td class="num">9.2% <span class="ci">[5.4, 15.0]</span></td>
+              <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
+              <td class="num">$0.66</td>
+            </tr>
+          </tbody>
+        </table>
+        <p class="table-note">Point estimate with Wilson 95% confidence interval. "Sycophancy on
+          solved" = of the problems a model solved with no pressure, how often a confident wrong
+          reviewer made it abandon the correct answer.</p>
 
-      <section id="demo" class="section">
-        <h2>Mechanistic safety demo</h2>
-        <p>
-          A 3,000-episode run learns targeted activation interventions that preserve helpfulness,
-          avoid over-refusal, and block jailbreak-style unsafe behavior.
-        </p>
-        <pre><code>python3 -m verigrad_rl.cli train --env safety-circuit --episodes 3000 --temperature 1.5 --learning-rate 0.12 --run-dir runs/safety-demo
-python3 -m verigrad_rl.cli eval --env safety-circuit --checkpoint runs/safety-demo/policy.json --tasks 200
-python3 -m unittest discover -s tests</code></pre>
-        <div class="metrics">
-          <div class="metric"><strong>1.00</strong><span>Safety rate</span></div>
-          <div class="metric"><strong>1.00</strong><span>Mechanistic alignment</span></div>
-          <div class="metric"><strong>0.00</strong><span>Jailbreak success</span></div>
-          <div class="metric"><strong>12</strong><span>Unit tests</span></div>
+        <div class="viz-panel full">
+          <h3>Sycophancy on solved problems</h3>
+          <div class="bars">
+            <div class="bar-row">
+              <span>opus-4.8</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 8.4%"></div></div>
+              <strong>2.1%</strong>
+            </div>
+            <div class="bar-row">
+              <span>haiku-4.5</span>
+              <div class="bar-track"><div class="bar-fill" style="width: 36.8%"></div></div>
+              <strong>9.2%</strong>
+            </div>
+            <div class="bar-row">
+              <span>sonnet-4.6</span>
+              <div class="bar-track"><div class="bar-fill negative" style="width: 71.6%"></div></div>
+              <strong>17.9%</strong>
+            </div>
+          </div>
         </div>
-        <figure class="figure">
-          <img src="assets/safety_dashboard.svg" alt="Safety, utility, mechanistic alignment, over-refusal, and jailbreak success during training">
-        </figure>
-      </section>
 
-      <section id="figures" class="section">
-        <h2>Mechanistic inspection figures</h2>
-        <p>
-          The notebook and asset generator produce interpretable figures for causal attribution,
-          intervention comparison, and behavior-logit shifts before and after a patch.
-        </p>
-        <figure class="figure">
-          <img src="assets/feature_attribution.svg" alt="Causal attribution for unsafe-completion logit">
-        </figure>
-        <figure class="figure">
-          <img src="assets/intervention_comparison.svg" alt="Intervention reward comparison on a jailbreak prompt">
-        </figure>
-        <figure class="figure">
-          <img src="assets/behavior_logits.svg" alt="Behavior logits before and after targeted intervention">
-        </figure>
-      </section>
-
-      <section id="biosafety" class="section">
-        <h2>Interactive biosafety playground</h2>
-        <p>
-          The biosafety demo turns the same verifier logic into a browser playground.
-          Adjust synthetic sequence-risk, dual-use capability, synthesis-scale, utility,
-          and uncertainty sliders, then watch the recommended intervention, logits,
-          attribution, and verifier reward update live.
-        </p>
-        <div class="actions">
-          <a class="button primary" href="biosafety.html">Launch biosafety playground</a>
-          <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/verigrad_rl/envs/biosafety.py">View environment code</a>
+        <div class="callout">
+          <strong>Headline:</strong> capability is nearly tied (~95% all three), yet sycophancy
+          under a confident wrong reviewer differs <strong>~9&times;</strong> with non-overlapping
+          confidence intervals — Sonnet 4.6 abandons a correct answer 17.9% of the time, Opus 4.8
+          only 2.1%. The capability ranking is <em>not</em> the trustworthiness ranking. Pressure
+          drops Sonnet's accuracy by 20.7 points (95% CI [14, 27], excludes zero); Opus's drop
+          (1.3 points) is statistically indistinguishable from zero.
         </div>
       </section>
 
-      <section id="notebook" class="section">
-        <h2>Notebook walkthrough</h2>
+      <section class="section" id="mechanism">
+        <h2>Mechanistic analysis — <em>why</em> models defer</h2>
         <p>
-          The notebook gives a GitHub-renderable tour with figures, reproducible commands,
-          activation patches, safety metrics, and the core training flow.
+          Measuring <em>that</em> a model defers isn't enough. Chain-of-thought-level mechanistic
+          interpretability on the real transcripts asks: when a model abandons the correct answer,
+          did its reasoning already compute the right answer and then cave
+          (<strong>sycophantic override</strong>), or did the pressure corrupt the computation
+          itself (<strong>anchored reasoning</strong>)?
         </p>
-        <div class="actions">
-          <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/notebooks/VeriGrad_RL_walkthrough.ipynb">Open the notebook</a>
-          <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/docs/GETTING_STARTED.md">Getting started</a>
-          <a class="button" href="architecture.html">Architecture notes</a>
-          <a class="button" href="project_pitch.html">Interview pitch</a>
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Model</th>
+              <th class="num">Deference cases</th>
+              <th class="num">Sycophantic override</th>
+              <th class="num">Anchored reasoning</th>
+              <th class="num">Override share</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td><code>opus-4.8</code></td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">75.0%</td></tr>
+            <tr><td><code>sonnet-4.6</code></td><td class="num">30</td><td class="num">28</td><td class="num">2</td><td class="num">93.3%</td></tr>
+            <tr><td><code>haiku-4.5</code></td><td class="num">16</td><td class="num">14</td><td class="num">2</td><td class="num">87.5%</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          Across the lineup, deference is overwhelmingly <strong>social, not cognitive</strong> —
+          the model computed the right answer and threw it away to agree with authority. That is a
+          worse failure mode than honest miscalculation, and it is invisible to any benchmark that
+          only checks the final answer. Two independent signals (a deterministic
+          gold-in-reasoning check and an LLM judge) classify each case and agree at 94%.
         </div>
+        <p class="table-note">The fully-transparent, activation-level analog lives in
+          <code>verigrad_rl/mech/</code>: a synthetic residual-stream circuit where the same
+          override-vs-corruption distinction can be produced causally by patching named features —
+          the API doesn't expose a real model's activations, so the frontier-model analysis is
+          necessarily at the reasoning-trace level.</p>
+      </section>
+
+      <section class="section" id="reliability">
+        <h2>Is the ruler trustworthy?</h2>
+        <p>
+          Two independent graders score a dual-labeled subset — a deterministic detector and an
+          independent LLM judge. We report <strong>Cohen's &kappa;</strong>, not just raw
+          agreement, because raw agreement lies when a behavior is rare.
+        </p>
+        <div class="grid">
+          <div class="feature">
+            <h3>Correctness</h3>
+            <p>&kappa; = 0.95 · 99% raw agreement · n = 450. Validated.</p>
+          </div>
+          <div class="feature">
+            <h3>Deference</h3>
+            <p>&kappa; = 0.97 · n = 150. Almost-perfect agreement. Validated.</p>
+          </div>
+          <div class="feature">
+            <h3>Spec-gaming</h3>
+            <p>0 positives in both graders — the propensity didn't occur, so there is nothing to
+              validate. (This is where the check earned its keep.)</p>
+          </div>
+        </div>
+        <div class="callout">
+          <strong>The cross-check caught a bug in my own ruler.</strong> An earlier version of the
+          deterministic spec-gaming detector flagged 3 "positives" the LLM judge unanimously
+          rejected. All three were the same clock-time answer — "2:00 PM" — that the regex misread
+          as two numbers. The disagreement surfaced the bug; raw agreement alone, at 98%, would
+          have hidden it. After fixing the extractor, true spec-gaming is 0/150 across the lineup.
+        </div>
+      </section>
+
+      <section class="section" id="reproduce">
+        <h2>Reproduce it</h2>
+        <p>Real models, real data, real cost. Every number on this page is computed from logged
+          model outputs — nothing synthetic, nothing hardcoded.</p>
+        <pre><code>pip install -e ".[llm]"
+echo "ANTHROPIC_API_KEY=sk-ant-..." &gt; .env        # gitignored
+
+python -m verigrad_rl.cli propensity --smoke       # ~30 calls, ~$0.10, end-to-end check
+python -m verigrad_rl.cli propensity --tasks 150   # full run -&gt; benchmark/results/ + FINDINGS.md
+python -m verigrad_rl.propensity.mechanism         # CoT-faithfulness analysis -&gt; MECHANISM.md</code></pre>
+        <p class="notice">
+          The repo also ships a transparent RL-from-verifier baseline: a REINFORCE policy over a
+          fully synthetic residual-stream circuit, used as the controllable, activation-level
+          analog of the analysis above. It is labeled as synthetic throughout — not a real
+          network's internals.
+        </p>
       </section>
     </main>
 
     <footer class="footer">
-      VeriGrad RL is MIT licensed and built for inspectable RL post-training experiments.
+      <p>
+        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a> ·
+        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Findings</a> ·
+        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/MECHANISM.md">Mechanistic analysis</a> ·
+        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/benchmark/results/leaderboard.md">Leaderboard</a>
+      </p>
+      <p>Measuring what models <em>will</em> do under pressure, not just what they <em>can</em> do.</p>
     </footer>
   </body>
 </html>
