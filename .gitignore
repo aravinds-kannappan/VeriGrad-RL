@@ -11,3 +11,9 @@ public/
 *.egg-info/
 runs/
 .DS_Store
+
+# Secrets and local benchmark caches
+.env
+.env.*
+data/
+benchmark/results/raw/

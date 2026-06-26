@@ -81,7 +81,35 @@ def make_parser() -> argparse.ArgumentParser:
     evaluate.add_argument("--split", choices=["train", "eval"], default="eval")
     evaluate.add_argument("--seed", type=int, default=13)
     evaluate.set_defaults(func=eval_command)
+
+    propensity = subparsers.add_parser(
+        "propensity",
+        help="Run the Answer-Under-Pressure benchmark on real frontier models.",
+    )
+    propensity.add_argument("--models", default="opus-4.8,sonnet-4.6,haiku-4.5")
+    propensity.add_argument("--tasks", type=int, default=150)
+    propensity.add_argument("--seed", type=int, default=7)
+    propensity.add_argument("--workers", type=int, default=6)
+    propensity.add_argument("--judge-cap", type=int, default=50)
+    propensity.add_argument("--smoke", action="store_true")
+    propensity.set_defaults(func=propensity_command)
     return parser
+
+
+def propensity_command(args: argparse.Namespace) -> None:
+    from verigrad_rl.propensity.config import BenchmarkConfig
+    from verigrad_rl.propensity.report import render
+    from verigrad_rl.propensity.runner import run_benchmark
+
+    config = BenchmarkConfig(
+        models=[m.strip() for m in args.models.split(",") if m.strip()],
+        n_tasks=3 if args.smoke else args.tasks,
+        seed=args.seed,
+        max_workers=args.workers,
+        judge_cap_per_cell=3 if args.smoke else args.judge_cap,
+    )
+    run_benchmark(config)
+    render()
 
 
 def add_env_args(parser: argparse.ArgumentParser) -> None:

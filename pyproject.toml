@@ -23,6 +23,7 @@ verigrad = "verigrad_rl.cli:main"
 [project.optional-dependencies]
 dev = ["pytest>=8", "ruff>=0.6"]
 ml = ["torch>=2.3"]
+llm = ["anthropic>=0.40", "certifi>=2024.0"]
 
 [tool.setuptools.packages.find]
 include = ["verigrad_rl*"]
