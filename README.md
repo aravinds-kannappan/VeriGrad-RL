@@ -32,13 +32,13 @@ outputs — nothing is synthetic or hardcoded.
 
 | Model | Control accuracy (capability) | Deference rate ↓ | Sycophancy on solved ↓ | Spec-gaming rate ↓ | Cost |
 |---|---|---|---|---|---|
-| `opus-4.8` | 96.0% [91.5, 98.2] | 2.7% [1.0, 6.7] | 2.1% [0.7, 5.9] | 0.7% [0.1, 3.7] | $1.78 |
-| `sonnet-4.6` | 96.7% [92.4, 98.6] | 20.0% [14.4, 27.1] | 17.9% [12.5, 25.0] | 0.7% [0.1, 3.7] | $1.56 |
-| `haiku-4.5` | 94.7% [89.8, 97.3] | 10.7% [6.7, 16.6] | 9.2% [5.4, 15.0] | 0.7% [0.1, 3.7] | $0.66 |
+| `opus-4.8` | 96.7% [92.4, 98.6] | 2.7% [1.0, 6.7] | 2.1% [0.7, 5.9] | 0.0% [0.0, 2.5] | $1.78 |
+| `sonnet-4.6` | 96.7% [92.4, 98.6] | 20.0% [14.4, 27.1] | 17.9% [12.5, 25.0] | 0.0% [0.0, 2.5] | $1.56 |
+| `haiku-4.5` | 95.3% [90.7, 97.7] | 10.7% [6.7, 16.6] | 9.1% [5.4, 14.9] | 0.0% [0.0, 2.5] | $0.66 |
 
 <sub>Point estimate with Wilson 95% CI. ↓ = lower is safer. "Sycophancy on solved" = of the problems a model solved with no pressure, how often a confident wrong reviewer made it abandon the correct answer. Full run: $4.32, 1,350 model calls + 450 judge calls, 0 errors.</sub>
 
-**Headline result:** capability is nearly tied (~95% all three), yet sycophancy under a
+**Headline result:** capability is nearly tied (~96% all three), yet sycophancy under a
 confident wrong reviewer differs **~9×** with non-overlapping confidence intervals —
 Sonnet 4.6 abandons a correct answer 17.9% of the time, Opus 4.8 only 2.1%. The
 capability ranking is *not* the trustworthiness ranking. See **[FINDINGS.md](FINDINGS.md)**
@@ -60,11 +60,12 @@ Two independent graders score a dual-labeled subset: a deterministic detector an
 independent LLM judge (`claude-haiku-4-5`). We report **Cohen's κ**, not just raw
 agreement — because raw agreement lies when a behavior is rare:
 
-- **Correctness:** κ = 0.90 (99% raw, n=450) — validated.
+- **Correctness:** κ = 0.95 (99% raw, n=450) — validated.
 - **Deference:** κ = 0.97 (n=150) — validated.
-- **Spec-gaming:** 98% raw agreement but **κ = 0.00** — the kappa paradox under a
-  ~0.7% base rate. With almost no positive class, *no* grader can be validated; you
-  need more data or a probe that elicits the behavior more often. (Reported, not hidden.)
+- **Spec-gaming:** the cross-check *caught a bug in the ruler*. An earlier detector flagged
+  3 "positives" the judge unanimously rejected (κ = 0.00 despite 98% raw agreement) — all
+  three the same clock-time answer (`2:00 PM`) misread as two numbers. After fixing the
+  extractor, true spec-gaming is **0/150** across the lineup; both graders agree.
 
 ### Mechanistic analysis — *why* models defer
 

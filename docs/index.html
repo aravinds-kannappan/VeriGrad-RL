@@ -44,7 +44,7 @@
           under pressure. We evaluate three frontier models (Claude Opus&nbsp;4.8, Sonnet&nbsp;4.6,
           Haiku&nbsp;4.5) on 150 real GSM8K problems under three framings — honest, wrong-authority,
           and a disclosed gameable grader — and find a sharp dissociation: capability is nearly tied
-          (~95%), yet deference to a confident wrong reviewer differs <strong>~9×</strong> with
+          (~96%), yet deference to a confident wrong reviewer differs <strong>~9×</strong> with
           non-overlapping confidence intervals. A chain-of-thought analysis shows ~90% of that
           deference is <em>sycophantic override</em> — the model computed the correct answer and then
           abandoned it — rather than corrupted reasoning. Every number is computed from logged model
@@ -59,7 +59,7 @@
         <a class="button" href="#cite">Cite</a>
       </div>
       <div class="stat-strip">
-        <div class="stat"><b>~95%</b><span>Capability, all three tied</span></div>
+        <div class="stat"><b>~96%</b><span>Capability, all three tied</span></div>
         <div class="stat"><b>9&times;</b><span>Sycophancy spread</span></div>
         <div class="stat"><b>~90%</b><span>Deference = override</span></div>
         <div class="stat"><b>$4.32</b><span>Full run · 0 errors</span></div>
@@ -153,7 +153,7 @@
 
           <figure>
             <img src="assets/fig_dissociation.svg" alt="Scatter of control accuracy versus sycophancy; the three models cluster tightly on the horizontal capability axis but spread widely on the vertical propensity axis.">
-            <figcaption><b>Figure 1.</b> Capability vs. propensity. All three models cluster near 95%
+            <figcaption><b>Figure 1.</b> Capability vs. propensity. All three models cluster near 96%
               control accuracy (horizontal), yet spread roughly 9× on sycophancy (vertical). The two
               axes are nearly orthogonal — capability does not predict trustworthiness. Whiskers are
               Wilson 95% intervals.</figcaption>
@@ -173,7 +173,7 @@
             <tbody>
               <tr>
                 <td><code>opus-4.8</code></td>
-                <td class="num">96.0% <span class="ci">[91.5, 98.2]</span></td>
+                <td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td>
                 <td class="num">2.7% <span class="ci">[1.0, 6.7]</span></td>
                 <td class="num"><span class="best">2.1%</span> <span class="ci">[0.7, 5.9]</span></td>
                 <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
@@ -189,9 +189,9 @@
               </tr>
               <tr>
                 <td><code>haiku-4.5</code></td>
-                <td class="num">94.7% <span class="ci">[89.8, 97.3]</span></td>
+                <td class="num">95.3% <span class="ci">[90.7, 97.7]</span></td>
                 <td class="num">10.7% <span class="ci">[6.7, 16.6]</span></td>
-                <td class="num">9.2% <span class="ci">[5.4, 15.0]</span></td>
+                <td class="num">9.1% <span class="ci">[5.4, 14.9]</span></td>
                 <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
                 <td class="num">$0.66</td>
               </tr>
@@ -201,7 +201,7 @@
             test, seed 7. Point estimate with Wilson 95% CI.</p>
 
           <figure>
-            <img src="assets/fig_sycophancy.svg" alt="Horizontal bar chart of sycophancy on solved problems with confidence-interval whiskers: Opus 2.1%, Haiku 9.2%, Sonnet 17.9%.">
+            <img src="assets/fig_sycophancy.svg" alt="Horizontal bar chart of sycophancy on solved problems with confidence-interval whiskers: Opus 2.1%, Haiku 9.1%, Sonnet 17.9%.">
             <figcaption><b>Figure 2.</b> Of the problems each model solved with no pressure, how often a
               confident wrong reviewer made it abandon the correct answer. Opus 4.8 and Sonnet 4.6 do
               not overlap.</figcaption>
