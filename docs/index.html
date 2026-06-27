@@ -3,365 +3,240 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Answer Under Pressure — Measuring Propensity in Frontier Models</title>
-    <meta name="description" content="A propensity benchmark measuring what real frontier models do under pressure — sycophancy, spec-gaming, and chain-of-thought faithfulness — with confidence intervals and an independent grader-reliability check.">
+    <title>VeriGrad RL — a propensity-evaluation toolkit for frontier models</title>
+    <meta name="description" content="Open-source toolkit measuring what frontier models do under pressure — sycophancy, spec-gaming, reasoning faithfulness — across domains, with clustered CIs, FDR correction, an independent grader-reliability check, and a reproducible SQLite cache.">
     <meta name="theme-color" content="#0b1f33">
-    <meta property="og:type" content="article">
-    <meta property="og:title" content="Answer Under Pressure: Measuring Propensity in Frontier Models">
-    <meta property="og:description" content="Capability is nearly tied across Opus 4.8 / Sonnet 4.6 / Haiku 4.5, yet sycophancy to a wrong authority differs ~9× — and ~90% of it is the model overriding an answer it had already computed.">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="VeriGrad RL — propensity evaluation for frontier models">
+    <meta property="og:description" content="Capability is nearly tied across Opus 4.8 / Sonnet 4.6 / Haiku 4.5, yet sycophancy to a wrong authority differs ~9×. Open-source, reproducible, real models.">
     <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230b1f33'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%230f766e'/%3E%3C/svg%3E">
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
     <header class="site-header">
       <div class="bar">
-        <a class="brand" href="#top"><span class="dot"></span> VeriGrad RL</a>
+        <a class="brand" href="#top"><span class="dot"></span> VeriGrad&nbsp;RL</a>
         <nav class="bar-links">
+          <a href="#features">Features</a>
           <a href="#results">Results</a>
-          <a href="#mechanism">Mechanism</a>
+          <a href="#scaling">Scaling</a>
           <a href="#reliability">Reliability</a>
-          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Findings</a>
-          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a>
+          <a href="#quickstart">Quickstart</a>
+          <a class="ghstar" href="https://github.com/aravinds-kannappan/VeriGrad-RL">★ Star on GitHub</a>
         </nav>
       </div>
     </header>
 
-    <div class="titleblock" id="top">
-      <div class="kicker">
-        <span class="tag">AI Safety</span>
-        <span class="tag">Model Evaluation</span>
-        <span class="tag">Propensity</span>
-      </div>
-      <h1 class="title">Answer Under Pressure</h1>
-      <p class="byline">
-        Measuring sycophancy, spec-gaming, and reasoning faithfulness in frontier models &nbsp;·&nbsp;
-        <strong>Aravind Kannappan</strong> &nbsp;·&nbsp; June 2026
-      </p>
-      <div class="abstract">
-        <h2>Abstract</h2>
-        <p>
-          Capability benchmarks tell you what a model <em>can</em> do, not what it <em>will</em> do
-          under pressure. We evaluate three frontier models (Claude Opus&nbsp;4.8, Sonnet&nbsp;4.6,
-          Haiku&nbsp;4.5) on 150 real GSM8K problems under three framings — honest, wrong-authority,
-          and a disclosed gameable grader — and find a sharp dissociation: capability is nearly tied
-          (~96%), yet deference to a confident wrong reviewer differs <strong>~9×</strong> with
-          non-overlapping confidence intervals. A chain-of-thought analysis shows ~90% of that
-          deference is <em>sycophantic override</em> — the model computed the correct answer and then
-          abandoned it — rather than corrupted reasoning. Every number is computed from logged model
-          outputs and cross-checked against an independent grader; that check caught a real bug in
-          our own detector. Total cost: $4.32, zero errors.
+    <main class="wrap" id="top">
+      <section class="hero">
+        <div class="tags">
+          <span class="tag">AI Safety</span>
+          <span class="tag">Model Evaluation</span>
+          <span class="tag">Open Source · MIT</span>
+        </div>
+        <h1>Measure what models <em>will</em> do, not just what they can.</h1>
+        <p class="tagline">
+          VeriGrad RL is an open-source toolkit for measuring the <strong>propensities</strong> of
+          real frontier models — sycophancy, spec-gaming, and reasoning faithfulness — across task
+          domains, with confidence intervals, FDR correction, and an independent grader-reliability
+          check. Real models, real data, fully reproducible.
         </p>
-      </div>
-      <div class="actions">
-        <a class="button primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View on GitHub</a>
-        <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Findings</a>
-        <a class="button" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/MECHANISM.md">Mechanistic analysis</a>
-        <a class="button" href="#cite">Cite</a>
-      </div>
-      <div class="stat-strip">
-        <div class="stat"><b>~96%</b><span>Capability, all three tied</span></div>
-        <div class="stat"><b>9&times;</b><span>Sycophancy spread</span></div>
-        <div class="stat"><b>~90%</b><span>Deference = override</span></div>
-        <div class="stat"><b>$4.32</b><span>Full run · 0 errors</span></div>
-      </div>
-    </div>
+        <div class="badges">
+          <img src="https://img.shields.io/github/actions/workflow/status/aravinds-kannappan/VeriGrad-RL/ci.yml?branch=main&label=CI" alt="CI status">
+          <img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT license">
+          <img src="https://img.shields.io/badge/python-3.10%2B-0369a1" alt="Python 3.10+">
+          <img src="https://img.shields.io/badge/tests-49%20passing-16a34a" alt="49 tests passing">
+          <img src="https://img.shields.io/github/stars/aravinds-kannappan/VeriGrad-RL?style=social" alt="GitHub stars">
+        </div>
+        <div class="cta">
+          <a class="btn primary" href="https://github.com/aravinds-kannappan/VeriGrad-RL">View on GitHub</a>
+          <a class="btn" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Read the findings</a>
+          <a class="btn" href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/benchmark/scale/REPORT.md">Scaling report</a>
+        </div>
 
-    <div class="layout">
-      <aside class="toc" aria-label="Contents">
-        <h4>Contents</h4>
-        <ol>
-          <li><a href="#intro">Introduction</a></li>
-          <li><a href="#approach">Approach</a></li>
-          <li><a href="#results">Results</a></li>
-          <li><a href="#mechanism">Mechanism</a></li>
-          <li><a href="#reliability">Grader reliability</a></li>
-          <li><a href="#limitations">Limitations</a></li>
-          <li><a href="#reproduce">Reproducibility</a></li>
-          <li><a href="#cite">Citation</a></li>
-          <li><a href="#refs">References</a></li>
-        </ol>
-      </aside>
+        <div class="terminal">
+          <div class="term-head"><span class="d" style="background:#ff5f56"></span><span class="d" style="background:#ffbd2e"></span><span class="d" style="background:#27c93f"></span><span class="t">bash</span></div>
+          <button class="copy" data-copy="git clone https://github.com/aravinds-kannappan/VeriGrad-RL &amp;&amp; cd VeriGrad-RL&#10;pip install -e &quot;.[llm]&quot;&#10;echo &quot;ANTHROPIC_API_KEY=sk-ant-...&quot; &gt; .env&#10;python -m verigrad_rl.cli propensity --tasks 150&#10;python -m verigrad_rl.cli scale --domains gsm8k,commonsense_qa">Copy</button>
+          <pre><span class="p">$</span> git clone https://github.com/aravinds-kannappan/VeriGrad-RL &amp;&amp; cd VeriGrad-RL
+<span class="p">$</span> pip install -e <span class="k">".[llm]"</span>
+<span class="p">$</span> echo "ANTHROPIC_API_KEY=sk-ant-..." &gt; .env
 
-      <main class="content">
-        <section id="intro">
-          <span class="sec-num">01</span>
-          <h2>Introduction</h2>
-          <p class="lead">
-            "Capability is not the bottleneck to deploying agents. Trust is." A model that scores 96%
-            on a benchmark can still cave the moment someone with apparent authority tells it it's
-            wrong — and a leaderboard of final-answer accuracy will never show it.
-          </p>
-          <p>
-            This project measures <em>propensity</em>: what a model does under adversarial or
-            ambiguous pressure, separate from raw capability. We hold the task fixed (real
-            grade-school math, where the right answer is unambiguous) and vary only the social and
-            incentive framing around it. The gap between how a model behaves honestly and how it
-            behaves under pressure is the quantity of interest.
-          </p>
-          <p>
-            Three behaviours are probed: <strong>deference</strong> to a confident wrong authority
-            (sycophancy / resistance-to-redirection), <strong>spec-gaming</strong> a grader whose
-            weakness has been disclosed (reward-hacking), and the <strong>faithfulness</strong> of the
-            reasoning that produces a wrong answer under pressure.
-          </p>
-        </section>
+<span class="c"># measure propensities on real frontier models</span>
+<span class="p">$</span> python -m verigrad_rl.cli propensity --tasks 150
+<span class="c"># scale across domains with clustered CIs + FDR correction</span>
+<span class="p">$</span> python -m verigrad_rl.cli scale --domains gsm8k,commonsense_qa</pre>
+        </div>
 
-        <section id="approach">
-          <span class="sec-num">02</span>
-          <h2>Approach</h2>
-          <p>
-            The same real GSM8K problem is presented under three framings. The first establishes
-            capability; the other two apply pressure and measure the response.
-          </p>
-          <div class="pipeline">
-            <div class="stage">
-              <div class="lab">control</div>
-              <h4>Solve honestly</h4>
-              <p>Baseline accuracy — the capability anchor every propensity is measured against.</p>
-            </div>
-            <div class="stage">
-              <div class="lab">authority_wrong</div>
-              <h4>Wrong reviewer</h4>
-              <p>A confident reviewer asserts a wrong answer, derived from the real gold value — never
-                invented. Measures deference.</p>
-            </div>
-            <div class="stage">
-              <div class="lab">grader_gameable</div>
-              <h4>Disclosed exploit</h4>
-              <p>The substring grader is revealed and gaming is invited. Measures spec-gaming when it
-                pays to cheat.</p>
-            </div>
-          </div>
-          <h3>Scoring and statistics</h3>
-          <p>
-            Answers are extracted deterministically from the model's <code>ANSWER:</code> line.
-            Proportions carry Wilson 95% confidence intervals; the accuracy lost under pressure uses
-            a paired bootstrap over shared problems. Crucially, a second independent grader — a
-            separate Haiku judge — re-labels a subset, and we report Cohen's <span class="mono">κ</span>
-            against it rather than trusting a single ruler. Models are called through the Anthropic
-            API with no temperature or thinking-budget tuning, so the measured behaviour is each
-            model's default.
-          </p>
-        </section>
+        <div class="statbar">
+          <div class="stat"><b>9&times;</b><span>Sycophancy spread</span></div>
+          <div class="stat"><b>2</b><span>Task domains</span></div>
+          <div class="stat"><b>&kappa; 0.95</b><span>Grader validated</span></div>
+          <div class="stat"><b>0</b><span>Errors across runs</span></div>
+        </div>
+      </section>
 
-        <section id="results">
-          <span class="sec-num">03</span>
-          <h2>Results</h2>
-          <p class="lead">
-            Capability is nearly tied. Trustworthiness is not.
-          </p>
+      <section id="features">
+        <p class="eyebrow">Toolkit</p>
+        <h2>What's in the box</h2>
+        <div class="features">
+          <div class="feat"><div class="ic">🎯</div><h3>Propensity probes</h3>
+            <p>Hold the task fixed, vary the pressure: honest control, a confident wrong authority, and a disclosed gameable grader.</p></div>
+          <div class="feat"><div class="ic">🌐</div><h3>Multi-domain</h3>
+            <p>Pluggable <code>Environment × Pressure</code> registries. GSM8K and CommonsenseQA ship today; adding a domain is config.</p></div>
+          <div class="feat"><div class="ic">📊</div><h3>Statistical rigor</h3>
+            <p>Wilson and item-clustered bootstrap CIs, a mild→expert pressure gradient, and Benjamini–Hochberg FDR correction.</p></div>
+          <div class="feat"><div class="ic">🔍</div><h3>Grader reliability</h3>
+            <p>An independent LLM judge plus Cohen's κ — because raw agreement lies when a behavior is rare. It caught a bug in our own ruler.</p></div>
+          <div class="feat"><div class="ic">🧠</div><h3>Mechanistic analysis</h3>
+            <p>Chain-of-thought faithfulness: when a model caves, did it already know the answer (override) or get confused (anchored)?</p></div>
+          <div class="feat"><div class="ic">♻️</div><h3>Reproducible platform</h3>
+            <p>SQLite store with content-addressed caching (resumable, free re-runs), provenance stamping, and a hard cost ceiling.</p></div>
+        </div>
+      </section>
 
-          <figure>
-            <img src="assets/fig_dissociation.svg" alt="Scatter of control accuracy versus sycophancy; the three models cluster tightly on the horizontal capability axis but spread widely on the vertical propensity axis.">
-            <figcaption><b>Figure 1.</b> Capability vs. propensity. All three models cluster near 96%
-              control accuracy (horizontal), yet spread roughly 9× on sycophancy (vertical). The two
-              axes are nearly orthogonal — capability does not predict trustworthiness. Whiskers are
-              Wilson 95% intervals.</figcaption>
-          </figure>
+      <section id="results">
+        <p class="eyebrow">The core finding</p>
+        <h2>Capability is nearly tied. Trustworthiness is not.</h2>
+        <p class="lead">Three frontier models, 150 real GSM8K problems each, under three framings.</p>
+        <figure>
+          <img src="assets/fig_dissociation.svg" alt="Scatter of control accuracy versus sycophancy; the three models cluster on the horizontal capability axis but spread widely on the vertical propensity axis.">
+          <figcaption><b>Capability vs. propensity.</b> All three models cluster near 96% control
+            accuracy, yet spread ~9× on sycophancy. The axes are nearly orthogonal.</figcaption>
+        </figure>
+        <table class="data-table">
+          <thead><tr><th>Model</th><th class="num">Control accuracy</th><th class="num">Deference ↓</th><th class="num">Sycophancy on solved ↓</th><th class="num">Spec-gaming ↓</th><th class="num">Cost</th></tr></thead>
+          <tbody>
+            <tr><td><code>opus-4.8</code></td><td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td><td class="num">2.7% <span class="ci">[1.0, 6.7]</span></td><td class="num"><span class="best">2.1%</span> <span class="ci">[0.7, 5.9]</span></td><td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td><td class="num">$1.78</td></tr>
+            <tr><td><code>sonnet-4.6</code></td><td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td><td class="num">20.0% <span class="ci">[14.4, 27.1]</span></td><td class="num"><span class="worst">17.9%</span> <span class="ci">[12.5, 25.0]</span></td><td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td><td class="num">$1.56</td></tr>
+            <tr><td><code>haiku-4.5</code></td><td class="num">95.3% <span class="ci">[90.7, 97.7]</span></td><td class="num">10.7% <span class="ci">[6.7, 16.6]</span></td><td class="num">9.1% <span class="ci">[5.4, 14.9]</span></td><td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td><td class="num">$0.66</td></tr>
+          </tbody>
+        </table>
+        <div class="callout">
+          <strong>Headline.</strong> Sonnet 4.6 and Opus 4.8 are statistically tied on capability, but
+          Sonnet abandons a correct answer under a wrong reviewer 17.9% of the time versus Opus's 2.1%
+          — a ~9× gap with non-overlapping confidence intervals. The most capable model is also the
+          most robust; the mid-tier model is the least.
+        </div>
+      </section>
 
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Model</th>
-                <th class="num">Control accuracy</th>
-                <th class="num">Deference&nbsp;&darr;</th>
-                <th class="num">Sycophancy on solved&nbsp;&darr;</th>
-                <th class="num">Spec-gaming&nbsp;&darr;</th>
-                <th class="num">Cost</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><code>opus-4.8</code></td>
-                <td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td>
-                <td class="num">2.7% <span class="ci">[1.0, 6.7]</span></td>
-                <td class="num"><span class="best">2.1%</span> <span class="ci">[0.7, 5.9]</span></td>
-                <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
-                <td class="num">$1.78</td>
-              </tr>
-              <tr>
-                <td><code>sonnet-4.6</code></td>
-                <td class="num">96.7% <span class="ci">[92.4, 98.6]</span></td>
-                <td class="num">20.0% <span class="ci">[14.4, 27.1]</span></td>
-                <td class="num"><span class="worst">17.9%</span> <span class="ci">[12.5, 25.0]</span></td>
-                <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
-                <td class="num">$1.56</td>
-              </tr>
-              <tr>
-                <td><code>haiku-4.5</code></td>
-                <td class="num">95.3% <span class="ci">[90.7, 97.7]</span></td>
-                <td class="num">10.7% <span class="ci">[6.7, 16.6]</span></td>
-                <td class="num">9.1% <span class="ci">[5.4, 14.9]</span></td>
-                <td class="num">0.0% <span class="ci">[0.0, 2.5]</span></td>
-                <td class="num">$0.66</td>
-              </tr>
-            </tbody>
-          </table>
-          <p class="table-note"><b>Table 1.</b> Leaderboard, 150 problems / model / condition, GSM8K
-            test, seed 7. Point estimate with Wilson 95% CI.</p>
+      <section id="scaling">
+        <p class="eyebrow">Scales to a research program</p>
+        <h2>Three axes: breadth, rigor, platform</h2>
+        <div class="features">
+          <div class="feat"><div class="ic">🌐</div><h3>Breadth</h3>
+            <p>New domains and propensities are config via the <code>Environment × Pressure</code> registries — not new code.</p></div>
+          <div class="feat"><div class="ic">📐</div><h3>Rigor</h3>
+            <p>Multi-sample clustered CIs, an elicitation gradient, FDR correction, and a cross-domain construct-validity check.</p></div>
+          <div class="feat"><div class="ic">⚙️</div><h3>Platform</h3>
+            <p>Cached, resumable, provenance-stamped runs under a hard cost ceiling — a re-run is free.</p></div>
+        </div>
+        <figure>
+          <img src="assets/fig_gradient.svg" alt="Deference rises with escalating authority pressure, plotted per model and faceted by domain.">
+          <figcaption><b>Elicitation gradient.</b> Deference under escalating authority (honest → mild →
+            expert-consensus), per model, across two domains. Cross-domain run: 648 samples, $1.74.</figcaption>
+        </figure>
+        <table class="data-table">
+          <thead><tr><th>Model</th><th class="num">GSM8K · L1</th><th class="num">GSM8K · L3</th><th class="num">CSQA · L1</th><th class="num">CSQA · L3</th></tr></thead>
+          <tbody>
+            <tr><td><code>opus-4.8</code></td><td class="num">0.0%</td><td class="num">13.9%</td><td class="num">2.8%</td><td class="num">2.8%</td></tr>
+            <tr><td><code>sonnet-4.6</code></td><td class="num">0.0%</td><td class="num">8.3%</td><td class="num">8.3%</td><td class="num">22.2%</td></tr>
+            <tr><td><code>haiku-4.5</code></td><td class="num">0.0%</td><td class="num">16.7%</td><td class="num">8.3%</td><td class="num"><span class="worst">47.2%</span></td></tr>
+          </tbody>
+        </table>
+        <p class="table-note">Deference rate at authority intensity L1 (mild) and L3 (expert consensus), item-clustered.</p>
+        <div class="callout">
+          <strong>Two methodological points the machinery surfaces on its own.</strong> (1) <em>FDR
+          correction changes a conclusion:</em> on CommonsenseQA, Haiku-vs-Sonnet (47% vs 22%) is
+          significant at raw <em>p</em> = 0.026 but <span class="worst">not</span> after Benjamini–Hochberg
+          (<em>q</em> = 0.052). (2) <em>A propensity doesn't cleanly transfer:</em> deference is far
+          higher on fuzzy commonsense than on verifiable math, and the model ranking differs across
+          domains — a construct-validity caution you only catch by running more than one domain.
+        </div>
+      </section>
 
-          <figure>
-            <img src="assets/fig_sycophancy.svg" alt="Horizontal bar chart of sycophancy on solved problems with confidence-interval whiskers: Opus 2.1%, Haiku 9.1%, Sonnet 17.9%.">
-            <figcaption><b>Figure 2.</b> Of the problems each model solved with no pressure, how often a
-              confident wrong reviewer made it abandon the correct answer. Opus 4.8 and Sonnet 4.6 do
-              not overlap.</figcaption>
-          </figure>
+      <section id="mechanism">
+        <p class="eyebrow">Why models cave</p>
+        <h2>Social, not cognitive</h2>
+        <p>When a model abandons the correct answer, did its reasoning already compute the right
+          answer and then cave (<strong>sycophantic override</strong>), or did the pressure corrupt the
+          computation (<strong>anchored reasoning</strong>)? Across the lineup, ~90% of deference is
+          override — the model knew, and threw it away to agree with authority.</p>
+        <figure>
+          <img src="assets/fig_mechanism.svg" alt="Stacked bars of deference split into sycophantic override versus anchored reasoning; override dominates for every model.">
+          <figcaption><b>Override dominates.</b> Two independent signals (deterministic + LLM judge)
+            classify each case and agree at 94%.</figcaption>
+        </figure>
+      </section>
 
-          <figure>
-            <img src="assets/fig_pressure.svg" alt="Accuracy lost under pressure with confidence intervals: Sonnet -20.7 points (significant), Haiku -7.3, Opus -1.3 (not significant).">
-            <figcaption><b>Figure 3.</b> Accuracy lost when the same problems are posed under
-              wrong-authority pressure (paired bootstrap, 95% CI). Sonnet's 20.7-point drop excludes
-              zero; Opus's is statistically indistinguishable from no change.</figcaption>
-          </figure>
+      <section id="reliability">
+        <p class="eyebrow">Is the ruler trustworthy?</p>
+        <h2>We test our graders</h2>
+        <p>Two independent graders score a dual-labeled subset; we report Cohen's <span class="mono">κ</span>,
+          not just raw agreement.</p>
+        <table class="data-table">
+          <thead><tr><th>Label</th><th class="num">Cohen's κ</th><th class="num">Raw agreement</th><th class="num">n</th><th>Verdict</th></tr></thead>
+          <tbody>
+            <tr><td>Correctness</td><td class="num">0.95</td><td class="num">99%</td><td class="num">450</td><td class="yes">validated</td></tr>
+            <tr><td>Deference</td><td class="num">0.97</td><td class="num">99%</td><td class="num">150</td><td class="yes">validated</td></tr>
+            <tr><td>Spec-gaming</td><td class="num">—</td><td class="num">—</td><td class="num">150</td><td>0 positives — nothing to validate</td></tr>
+          </tbody>
+        </table>
+        <div class="callout warn">
+          <strong>The cross-check caught a bug in our own ruler.</strong> An earlier spec-gaming detector
+          flagged 3 "positives" the judge unanimously rejected — all three the same clock-time answer,
+          "2:00&nbsp;PM", misread as two numbers. The disagreement (κ = 0.00 despite 98% raw agreement)
+          surfaced the bug; raw agreement alone would have hidden it. After the fix, true spec-gaming is
+          0/150 across the lineup.
+        </div>
+      </section>
 
-          <div class="callout">
-            <strong>Headline.</strong> Sonnet 4.6 and Opus 4.8 are statistically tied on capability
-            (~96%), but Sonnet abandons a correct answer under a wrong reviewer 17.9% of the time
-            versus Opus's 2.1% — a ~9× gap with non-overlapping confidence intervals. The most
-            capable model is also the most robust; the mid-tier model is the least.
-          </div>
-        </section>
+      <section id="quickstart">
+        <p class="eyebrow">Quickstart</p>
+        <h2>Run it yourself</h2>
+        <p>Everything is real and reproducible — the figures on this page regenerate from the logged
+          run. You'll need an Anthropic API key; the full propensity run costs ~$4.</p>
+        <div class="terminal">
+          <div class="term-head"><span class="d" style="background:#ff5f56"></span><span class="d" style="background:#ffbd2e"></span><span class="d" style="background:#27c93f"></span><span class="t">bash</span></div>
+          <button class="copy" data-copy="pip install -e &quot;.[llm]&quot;&#10;python -m verigrad_rl.cli propensity --smoke&#10;python -m verigrad_rl.cli propensity --tasks 150&#10;python -m verigrad_rl.propensity.mechanism&#10;python -m verigrad_rl.cli scale --domains gsm8k,commonsense_qa --tasks 12 --samples 3&#10;python -m unittest discover -s tests">Copy</button>
+          <pre><span class="p">$</span> pip install -e <span class="k">".[llm]"</span>
 
-        <section id="mechanism">
-          <span class="sec-num">04</span>
-          <h2>Mechanism — <em>why</em> models defer</h2>
-          <p>
-            Measuring <em>that</em> a model defers isn't enough. A chain-of-thought-level analysis of
-            the real transcripts asks: when a model abandons the correct answer, did its reasoning
-            already compute the right answer and then cave (<strong>sycophantic override</strong>), or
-            did the pressure corrupt the computation itself (<strong>anchored reasoning</strong>)?
-          </p>
-
-          <figure>
-            <img src="assets/fig_mechanism.svg" alt="Stacked bars of deference cases split into sycophantic override versus anchored reasoning; override dominates for every model.">
-            <figcaption><b>Figure 4.</b> Decomposition of every deference case. Override (the model knew
-              the answer and caved) dominates anchored reasoning for all three models.</figcaption>
-          </figure>
-
-          <table class="data-table">
-            <thead>
-              <tr><th>Model</th><th class="num">Deference cases</th><th class="num">Override</th><th class="num">Anchored</th><th class="num">Override share</th></tr>
-            </thead>
-            <tbody>
-              <tr><td><code>opus-4.8</code></td><td class="num">4</td><td class="num">3</td><td class="num">1</td><td class="num">75.0%</td></tr>
-              <tr><td><code>sonnet-4.6</code></td><td class="num">30</td><td class="num">28</td><td class="num">2</td><td class="num">93.3%</td></tr>
-              <tr><td><code>haiku-4.5</code></td><td class="num">16</td><td class="num">14</td><td class="num">2</td><td class="num">87.5%</td></tr>
-            </tbody>
-          </table>
-
-          <div class="callout">
-            Deference is overwhelmingly <strong>social, not cognitive</strong> — the model computed the
-            right answer and threw it away to agree with authority. That is a worse failure mode than
-            honest miscalculation, and it is invisible to any benchmark that only checks the final
-            answer. Two independent signals (a deterministic gold-in-reasoning check and an LLM judge)
-            classify each case and agree at 94%.
-          </div>
-          <p class="table-note">
-            The fully-transparent, activation-level analog lives in <code>verigrad_rl/mech/</code>: a
-            synthetic residual-stream circuit where the same override-vs-corruption distinction can be
-            produced <em>causally</em> by patching named features. The Anthropic API does not expose a
-            real model's activations, so the frontier-model analysis is necessarily at the
-            reasoning-trace level.
-          </p>
-        </section>
-
-        <section id="reliability">
-          <span class="sec-num">05</span>
-          <h2>Grader reliability</h2>
-          <p>
-            An evaluation is only as good as its ruler. Two independent graders score a dual-labeled
-            subset, and we report Cohen's <span class="mono">κ</span> — not just raw agreement, which
-            is misleading when a behaviour is rare.
-          </p>
-          <table class="data-table">
-            <thead><tr><th>Label</th><th class="num">Cohen's κ</th><th class="num">Raw agreement</th><th class="num">n</th><th>Verdict</th></tr></thead>
-            <tbody>
-              <tr><td>Correctness</td><td class="num">0.95</td><td class="num">99%</td><td class="num">450</td><td>validated</td></tr>
-              <tr><td>Deference</td><td class="num">0.97</td><td class="num">99%</td><td class="num">150</td><td>validated</td></tr>
-              <tr><td>Spec-gaming</td><td class="num">—</td><td class="num">—</td><td class="num">150</td><td>0 positives — nothing to validate</td></tr>
-            </tbody>
-          </table>
-          <div class="callout warn">
-            <strong>The cross-check caught a bug in our own ruler.</strong> An earlier version of the
-            deterministic spec-gaming detector flagged 3 "positives" the LLM judge unanimously
-            rejected. All three were the same clock-time answer — "2:00&nbsp;PM" — that the regex
-            misread as two numbers. The disagreement (κ = 0.00 despite 98% raw agreement) surfaced the
-            bug; raw agreement alone would have hidden it. After fixing the extractor, true spec-gaming
-            is 0/150 across the lineup — every model refused the disclosed exploit.
-          </div>
-        </section>
-
-        <section id="limitations">
-          <span class="sec-num">06</span>
-          <h2>Limitations</h2>
-          <ul>
-            <li><strong>One task domain.</strong> Grade-school math gives unambiguous gold answers, but
-              propensities may differ on code, tool-use, or open-ended agentic tasks. The harness is
-              built to add those as new probes.</li>
-            <li><strong>Single sample per cell.</strong> One generation per (model, condition, problem)
-              at the API default; rates are cross-problem, not within-problem repeated trials.</li>
-            <li><strong>Explicit pressure.</strong> The wrong-authority and gameable-grader framings are
-              overt. They establish that the propensity exists and varies by model; subtler,
-              naturalistic pressure would likely raise the rates.</li>
-            <li><strong>The judge is a model.</strong> Reliability numbers bound, but do not eliminate,
-              grader error — which is exactly why we report κ rather than asserting the grader is
-              perfect.</li>
-          </ul>
-        </section>
-
-        <section id="reproduce">
-          <span class="sec-num">07</span>
-          <h2>Reproducibility</h2>
-          <p>
-            Real models, real data, real cost — nothing synthetic or hardcoded. Tasks are the public
-            GSM8K test split; agents are Claude Opus&nbsp;4.8 / Sonnet&nbsp;4.6 / Haiku&nbsp;4.5 via
-            the Anthropic API. The full run logged every transcript ($4.32, 1,350 model + 450 judge
-            calls, 0 errors) and the figures on this page are regenerated from that log.
-          </p>
-          <pre><code>pip install -e ".[llm]"
-echo "ANTHROPIC_API_KEY=sk-ant-..." &gt; .env          # gitignored
-
-python -m verigrad_rl.cli propensity --tasks 150     # full run  -&gt; benchmark/results/ + FINDINGS.md
-python -m verigrad_rl.propensity.mechanism           # CoT analysis -&gt; MECHANISM.md
-python scripts/build_figures.py                      # figures from the real summary.json</code></pre>
-        </section>
-
-        <section id="cite">
-          <span class="sec-num">08</span>
-          <h2>Citation</h2>
-          <pre class="bibtex"><code>@misc{kannappan2026answerunderpressure,
-  title  = {Answer Under Pressure: Measuring Sycophancy, Spec-Gaming,
-            and Reasoning Faithfulness in Frontier Models},
-  author = {Aravind Kannappan},
-  year   = {2026},
-  note   = {VeriGrad RL},
-  url    = {https://github.com/aravinds-kannappan/VeriGrad-RL}
-}</code></pre>
-        </section>
-
-        <section id="refs">
-          <span class="sec-num">09</span>
-          <h2>References</h2>
-          <ol class="refs">
-            <li>K. Cobbe et al. <em>Training Verifiers to Solve Math Word Problems</em> (GSM8K). arXiv:2110.14168, 2021.</li>
-            <li>E. Perez et al. <em>Discovering Language Model Behaviors with Model-Written Evaluations</em>. arXiv:2212.09251, 2022.</li>
-            <li>M. Sharma et al. <em>Towards Understanding Sycophancy in Language Models</em>. arXiv:2310.13548, 2023.</li>
-            <li>E. B. Wilson. <em>Probable inference, the law of succession, and statistical inference</em>. JASA, 1927.</li>
-            <li>J. Cohen. <em>A coefficient of agreement for nominal scales</em>. Educ. Psychol. Meas., 1960.</li>
-            <li>J. R. Landis &amp; G. G. Koch. <em>The measurement of observer agreement for categorical data</em>. Biometrics, 1977.</li>
-          </ol>
-        </section>
-      </main>
-    </div>
+<span class="c"># end-to-end smoke check (~30 calls, ~$0.10)</span>
+<span class="p">$</span> python -m verigrad_rl.cli propensity --smoke
+<span class="c"># full benchmark  ->  benchmark/results/ + FINDINGS.md</span>
+<span class="p">$</span> python -m verigrad_rl.cli propensity --tasks 150
+<span class="c"># chain-of-thought faithfulness  ->  MECHANISM.md</span>
+<span class="p">$</span> python -m verigrad_rl.propensity.mechanism
+<span class="c"># scale across domains  ->  benchmark/scale/REPORT.md</span>
+<span class="p">$</span> python -m verigrad_rl.cli scale --domains gsm8k,commonsense_qa --tasks 12 --samples 3
+<span class="c"># 49 tests, stdlib only</span>
+<span class="p">$</span> python -m unittest discover -s tests</pre>
+        </div>
+        <p class="table-note">Stdlib + the <code>anthropic</code> SDK only. MIT-licensed — contributions
+          welcome; adding a domain or a propensity is a single small module.</p>
+      </section>
+    </main>
 
     <footer class="footer">
-      <p>
-        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub</a> ·
-        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Findings</a> ·
-        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/MECHANISM.md">Mechanism</a> ·
-        <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/benchmark/results/leaderboard.md">Leaderboard</a>
-      </p>
-      <p>Measuring what models <em>will</em> do under pressure, not just what they <em>can</em> do.</p>
+      <div class="footer-inner">
+        <div>
+          <h4>Project</h4>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL">GitHub repository</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/LICENSE">License — MIT</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/CONTRIBUTING.md">Contributing</a>
+        </div>
+        <div>
+          <h4>Docs</h4>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/FINDINGS.md">Findings</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/MECHANISM.md">Mechanistic analysis</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/benchmark/scale/REPORT.md">Scaling report</a>
+          <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/blob/main/benchmark/results/leaderboard.md">Leaderboard</a>
+        </div>
+        <div>
+          <h4>Built with</h4>
+          <p class="meta">Python + the Anthropic API. Real models, real datasets (GSM8K, CommonsenseQA),
+            no synthetic numbers. Measuring what models <em>will</em> do under pressure.</p>
+        </div>
+      </div>
     </footer>
 
     <script src="app.js" defer></script>
