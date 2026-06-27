@@ -20,6 +20,7 @@
           <a href="#features">Features</a>
           <a href="#results">Results</a>
           <a href="#scaling">Scaling</a>
+          <a href="#playground">Playground</a>
           <a href="#reliability">Reliability</a>
           <a href="#quickstart">Quickstart</a>
           <a class="ghstar" href="https://github.com/aravinds-kannappan/VeriGrad-RL">★ Star on GitHub</a>
@@ -154,6 +155,71 @@
         </div>
       </section>
 
+      <section id="playground">
+        <p class="eyebrow">Interactive · runs in your browser</p>
+        <h2>Train a model on the data, live</h2>
+        <p>No server, no pre-baked numbers — the widgets below run real computation in your browser
+          on the 648 logged samples from the cross-domain run.</p>
+
+        <div class="widget">
+          <h3>What drives deference? — logistic regression, trained in-browser</h3>
+          <p class="muted-p">Gradient descent fits P(defer) from four features of the real run. Watch
+            it train, read the learned coefficients, then predict on any combination.</p>
+          <div class="ml-grid">
+            <div class="ml-left">
+              <div class="controls">
+                <label>learning rate <output id="ml-lr-val">0.5</output>
+                  <input id="ml-lr" type="range" min="0.05" max="1.5" step="0.05" value="0.5"></label>
+                <label>epochs <output id="ml-epochs-val">300</output>
+                  <input id="ml-epochs" type="range" min="50" max="800" step="50" value="300"></label>
+                <button id="ml-train" class="btn primary">▶ Train in browser</button>
+              </div>
+              <div id="ml-loss" class="chart"></div>
+              <div id="ml-metrics" class="metrics-line"></div>
+            </div>
+            <div class="ml-right">
+              <h4>Learned coefficients <span class="hint">standardized · + = more deference</span></h4>
+              <div id="ml-coef" class="coef"></div>
+            </div>
+          </div>
+          <div class="predictor">
+            <h4>Predict P(defer) for any combination</h4>
+            <div class="pred-controls">
+              <label>model <select id="pred-model">
+                <option value="opus">Opus 4.8</option>
+                <option value="sonnet">Sonnet 4.6</option>
+                <option value="haiku" selected>Haiku 4.5</option></select></label>
+              <label>domain <select id="pred-domain">
+                <option value="gsm8k">GSM8K (math)</option>
+                <option value="csqa" selected>CommonsenseQA</option></select></label>
+              <label>authority intensity <output id="pred-intensity-val">3</output>
+                <input id="pred-intensity" type="range" min="0" max="3" step="1" value="3"></label>
+            </div>
+            <div class="gauge-wrap">
+              <div class="gauge"><div id="pred-gauge" class="gauge-fill"></div></div>
+              <div class="gauge-num"><span id="pred-out">—</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="widget">
+          <h3>The κ paradox — why raw agreement lies for rare behaviors</h3>
+          <p class="muted-p">Two independent graders label items where the true behavior occurs at a
+            chosen base rate. Drag the rate down and watch Cohen's κ collapse while raw agreement stays
+            high — the trap that hid our spec-gaming detector bug.</p>
+          <div class="k-grid">
+            <div class="controls">
+              <label>behavior base rate <output id="k-rate-val">0.7%</output>
+                <input id="k-rate" type="range" min="0.2" max="50" step="0.1" value="0.7"></label>
+              <label>per-grader accuracy <output id="k-acc-val">98.0%</output>
+                <input id="k-acc" type="range" min="80" max="99.9" step="0.1" value="98"></label>
+            </div>
+            <div id="k-bars" class="kbars"></div>
+          </div>
+          <p id="k-verdict" class="callout"></p>
+        </div>
+      </section>
+
       <section id="mechanism">
         <p class="eyebrow">Why models cave</p>
         <h2>Social, not cognitive</h2>
@@ -239,6 +305,8 @@
       </div>
     </footer>
 
-    <script src="app.js" defer></script>
+    <script src="data.js"></script>
+    <script src="ml.js"></script>
+    <script src="app.js"></script>
   </body>
 </html>
