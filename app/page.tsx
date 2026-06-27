@@ -23,8 +23,11 @@ export default function Home() {
         </div>
       </header>
 
-      <main className="wrap" id="top">
-        <section className="hero" style={{ borderTop: "none" }}>
+      <section className="hero-band" id="top">
+        <span className="blob b1" />
+        <span className="blob b2" />
+        <span className="blob b3" />
+        <div className="wrap hero-inner">
           <div className="tags">
             <span className="tag">AI Safety</span>
             <span className="tag">Model Evaluation</span>
@@ -56,8 +59,10 @@ export default function Home() {
               </div>
             ))}
           </div>
-        </section>
+        </div>
+      </section>
 
+      <main className="wrap">
         <section id="live">
           <p className="eyebrow">Interactive · live model calls</p>
           <h2>Probe a model under pressure</h2>

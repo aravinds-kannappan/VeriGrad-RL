@@ -160,3 +160,93 @@ select, textarea, input[type="text"] { font: inherit; font-size: 14px; padding: 
   .features, .ml-grid, .k-grid { grid-template-columns: 1fr; }
   .bar-links a:not(.ghstar) { display: none; }
 }
+
+/* ===================== visual depth + motion ===================== */
+
+/* layered, textured page background */
+body::before {
+  content: ""; position: fixed; inset: 0; z-index: -2; pointer-events: none;
+  background:
+    radial-gradient(820px 460px at 8% -8%, rgba(15, 118, 110, 0.12), transparent 60%),
+    radial-gradient(760px 460px at 98% 2%, rgba(3, 105, 161, 0.09), transparent 58%),
+    radial-gradient(720px 520px at 55% 116%, rgba(180, 83, 9, 0.06), transparent 60%);
+}
+body::after {
+  content: ""; position: fixed; inset: 0; z-index: -1; pointer-events: none;
+  background-image:
+    linear-gradient(rgba(11, 31, 51, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(11, 31, 51, 0.035) 1px, transparent 1px);
+  background-size: 42px 42px;
+  -webkit-mask-image: radial-gradient(circle at 50% 18%, #000, transparent 70%);
+  mask-image: radial-gradient(circle at 50% 18%, #000, transparent 70%);
+}
+
+/* full-bleed animated hero band */
+.hero-band {
+  position: relative; overflow: hidden;
+  background: linear-gradient(150deg, #0a1b2d 0%, #0c2840 50%, #0a332f 100%);
+  color: #e9f2f6; border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+.hero-band .blob { position: absolute; border-radius: 50%; filter: blur(48px); opacity: 0.75; z-index: 0; will-change: transform; }
+.hero-band .b1 { width: 560px; height: 560px; top: -210px; left: -130px; background: radial-gradient(circle, rgba(16, 185, 170, 0.55), transparent 62%); animation: float1 15s ease-in-out infinite; }
+.hero-band .b2 { width: 520px; height: 520px; bottom: -250px; right: -120px; background: radial-gradient(circle, rgba(3, 130, 200, 0.5), transparent 62%); animation: float2 19s ease-in-out infinite; }
+.hero-band .b3 { width: 360px; height: 360px; top: 36%; left: 54%; background: radial-gradient(circle, rgba(217, 119, 30, 0.35), transparent 62%); animation: float3 23s ease-in-out infinite; }
+.hero-inner { position: relative; z-index: 1; padding-top: 66px; padding-bottom: 48px; }
+@keyframes float1 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(70px, 48px); } }
+@keyframes float2 { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-64px, -36px); } }
+@keyframes float3 { 0%, 100% { transform: translate(0, 0) scale(1); } 50% { transform: translate(34px, -44px) scale(1.12); } }
+
+.hero-band h1 { color: #fff; }
+.hero-band .tagline { color: #c4d4de; }
+.hero-band .tagline strong { color: #fff; }
+.hero-band .tag { background: rgba(16, 185, 170, 0.16); color: #abf0dd; border-color: rgba(16, 185, 170, 0.34); }
+.hero-band .btn { border-color: rgba(255, 255, 255, 0.22); color: #fff; background: rgba(255, 255, 255, 0.06); }
+.hero-band .btn.primary { background: linear-gradient(90deg, #14b9a0, #0f766e); border-color: transparent; box-shadow: 0 8px 22px rgba(16, 185, 170, 0.28); }
+.hero-band .stat { background: rgba(255, 255, 255, 0.06); border-color: rgba(255, 255, 255, 0.12); backdrop-filter: blur(4px); box-shadow: none; }
+.hero-band .stat b { color: #fff; }
+.hero-band .stat span { color: #a2b7c6; }
+
+/* hero entrance (staggered) */
+.hero-inner > * { animation: heroUp 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.hero-inner > .tags { animation-delay: 0.03s; }
+.hero-inner > h1 { animation-delay: 0.09s; }
+.hero-inner > .tagline { animation-delay: 0.17s; }
+.hero-inner > .badges { animation-delay: 0.25s; }
+.hero-inner > .cta { animation-delay: 0.31s; }
+.hero-inner > .statbar { animation-delay: 0.37s; }
+@keyframes heroUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
+
+/* brand dot pulse */
+.brand .dot { animation: dotPulse 2.6s ease-in-out infinite; }
+@keyframes dotPulse { 0%, 100% { box-shadow: 0 0 0 0 rgba(15, 118, 110, 0.55); } 50% { box-shadow: 0 0 0 7px rgba(15, 118, 110, 0); } }
+
+/* card depth + hover */
+.feat, .widget, .probe, .callout { box-shadow: 0 1px 2px rgba(11, 31, 51, 0.04), 0 10px 26px rgba(11, 31, 51, 0.05); }
+.feat { transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease; }
+.feat:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(11, 31, 51, 0.13); border-color: #c4ece5; }
+figure img { box-shadow: 0 12px 30px rgba(11, 31, 51, 0.07); }
+.btn { transition: transform 0.15s ease, box-shadow 0.15s ease; }
+.btn.primary:hover { box-shadow: 0 8px 20px rgba(15, 118, 110, 0.3); }
+
+/* eyebrow accent rule */
+.eyebrow { display: inline-flex; align-items: center; gap: 9px; }
+.eyebrow::before { content: ""; width: 22px; height: 2px; background: var(--teal); border-radius: 2px; display: inline-block; }
+
+/* scroll-reveal — applied only where supported; otherwise content shows normally */
+@supports (animation-timeline: view()) {
+  main > section > figure,
+  main > section > .widget,
+  main > section > .probe,
+  main > section > .callout,
+  main > section > .data-table,
+  main > section > .features {
+    animation: revealUp linear both;
+    animation-timeline: view();
+    animation-range: entry 2% entry 30%;
+  }
+}
+@keyframes revealUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: none; } }
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-band .blob, .hero-inner > *, .brand .dot { animation: none !important; }
+}
