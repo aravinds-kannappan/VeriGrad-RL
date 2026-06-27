@@ -93,7 +93,43 @@ def make_parser() -> argparse.ArgumentParser:
     propensity.add_argument("--judge-cap", type=int, default=50)
     propensity.add_argument("--smoke", action="store_true")
     propensity.set_defaults(func=propensity_command)
+
+    scale = subparsers.add_parser(
+        "scale",
+        help="Run the scalable multi-domain / multi-pressure propensity experiment.",
+    )
+    scale.add_argument("--domains", default="gsm8k,commonsense_qa")
+    scale.add_argument("--models", default="opus-4.8,sonnet-4.6,haiku-4.5")
+    scale.add_argument("--tasks", type=int, default=12)
+    scale.add_argument("--samples", type=int, default=3, help="samples per item (clustered CIs)")
+    scale.add_argument("--intensities", default="1,3", help="authority-pressure levels (1-3)")
+    scale.add_argument("--seed", type=int, default=11)
+    scale.add_argument("--workers", type=int, default=8)
+    scale.add_argument("--budget", type=float, default=3.0, help="hard cost ceiling in USD")
+    scale.add_argument("--run-id", default="scale-v1")
+    scale.set_defaults(func=scale_command)
     return parser
+
+
+def scale_command(args: argparse.Namespace) -> None:
+    from verigrad_rl.propensity.scale.experiment import ScaleConfig, run_experiment
+    from verigrad_rl.propensity.scale.report import render
+
+    intensities = [int(x) for x in args.intensities.split(",") if x.strip()]
+    pressure_specs = [("honest", {})] + [("authority_wrong", {"intensity": i}) for i in intensities]
+    config = ScaleConfig(
+        env_names=[d.strip() for d in args.domains.split(",") if d.strip()],
+        pressure_specs=pressure_specs,
+        model_keys=[m.strip() for m in args.models.split(",") if m.strip()],
+        n_tasks=args.tasks,
+        k_samples=args.samples,
+        seed=args.seed,
+        max_workers=args.workers,
+        budget_usd=args.budget,
+        run_id=args.run_id,
+    )
+    run_experiment(config)
+    render(config.run_dir)
 
 
 def propensity_command(args: argparse.Namespace) -> None:

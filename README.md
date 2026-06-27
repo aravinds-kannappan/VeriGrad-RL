@@ -116,6 +116,57 @@ propensity means adding a condition in
 
 ---
 
+## Scaling it to a research program
+
+The single benchmark above generalizes into a platform along three axes, in
+[`verigrad_rl/propensity/scale/`](verigrad_rl/propensity/scale). Full live results:
+**[benchmark/scale/REPORT.md](benchmark/scale/REPORT.md)**.
+
+**Breadth — new domains and propensities are config, not code.** A *probe* is an
+`Environment` (a task domain + ground-truth verifier) × a `Pressure` (a transform that
+injects authority / incentive / ambiguity), wired through registries
+([`core.py`](verigrad_rl/propensity/scale/core.py),
+[`environments.py`](verigrad_rl/propensity/scale/environments.py),
+[`pressures.py`](verigrad_rl/propensity/scale/pressures.py)). Two real domains ship today
+— **GSM8K** (free-form math) and **CommonsenseQA** (multiple choice) — so the same
+sycophancy probe runs cross-domain, which is what lets you ask whether a propensity
+*transfers*.
+
+**Rigor — the science, not just more numbers.**
+- **Multiple samples per item** with **item-clustered bootstrap CIs** — honest intervals
+  that a naive Wilson on flattened samples would understate.
+- A **pressure-intensity gradient** (mild → expert-consensus): propensity is reported as
+  a curve under elicitation, not a single default-rate point.
+- **Benjamini–Hochberg FDR correction** across the many model comparisons — running a
+  big grid creates a multiplicity problem, and this controls the false-discovery rate.
+- A **cross-domain construct-validity check**: does the model ranking transfer?
+
+**Platform — reproducible and cheap to re-run.** A SQLite store
+([`store.py`](verigrad_rl/propensity/scale/store.py)) with **content-addressed caching**
+(runs are resumable; re-runs after a code change only pay for what changed), **provenance
+stamping** (model id, prompt version, harness git SHA, seed on every row), and a **hard
+cost ceiling**.
+
+```bash
+python -m verigrad_rl.cli scale \
+  --domains gsm8k,commonsense_qa --models opus-4.8,sonnet-4.6,haiku-4.5 \
+  --intensities 1,3 --tasks 12 --samples 3 --budget 5.0
+# -> benchmark/scale/{REPORT.md, summary.json, samples.jsonl, runs.db, fig_gradient.svg}
+```
+
+**What the first real run showed** (2 domains × 3 models × 3 conditions, $1.74) — two
+methodological points the machinery surfaces on its own:
+
+- **FDR correction changes a conclusion.** On CommonsenseQA, Haiku-vs-Sonnet deference
+  (47% vs 22%) is significant at raw *p* = 0.026 but **not** after Benjamini–Hochberg
+  (*q* = 0.052). Reporting uncorrected p-values across a grid would have over-claimed.
+- **A propensity does not cleanly transfer across domains.** Deference rises with the
+  authority gradient in both domains, but it's far higher on fuzzy commonsense (Haiku
+  47% at L3) than on verifiable math (17%), and the *model ranking differs* between
+  them — a construct-validity caution you only catch by running more than one domain.
+
+---
+
 ## Activation-level baseline: RL-from-verifier on a transparent circuit
 
 The repo also includes the original VeriGrad RL trainer: a dependency-free
@@ -156,6 +207,9 @@ verigrad_rl/
     runner.py        Orchestration, logging, cost tracking, aggregation.
     report.py        Renders summary.json -> leaderboard.md + FINDINGS.md.
     mechanism.py     CoT-faithfulness analysis of deference -> MECHANISM.md.
+    scale/           Scalable harness: Environment x Pressure registries (breadth),
+                     clustered CIs + gradient + FDR (rigor), SQLite cache + provenance
+                     + budget (platform). See benchmark/scale/REPORT.md.
   envs/, mech/     Synthetic RL-from-verifier baseline (transparent circuit).
   rewards.py       Verifier contracts and reward helpers.
   policy.py        Feature-based categorical policy (log-linear).

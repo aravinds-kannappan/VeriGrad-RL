@@ -17,3 +17,5 @@ runs/
 .env.*
 data/
 benchmark/results/raw/
+benchmark/scale/runs.db
+benchmark/**/run.log
