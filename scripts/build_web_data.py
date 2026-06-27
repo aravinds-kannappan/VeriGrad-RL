@@ -15,8 +15,8 @@ import shutil
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
-WEB_LIB = ROOT / "web" / "lib"
-WEB_ASSETS = ROOT / "web" / "public" / "assets"
+WEB_LIB = ROOT / "lib"
+WEB_ASSETS = ROOT / "public" / "assets"
 
 
 def samples() -> None:
@@ -72,7 +72,7 @@ def figures() -> None:
     for svg in src.glob("fig_*.svg"):
         shutil.copy(svg, WEB_ASSETS / svg.name)
         n += 1
-    print(f"  copied {n} figures to web/public/assets/")
+    print(f"  copied {n} figures to public/assets/")
 
 
 def main() -> None:
