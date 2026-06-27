@@ -12,8 +12,18 @@
     · <a href="benchmark/results/leaderboard.md">Leaderboard</a>
     · <a href="verigrad_rl/propensity">Benchmark code</a>
     · <a href="docs/ARCHITECTURE.md">Architecture</a>
+    · <a href="web">Interactive app</a>
   </p>
 </div>
+
+## Interactive web app (Next.js)
+
+A real **Next.js + React + TypeScript** app lives in [`web/`](web) — not a static page. It has a
+**live API route** that calls real frontier models in real time (probe a problem, pick the
+pressure, watch the model hold or cave), plus an **in-browser logistic regression** trained on the
+648 real samples and the κ-paradox simulator. Run it with `cd web && npm install && npm run dev`,
+or deploy on Vercel (set **Root Directory = `web`** and add **`ANTHROPIC_API_KEY`**). See
+[web/README.md](web/README.md).
 
 ## Answer Under Pressure — the propensity benchmark
 

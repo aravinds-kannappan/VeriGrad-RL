@@ -6,7 +6,7 @@ __pycache__/
 venv/
 build/
 dist/
-public/
+/public/
 .vercel/
 *.egg-info/
 runs/
@@ -19,3 +19,10 @@ data/
 benchmark/results/raw/
 benchmark/scale/runs.db
 benchmark/**/run.log
+
+# Next.js web app build artifacts
+web/node_modules/
+web/.next/
+web/out/
+web/.env.local
+web/next-env.d.ts
