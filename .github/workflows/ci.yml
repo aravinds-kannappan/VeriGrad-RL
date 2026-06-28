@@ -16,3 +16,5 @@ jobs:
       - run: python -m verigrad_rl.cli train --episodes 50 --eval-every 25 --eval-tasks 20 --run-dir runs/ci
       - run: python -m verigrad_rl.cli train --env safety-circuit --episodes 120 --eval-every 60 --eval-tasks 30 --temperature 1.5 --run-dir runs/safety-ci
       - run: python -m verigrad_rl.cli train --env biosafety --episodes 120 --eval-every 60 --eval-tasks 30 --temperature 1.4 --run-dir runs/biosafety-ci
+      - run: python -m verigrad_rl.cli circuit --target safety-dag --out runs/circuit-ci
+      - run: python -m verigrad_rl.cli circuit --target toy-circuit --out runs/circuit-toy-ci

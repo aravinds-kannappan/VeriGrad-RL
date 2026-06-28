@@ -108,7 +108,57 @@ def make_parser() -> argparse.ArgumentParser:
     scale.add_argument("--budget", type=float, default=3.0, help="hard cost ceiling in USD")
     scale.add_argument("--run-id", default="scale-v1")
     scale.set_defaults(func=scale_command)
+
+    circuit = subparsers.add_parser(
+        "circuit",
+        help="Automated circuit discovery (ACDC + path patching) on a safety circuit.",
+    )
+    circuit.add_argument("--target", choices=["safety-dag", "toy-circuit"], default="safety-dag")
+    circuit.add_argument("--tau", type=float, default=0.02, help="KL budget per edge (nats)")
+    circuit.add_argument("--samples", type=int, default=24, help="contrastive pairs in the task")
+    circuit.add_argument("--seed", type=int, default=1)
+    circuit.add_argument("--out", default="benchmark/circuits", help="report + SVG output dir")
+    circuit.set_defaults(func=circuit_command)
     return parser
+
+
+def circuit_command(args: argparse.Namespace) -> None:
+    from pathlib import Path
+
+    from verigrad_rl.mech.acdc import contrastive_dataset, run_acdc
+    from verigrad_rl.mech.circuit_graph import from_toy_safety_circuit, safety_dag
+    from verigrad_rl.mech.circuit_report import render_markdown, render_svg
+
+    if args.target == "toy-circuit":
+        graph = from_toy_safety_circuit()
+        clean = {"harmful_intent": 0.9, "helpful_intent": 0.3, "jailbreak_pressure": 0.9,
+                 "refusal_prior": 0.2, "uncertainty": 0.2}
+        corrupt = {"harmful_intent": 0.1, "helpful_intent": 0.9, "jailbreak_pressure": 0.1,
+                   "refusal_prior": 0.2, "uncertainty": 0.2}
+        title = "Discovered safety circuit (RL reward model)"
+    else:
+        graph = safety_dag()
+        clean = {"harm": 0.9, "jailbreak": 0.8, "topic": 0.1, "refusal_cue": 0.3, "noise": 0.5}
+        corrupt = {"harm": 0.1, "jailbreak": 0.1, "topic": 0.9, "refusal_cue": 0.3, "noise": 0.5}
+        title = "Discovered refuse/answer safety circuit"
+
+    dataset = contrastive_dataset(graph, clean, corrupt, n=args.samples, seed=args.seed)
+    result = run_acdc(graph, dataset, tau=args.tau)
+
+    out = Path(args.out)
+    out.mkdir(parents=True, exist_ok=True)
+    (out / "REPORT.md").write_text(render_markdown(graph, result, title=title), encoding="utf-8")
+    (out / "fig_circuit.svg").write_text(render_svg(graph, result, title=title), encoding="utf-8")
+    print(json.dumps({
+        "target": args.target,
+        "edges_kept": result.n_edges,
+        "edges_total": result.full_edges,
+        "sparsity": round(result.sparsity, 3),
+        "faithfulness_kl": round(result.faithfulness_kl, 4),
+        "tau": result.tau,
+        "circuit": [f"{u}->{v}" for (u, v) in result.circuit_edges],
+        "out": str(out),
+    }, indent=2))
 
 
 def scale_command(args: argparse.Namespace) -> None:

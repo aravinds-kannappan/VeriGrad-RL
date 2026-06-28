@@ -19,6 +19,8 @@
 
 ## Mechanistic Interpretability
 
+- [x] Automated circuit discovery (ACDC + path patching) on the transparent circuit.
+- Port the `CircuitGraph` interface to real transformer activations (e.g. TransformerLens).
 - Connect `ToySafetyCircuit` to real transformer activation caches.
 - Add sparse autoencoder feature dictionaries.
 - Add steering-vector and activation-patching backends.

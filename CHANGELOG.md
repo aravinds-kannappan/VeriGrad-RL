@@ -1,5 +1,20 @@
 # Changelog
 
+## 0.5.0
+
+- Added **automated circuit discovery** grounded in the literature: a dependency-free
+  implementation of ACDC (Conmy et al., NeurIPS 2023) and path patching
+  (Goldowsky-Dill et al., 2023) over a transparent `CircuitGraph` substrate
+  (`verigrad_rl/mech/{circuit_graph,acdc,circuit_report}.py`).
+- Path patching has exact, unit-tested clean/corrupt invariants; ACDC is validated
+  against a known answer key on a safety DAG and recovers the harm-detection circuit
+  on the RL reward model with no hand labeling (`tests/test_acdc.py`, 8 tests).
+- Added `verigrad circuit` CLI: writes `benchmark/circuits/{REPORT.md, fig_circuit.svg}`;
+  the discovered-circuit figure is surfaced on the site.
+- Added `docs/MECH_INTERP.md` (the system) and `docs/REFERENCES.md` (maps all of the
+  AI-safety papers behind VeriGrad to where each is implemented vs. grounds the work).
+- 65 tests passing (1 skipped without inspect-ai).
+
 ## 0.4.0
 
 - Added an **Inspect AI** adapter (`verigrad_rl/integrations/inspect_task.py`): the

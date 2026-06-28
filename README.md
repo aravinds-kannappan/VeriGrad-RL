@@ -11,8 +11,9 @@
     · <a href="MECHANISM.md">Mechanistic analysis</a>
     · <a href="benchmark/results/leaderboard.md">Leaderboard</a>
     · <a href="docs/INTEGRATIONS.md">Integrations</a>
+    · <a href="docs/MECH_INTERP.md">Circuit discovery</a>
     · <a href="docs/SCALING.md">Scaling</a>
-    · <a href="docs/ARCHITECTURE.md">Architecture</a>
+    · <a href="docs/REFERENCES.md">References</a>
     · <a href="app">Interactive app</a>
   </p>
 </div>
@@ -242,6 +243,32 @@ look safe on a verifier is easy; the harder, more useful question is whether the
 verifier survives contact with a *capable* model — which is what Answer Under Pressure
 measures on real frontier models.
 
+---
+
+## Automated circuit discovery (ACDC + path patching)
+
+The same transparent safety circuit is also the substrate for a real, dependency-free
+implementation of **automated circuit discovery**, grounded directly in the literature:
+**ACDC** (Conmy et al., *Towards Automated Circuit Discovery*, NeurIPS 2023) and **path
+patching** (Goldowsky-Dill et al., *Localizing Model Behavior with Path Patching*, 2023).
+Full method: **[docs/MECH_INTERP.md](docs/MECH_INTERP.md)**.
+
+```bash
+verigrad circuit --target safety-dag --tau 0.02   # -> benchmark/circuits/{REPORT.md, fig_circuit.svg}
+verigrad circuit --target toy-circuit             # the same method on the RL reward model
+```
+
+Because the circuit is white-box it has a **known answer key**, so the discovery is
+*validated* the way the paper validates ACDC against hand-found circuits: `tests/test_acdc.py`
+checks that path patching is exact (patch nothing → clean run; patch everything → corrupt
+run), that the core harm-detection pathway is recovered, that information-free edges are
+pruned, and that precision/recall move with `tau` as predicted. On the RL reward model it
+recovers — with no hand labeling — that `harmful_intent` and `jailbreak_pressure` drive the
+harmful-completion and safe-refusal logits.
+
+Every paper behind VeriGrad — mechanistic, propensity, and oversight — is mapped to where
+it is implemented or grounds the work in **[docs/REFERENCES.md](docs/REFERENCES.md)**.
+
 > The `docs/` site and the synthetic biosafety/DNA-screening playground are
 > illustrative demos built on synthetic, non-operational data. They are clearly labeled
 > as synthetic and are not part of the real-model benchmark.
@@ -264,7 +291,10 @@ verigrad_rl/
                      + budget (platform). See benchmark/scale/REPORT.md.
   integrations/    Harness-agnostic adapters. _logic.py (offline core, anchor-matched
                    to the runner) + inspect_task.py (Inspect AI Task, any provider).
-  envs/, mech/     Synthetic RL-from-verifier baseline (transparent circuit).
+  mech/            Mechanistic interp: ToySafetyCircuit + automated circuit discovery.
+    circuit_graph.py  White-box DAG + exact path patching (Goldowsky-Dill 2023).
+    acdc.py           ACDC algorithm (Conmy 2023); circuit_report.py renders it.
+  envs/            Synthetic RL-from-verifier baseline environments.
   rewards.py       Verifier contracts and reward helpers.
   policy.py        Feature-based categorical policy (log-linear).
   train.py         REINFORCE trainer (moving baseline).

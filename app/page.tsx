@@ -39,6 +39,13 @@ inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
 inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
   --model openai/gpt-4o`;
 
+const CIRCUIT = `# automated circuit discovery on a transparent safety circuit
+verigrad circuit --target safety-dag --tau 0.02
+#  -> benchmark/circuits/{REPORT.md, fig_circuit.svg}
+
+# run the same method on the RL environment's actual reward model
+verigrad circuit --target toy-circuit`;
+
 const FEATURES = [
   {
     ic: "🎯",
@@ -57,8 +64,8 @@ const FEATURES = [
   },
   {
     ic: "🔬",
-    h: "Mechanistic analysis",
-    p: "Override vs. anchored — did the model know the answer and cave, or did pressure corrupt the computation? Two independent signals agree at 94%.",
+    h: "Automated circuit discovery",
+    p: "A dependency-free ACDC + path-patching implementation (Conmy 2023; Goldowsky-Dill 2023) that finds the safety circuit on a transparent substrate, validated against a known answer key.",
   },
   {
     ic: "✅",
@@ -139,6 +146,7 @@ export default function Home() {
             <a href="#live">Live demo</a>
             <a href="#results">Results</a>
             <a href="#ecosystem">Ecosystem</a>
+            <a href="#circuits">Circuits</a>
             <a href="#scaling">Scaling</a>
             <a className="ghstar" href={REPO}>★ GitHub</a>
           </nav>
@@ -167,7 +175,7 @@ export default function Home() {
             <img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT" />
             <img src="https://img.shields.io/badge/python-3.10%2B-0369a1" alt="Python" />
             <img src="https://img.shields.io/badge/Inspect-adapter-7c3aed" alt="Inspect adapter" />
-            <img src="https://img.shields.io/badge/tests-57-16a34a" alt="tests" />
+            <img src="https://img.shields.io/badge/tests-65-16a34a" alt="tests" />
             <img src={`https://img.shields.io/github/stars/aravinds-kannappan/VeriGrad-RL?style=social`} alt="stars" />
           </div>
           <div className="cta">
@@ -409,6 +417,37 @@ export default function Home() {
           </table>
         </section>
 
+        <section id="circuits">
+          <p className="eyebrow">White-box · automated circuit discovery</p>
+          <h2>Find the safety circuit automatically</h2>
+          <p>
+            Behavior tells you a model caved; mechanism tells you which components did it. VeriGrad
+            ships a dependency-free implementation of <strong>ACDC</strong> (Conmy et al., NeurIPS
+            2023) and <strong>path patching</strong> (Goldowsky-Dill et al., 2023), run on a
+            transparent safety circuit with a known answer key — so the discovery is{" "}
+            <em>validated</em>, not just asserted.
+          </p>
+          <figure>
+            <img src="/assets/fig_circuit.svg" alt="Automatically discovered refuse/answer safety circuit" />
+            <figcaption>
+              <b>Discovered circuit.</b> ACDC keeps the harm-detection → guard → output pathway
+              (solid teal) and prunes information-free edges (dashed). Run on the RL reward model it
+              recovers — with no hand labeling — that harmful-intent and jailbreak features drive the
+              refusal logit.
+            </figcaption>
+          </figure>
+          <CodeBlock title="circuit.sh" code={CIRCUIT} />
+          <div className="callout">
+            <strong>Validated, not asserted.</strong> Because the circuit is white-box it has a known
+            answer key, so <code>tests/test_acdc.py</code> checks the core pathway is recovered, that
+            information-free edges are pruned, and that precision/recall move with the threshold
+            exactly as the ACDC paper predicts. Method in{" "}
+            <a href={`${REPO}/blob/main/docs/MECH_INTERP.md`}>docs/MECH_INTERP.md</a>; every paper
+            behind VeriGrad is mapped in{" "}
+            <a href={`${REPO}/blob/main/docs/REFERENCES.md`}>docs/REFERENCES.md</a>.
+          </div>
+        </section>
+
         <section id="reliability">
           <p className="eyebrow">Is the ruler trustworthy?</p>
           <h2>We test our graders</h2>
@@ -449,8 +488,9 @@ export default function Home() {
             <h4>Docs</h4>
             <a href={`${REPO}/blob/main/FINDINGS.md`}>Findings</a>
             <a href={`${REPO}/blob/main/docs/INTEGRATIONS.md`}>Integrations</a>
+            <a href={`${REPO}/blob/main/docs/MECH_INTERP.md`}>Circuit discovery</a>
             <a href={`${REPO}/blob/main/docs/SCALING.md`}>Scaling</a>
-            <a href={`${REPO}/blob/main/MECHANISM.md`}>Mechanistic analysis</a>
+            <a href={`${REPO}/blob/main/docs/REFERENCES.md`}>References</a>
           </div>
           <div>
             <h4>Built with</h4>

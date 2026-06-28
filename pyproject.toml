@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verigrad-rl"
-version = "0.4.0"
+version = "0.5.0"
 description = "Propensity benchmark for frontier models + a verifiable-reward RL baseline, with an Inspect AI adapter."
 readme = "README.md"
 requires-python = ">=3.10"
