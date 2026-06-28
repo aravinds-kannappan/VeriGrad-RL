@@ -1,9 +1,130 @@
 import LiveProbe from "@/components/LiveProbe";
 import MLPlayground from "@/components/MLPlayground";
 import KappaSim from "@/components/KappaSim";
+import CodeBlock from "@/components/CodeBlock";
 import { LEADERBOARD, MECHANISM, GRADIENT, RELIABILITY, STATS } from "@/lib/data";
 
 const REPO = "https://github.com/aravinds-kannappan/VeriGrad-RL";
+
+const INSTALL = `# clone + install (editable) — Python 3.10+
+git clone https://github.com/aravinds-kannappan/VeriGrad-RL
+cd VeriGrad-RL
+pip install -e ".[llm,inspect]"`;
+
+const RUN = `# runs offline in seconds — verifiable-reward RL, no API key
+verigrad train --episodes 400 --env arithmetic
+
+# the propensity benchmark on real frontier models
+export ANTHROPIC_API_KEY=sk-ant-...
+verigrad propensity --smoke      # 3 problems, ~$0.01 — sanity check
+verigrad propensity --tasks 150  # the full leaderboard run`;
+
+const PY = `from verigrad_rl.integrations import (
+    build_pressure_samples, label_response, safe_behavior,
+)
+
+# real GSM8K problems rendered under a confident, wrong reviewer
+samples = build_pressure_samples("authority_wrong", n_tasks=150, seed=7)
+
+# call any model on samples[i].prompt, then score deterministically:
+labels = label_response("authority_wrong", model_text,
+                        samples[0].gold, samples[0].anchor)
+held = safe_behavior("authority_wrong", labels)   # True == did not cave`;
+
+const INSPECT = `pip install "verigrad-rl[inspect]"
+
+# the SAME probes, against any Inspect provider — one flag swaps the vendor
+inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
+  --model anthropic/claude-sonnet-4-6
+inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
+  --model openai/gpt-4o`;
+
+const FEATURES = [
+  {
+    ic: "🎯",
+    h: "Propensity benchmark",
+    p: "Answer Under Pressure — deference, spec-gaming, and robustness on real GSM8K + CommonsenseQA. Measures what a model will do, not just what it can.",
+  },
+  {
+    ic: "🔌",
+    h: "Inspect AI adapter",
+    p: "Run every probe through UK AISI's Inspect against Anthropic, OpenAI, Google, or a local model behind vLLM/Ollama. One flag swaps the vendor.",
+  },
+  {
+    ic: "📈",
+    h: "Scales to a program",
+    p: "Content-addressed, resumable runs with a hard cost ceiling, item-clustered CIs, and Benjamini–Hochberg FDR correction across domains.",
+  },
+  {
+    ic: "🔬",
+    h: "Mechanistic analysis",
+    p: "Override vs. anchored — did the model know the answer and cave, or did pressure corrupt the computation? Two independent signals agree at 94%.",
+  },
+  {
+    ic: "✅",
+    h: "We test the ruler",
+    p: "Cohen's κ dual-labeling on every grader. The cross-check already caught a real bug in our own detector before it reached the report.",
+  },
+  {
+    ic: "🧪",
+    h: "RL-from-verifier baseline",
+    p: "A transparent policy-gradient loop on verifiable rewards — runs offline in seconds, no GPU, every number reproducible from a seed.",
+  },
+];
+
+const SHIPPED = [
+  {
+    name: "Inspect AI",
+    by: "UK AI Safety Institute",
+    desc: "Probes run as real Inspect Tasks against any provider it supports.",
+    href: "https://inspect.aisi.org.uk",
+  },
+  {
+    name: "GSM8K · CommonsenseQA",
+    by: "task source",
+    desc: "Real public datasets, downloaded and cached — never synthetic, never modified.",
+    href: "https://github.com/openai/grade-school-math",
+  },
+  {
+    name: "Anthropic API",
+    by: "models + judge",
+    desc: "Models under test and the independent reliability judge; cost is measured, not estimated.",
+    href: "https://docs.anthropic.com",
+  },
+];
+
+const PATTERNED = [
+  {
+    name: "garak",
+    by: "NVIDIA",
+    desc: "Probe/detector taxonomy for LLM vulnerability scanning.",
+    href: "https://github.com/NVIDIA/garak",
+  },
+  {
+    name: "lm-evaluation-harness",
+    by: "EleutherAI",
+    desc: "Capability-baseline + results-table conventions.",
+    href: "https://github.com/EleutherAI/lm-evaluation-harness",
+  },
+  {
+    name: "HELM",
+    by: "Stanford CRFM",
+    desc: "Scenario/metric separation and CI-first reporting.",
+    href: "https://github.com/stanford-crfm/helm",
+  },
+  {
+    name: "TransformerLens",
+    by: "open source",
+    desc: "White-box, mechanistic-interpretability workflow.",
+    href: "https://github.com/TransformerLensOrg/TransformerLens",
+  },
+  {
+    name: "petri",
+    by: "Anthropic",
+    desc: "Auditing-agent philosophy — probe behavior under pressure.",
+    href: "https://github.com/anthropic-experimental/petri",
+  },
+];
 
 export default function Home() {
   return (
@@ -14,9 +135,10 @@ export default function Home() {
             <span className="dot" /> VeriGrad&nbsp;RL
           </a>
           <nav className="bar-links">
+            <a href="#install">Install</a>
             <a href="#live">Live demo</a>
             <a href="#results">Results</a>
-            <a href="#playground">Playground</a>
+            <a href="#ecosystem">Ecosystem</a>
             <a href="#scaling">Scaling</a>
             <a className="ghstar" href={REPO}>★ GitHub</a>
           </nav>
@@ -30,26 +152,28 @@ export default function Home() {
         <div className="wrap hero-inner">
           <div className="tags">
             <span className="tag">AI Safety</span>
-            <span className="tag">Model Evaluation</span>
-            <span className="tag">Next.js · Live</span>
+            <span className="tag">Open Source</span>
+            <span className="tag">Inspect · Next.js · Live</span>
           </div>
-          <h1>Watch a frontier model cave under pressure — live.</h1>
+          <h1>Measure what a frontier model will do under pressure.</h1>
           <p className="tagline">
-            VeriGrad RL measures the <strong>propensities</strong> of real frontier models — sycophancy,
-            spec-gaming, reasoning faithfulness. This isn&rsquo;t a static page: probe a live model below,
-            train a classifier in your browser, and explore the real run data.
+            VeriGrad RL is an open-source toolkit and benchmark for model{" "}
+            <strong>propensities</strong> — sycophancy, spec-gaming, reasoning faithfulness. Install
+            it, run the probes through <strong>Inspect</strong> against any provider, or try a live
+            model in the browser below.
           </p>
           <div className="badges">
             <img src={`https://img.shields.io/github/actions/workflow/status/aravinds-kannappan/VeriGrad-RL/ci.yml?branch=main&label=CI`} alt="CI" />
             <img src="https://img.shields.io/badge/license-MIT-0f766e" alt="MIT" />
-            <img src="https://img.shields.io/badge/Next.js-app-000000" alt="Next.js" />
-            <img src="https://img.shields.io/badge/tests-49%20passing-16a34a" alt="tests" />
+            <img src="https://img.shields.io/badge/python-3.10%2B-0369a1" alt="Python" />
+            <img src="https://img.shields.io/badge/Inspect-adapter-7c3aed" alt="Inspect adapter" />
+            <img src="https://img.shields.io/badge/tests-57-16a34a" alt="tests" />
             <img src={`https://img.shields.io/github/stars/aravinds-kannappan/VeriGrad-RL?style=social`} alt="stars" />
           </div>
           <div className="cta">
-            <a className="btn primary" href="#live">Try the live demo ↓</a>
+            <a className="btn primary" href="#install">Quickstart ↓</a>
+            <a className="btn" href="#live">Try the live demo</a>
             <a className="btn" href={REPO}>View on GitHub</a>
-            <a className="btn" href={`${REPO}/blob/main/FINDINGS.md`}>Read the findings</a>
           </div>
           <div className="statbar">
             {STATS.map((s) => (
@@ -63,6 +187,40 @@ export default function Home() {
       </section>
 
       <main className="wrap">
+        <section id="install">
+          <p className="eyebrow">Get started · 60 seconds</p>
+          <h2>Install and run it</h2>
+          <p>
+            A pip-installable Python package (<code>verigrad</code> CLI + library) plus this Next.js app.
+            The RL baseline runs <strong>offline</strong>; the propensity benchmark calls real models and
+            reads <code>ANTHROPIC_API_KEY</code> from your environment.
+          </p>
+          <div className="two-col">
+            <CodeBlock title="install.sh" code={INSTALL} />
+            <CodeBlock title="run.sh" code={RUN} />
+          </div>
+          <h3>Use it as a library</h3>
+          <p className="muted-p">
+            The probe templates and deterministic detectors are importable — render a prompt, call any
+            model yourself, and score the response reproducibly.
+          </p>
+          <CodeBlock title="probe.py" code={PY} />
+        </section>
+
+        <section id="features">
+          <p className="eyebrow">What&rsquo;s in the box</p>
+          <h2>A benchmark, a baseline, and the plumbing to trust both</h2>
+          <div className="features">
+            {FEATURES.map((f) => (
+              <div className="feat" key={f.h}>
+                <div className="ic">{f.ic}</div>
+                <h3>{f.h}</h3>
+                <p>{f.p}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
         <section id="live">
           <p className="eyebrow">Interactive · live model calls</p>
           <h2>Probe a model under pressure</h2>
@@ -123,6 +281,49 @@ export default function Home() {
           </div>
         </section>
 
+        <section id="ecosystem">
+          <p className="eyebrow">Open source · interoperable</p>
+          <h2>Built to live in the safety-eval ecosystem</h2>
+          <p>
+            The probes are tiny and provider-neutral on purpose, so other people&rsquo;s harnesses can drive
+            them. The flagship is a real <strong>Inspect AI</strong> adapter — the same deterministic
+            detectors, now against any model Inspect can reach.
+          </p>
+          <CodeBlock title="inspect.sh" code={INSPECT} />
+
+          <h3>Shipped integrations</h3>
+          <div className="eco-grid">
+            {SHIPPED.map((e) => (
+              <a className="eco shipped" href={e.href} key={e.name}>
+                <span className="eco-tag">Shipped</span>
+                <b>{e.name}</b>
+                <span className="eco-by">{e.by}</span>
+                <p>{e.desc}</p>
+              </a>
+            ))}
+          </div>
+
+          <h3>Patterned after · compatible by design</h3>
+          <p className="muted-p">
+            Conventions VeriGrad deliberately mirrors so it slots into a real safety-eval workflow —
+            listed honestly as influences and interop targets, not bundled adapters.
+          </p>
+          <div className="eco-grid">
+            {PATTERNED.map((e) => (
+              <a className="eco" href={e.href} key={e.name}>
+                <span className="eco-tag muted">Influence</span>
+                <b>{e.name}</b>
+                <span className="eco-by">{e.by}</span>
+                <p>{e.desc}</p>
+              </a>
+            ))}
+          </div>
+          <p className="muted-p" style={{ marginTop: 14 }}>
+            Full details in{" "}
+            <a href={`${REPO}/blob/main/docs/INTEGRATIONS.md`}>docs/INTEGRATIONS.md</a>.
+          </p>
+        </section>
+
         <section id="playground">
           <p className="eyebrow">Interactive · runs in your browser</p>
           <h2>Train a model on the data, live</h2>
@@ -134,7 +335,7 @@ export default function Home() {
 
         <section id="scaling">
           <p className="eyebrow">Scales to a research program</p>
-          <h2>Across domains, under an elicitation gradient</h2>
+          <h2>Across domains, providers, and an elicitation gradient</h2>
           <figure>
             <img src="/assets/fig_gradient.svg" alt="Deference under escalating authority pressure across domains" />
             <figcaption>
@@ -164,6 +365,12 @@ export default function Home() {
               ))}
             </tbody>
           </table>
+          <div className="callout">
+            <strong>Provider-agnostic by design.</strong> The native runner targets Anthropic; the Inspect
+            adapter lifts that ceiling so the same probes produce a cross-vendor leaderboard. Runs are
+            content-addressed and resumable with a hard cost ceiling — see{" "}
+            <a href={`${REPO}/blob/main/docs/SCALING.md`}>docs/SCALING.md</a>.
+          </div>
           <div className="callout">
             <strong>FDR correction changes a conclusion.</strong> On CommonsenseQA, Haiku-vs-Sonnet (47% vs
             22%) is significant at raw <em>p</em> = 0.026 but not after Benjamini–Hochberg (<em>q</em> =
@@ -241,14 +448,15 @@ export default function Home() {
           <div>
             <h4>Docs</h4>
             <a href={`${REPO}/blob/main/FINDINGS.md`}>Findings</a>
+            <a href={`${REPO}/blob/main/docs/INTEGRATIONS.md`}>Integrations</a>
+            <a href={`${REPO}/blob/main/docs/SCALING.md`}>Scaling</a>
             <a href={`${REPO}/blob/main/MECHANISM.md`}>Mechanistic analysis</a>
-            <a href={`${REPO}/blob/main/benchmark/scale/REPORT.md`}>Scaling report</a>
           </div>
           <div>
             <h4>Built with</h4>
             <p className="meta">
-              Next.js + React + the Anthropic API. Real models, real datasets, no synthetic numbers.
-              Measuring what models <em>will</em> do under pressure.
+              Next.js + React + the Anthropic API, with an Inspect AI adapter. Real models, real datasets,
+              no synthetic numbers. Measuring what models <em>will</em> do under pressure.
             </p>
           </div>
         </div>

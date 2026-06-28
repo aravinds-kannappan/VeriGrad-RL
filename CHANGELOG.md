@@ -1,5 +1,19 @@
 # Changelog
 
+## 0.4.0
+
+- Added an **Inspect AI** adapter (`verigrad_rl/integrations/inspect_task.py`): the
+  propensity probes now run through the UK AISI Inspect framework against any
+  provider (Anthropic, OpenAI, Google, local), with anchors seeded identically to
+  the native runner so numbers are directly comparable.
+- Added a harness-agnostic integration core (`integrations/_logic.py`) plus offline
+  tests; `docs/INTEGRATIONS.md` documents adapters and honest interop targets.
+- Added `docs/SCALING.md` describing the breadth/rigor/platform machinery and the
+  axes it grows along (more providers via Inspect, domains, pressures, sharding).
+- Reworked the site to read as an open-source tool: install/quickstart with
+  copy-to-clipboard code blocks, a "what's in the box" feature grid, and an
+  Ecosystem section separating shipped integrations from honest influences.
+
 ## 0.3.0
 
 - Added synthetic biosafety/DNA order-screening triage environment.

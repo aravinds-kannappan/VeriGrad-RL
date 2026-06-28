@@ -10,7 +10,8 @@
     <a href="FINDINGS.md">Findings</a>
     · <a href="MECHANISM.md">Mechanistic analysis</a>
     · <a href="benchmark/results/leaderboard.md">Leaderboard</a>
-    · <a href="verigrad_rl/propensity">Benchmark code</a>
+    · <a href="docs/INTEGRATIONS.md">Integrations</a>
+    · <a href="docs/SCALING.md">Scaling</a>
     · <a href="docs/ARCHITECTURE.md">Architecture</a>
     · <a href="app">Interactive app</a>
   </p>
@@ -133,6 +134,40 @@ propensity means adding a condition in
 
 ---
 
+## Ecosystem & interoperability
+
+The probes are tiny and provider-neutral on purpose, so other people's open-source
+harnesses can drive the *same* deterministic detectors. Full details:
+**[docs/INTEGRATIONS.md](docs/INTEGRATIONS.md)**.
+
+**Shipped — an [Inspect AI](https://inspect.aisi.org.uk) adapter.** Inspect is the
+UK AI Safety Institute's open eval framework. Because it owns the model layer, the
+probes run against **any provider Inspect supports** — Anthropic, OpenAI, Google, or
+a local model behind vLLM/Ollama — not just the Anthropic lineup the native runner
+targets.
+
+```bash
+pip install "verigrad-rl[inspect]"
+
+# the SAME probe, two vendors — only the --model flag changes
+inspect eval verigrad_rl/integrations/inspect_task.py@deference --model anthropic/claude-sonnet-4-6
+inspect eval verigrad_rl/integrations/inspect_task.py@deference --model openai/gpt-4o
+```
+
+Anchors are seeded identically to the native runner, so a number produced under
+Inspect on `seed=7` matches `verigrad propensity --seed 7`. The harness-agnostic
+core ([`verigrad_rl/integrations/_logic.py`](verigrad_rl/integrations/_logic.py)) is
+unit-tested offline, so writing a second adapter is ~120 lines.
+
+**Patterned after** the conventions of [garak](https://github.com/NVIDIA/garak)
+(probe/detector taxonomy), [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness)
+(capability baselines), [HELM](https://github.com/stanford-crfm/helm) (scenario/metric +
+CI reporting), [TransformerLens](https://github.com/TransformerLensOrg/TransformerLens)
+(white-box workflow), and Anthropic's [petri](https://github.com/anthropic-experimental/petri)
+(auditing-agent philosophy) — listed as honest influences, not bundled adapters.
+
+---
+
 ## Scaling it to a research program
 
 The single benchmark above generalizes into a platform along three axes, in
@@ -227,11 +262,14 @@ verigrad_rl/
     scale/           Scalable harness: Environment x Pressure registries (breadth),
                      clustered CIs + gradient + FDR (rigor), SQLite cache + provenance
                      + budget (platform). See benchmark/scale/REPORT.md.
+  integrations/    Harness-agnostic adapters. _logic.py (offline core, anchor-matched
+                   to the runner) + inspect_task.py (Inspect AI Task, any provider).
   envs/, mech/     Synthetic RL-from-verifier baseline (transparent circuit).
   rewards.py       Verifier contracts and reward helpers.
   policy.py        Feature-based categorical policy (log-linear).
   train.py         REINFORCE trainer (moving baseline).
 benchmark/results/ Real run artifacts (summary, transcripts, leaderboard, mechanism).
+docs/              ARCHITECTURE, INTEGRATIONS (Inspect + interop), SCALING, references.
 FINDINGS.md        Writeup generated from the real summary.
 MECHANISM.md       Mechanistic (CoT-faithfulness) analysis of deference.
 tests/             Standard-library tests (incl. the propensity detectors + stats).

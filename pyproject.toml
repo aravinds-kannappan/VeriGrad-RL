@@ -4,13 +4,13 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "verigrad-rl"
-version = "0.3.0"
-description = "Verifiable-reward RL lab for text agents."
+version = "0.4.0"
+description = "Propensity benchmark for frontier models + a verifiable-reward RL baseline, with an Inspect AI adapter."
 readme = "README.md"
 requires-python = ">=3.10"
 license = {text = "MIT"}
 authors = [{name = "VeriGrad RL contributors"}]
-keywords = ["reinforcement-learning", "language-agents", "evals", "verifiers", "post-training"]
+keywords = ["ai-safety", "evals", "propensity", "sycophancy", "inspect-ai", "reinforcement-learning", "language-agents", "verifiers"]
 classifiers = [
   "Programming Language :: Python :: 3",
   "License :: OSI Approved :: MIT License",
@@ -24,6 +24,9 @@ verigrad = "verigrad_rl.cli:main"
 dev = ["pytest>=8", "ruff>=0.6"]
 ml = ["torch>=2.3"]
 llm = ["anthropic>=0.40", "certifi>=2024.0"]
+# Run the propensity probes through the UK AISI Inspect framework against any
+# provider (Anthropic, OpenAI, Google, local). See verigrad_rl/integrations.
+inspect = ["inspect-ai>=0.3", "certifi>=2024.0"]
 
 [tool.setuptools.packages.find]
 include = ["verigrad_rl*"]

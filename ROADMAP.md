@@ -1,5 +1,13 @@
 # Roadmap
 
+## Ecosystem & interoperability
+
+- [x] **Inspect AI adapter** — run every probe through UK AISI's Inspect against any provider.
+- [ ] Export benchmark results to an Inspect `.eval` log so native runs open in Inspect View.
+- [ ] `lm-evaluation-harness` task definition for the `control` capability baseline.
+- [ ] A `garak`-style detector plugin exposing the deterministic propensity detectors.
+- [ ] Add OpenAI / Google / local (vLLM, Ollama) to the published cross-vendor leaderboard.
+
 ## Near Term
 
 - Add more safety profiles: prompt injection, data exfiltration, cyber misuse, persuasion, and self-harm.
