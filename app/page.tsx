@@ -148,6 +148,7 @@ export default function Home() {
             <a href="#ecosystem">Ecosystem</a>
             <a href="#circuits">Circuits</a>
             <a href="#scaling">Scaling</a>
+            <a href="/docs/getting-started">Docs</a>
             <a className="ghstar" href={REPO}>★ GitHub</a>
           </nav>
         </div>
@@ -327,8 +328,7 @@ export default function Home() {
             ))}
           </div>
           <p className="muted-p" style={{ marginTop: 14 }}>
-            Full details in{" "}
-            <a href={`${REPO}/blob/main/docs/INTEGRATIONS.md`}>docs/INTEGRATIONS.md</a>.
+            Full details in the <a href="/docs/integrations">Integrations</a> docs.
           </p>
         </section>
 
@@ -376,8 +376,8 @@ export default function Home() {
           <div className="callout">
             <strong>Provider-agnostic by design.</strong> The native runner targets Anthropic; the Inspect
             adapter lifts that ceiling so the same probes produce a cross-vendor leaderboard. Runs are
-            content-addressed and resumable with a hard cost ceiling — see{" "}
-            <a href={`${REPO}/blob/main/docs/SCALING.md`}>docs/SCALING.md</a>.
+            content-addressed and resumable with a hard cost ceiling — see the{" "}
+            <a href="/docs/scaling">Scaling</a> docs.
           </div>
           <div className="callout">
             <strong>FDR correction changes a conclusion.</strong> On CommonsenseQA, Haiku-vs-Sonnet (47% vs
@@ -441,10 +441,9 @@ export default function Home() {
             <strong>Validated, not asserted.</strong> Because the circuit is white-box it has a known
             answer key, so <code>tests/test_acdc.py</code> checks the core pathway is recovered, that
             information-free edges are pruned, and that precision/recall move with the threshold
-            exactly as the ACDC paper predicts. Method in{" "}
-            <a href={`${REPO}/blob/main/docs/MECH_INTERP.md`}>docs/MECH_INTERP.md</a>; every paper
-            behind VeriGrad is mapped in{" "}
-            <a href={`${REPO}/blob/main/docs/REFERENCES.md`}>docs/REFERENCES.md</a>.
+            exactly as the ACDC paper predicts. Method in the{" "}
+            <a href="/docs/circuit-discovery">Circuit discovery</a> docs; every paper behind VeriGrad
+            is mapped in <a href="/docs/references">References</a>.
           </div>
         </section>
 
@@ -486,11 +485,11 @@ export default function Home() {
           </div>
           <div>
             <h4>Docs</h4>
-            <a href={`${REPO}/blob/main/FINDINGS.md`}>Findings</a>
-            <a href={`${REPO}/blob/main/docs/INTEGRATIONS.md`}>Integrations</a>
-            <a href={`${REPO}/blob/main/docs/MECH_INTERP.md`}>Circuit discovery</a>
-            <a href={`${REPO}/blob/main/docs/SCALING.md`}>Scaling</a>
-            <a href={`${REPO}/blob/main/docs/REFERENCES.md`}>References</a>
+            <a href="/docs/findings">Findings</a>
+            <a href="/docs/integrations">Integrations</a>
+            <a href="/docs/circuit-discovery">Circuit discovery</a>
+            <a href="/docs/scaling">Scaling</a>
+            <a href="/docs/references">References</a>
           </div>
           <div>
             <h4>Built with</h4>
