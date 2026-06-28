@@ -2,12 +2,12 @@
 
 Three axes of scale on top of the single Answer-Under-Pressure benchmark:
 
-- **Breadth** — pluggable ``Environment`` × ``Pressure`` so a new task domain or a
+- **Breadth**: pluggable ``Environment`` × ``Pressure`` so a new task domain or a
   new propensity is configuration, not new code (`core`, `environments`, `pressures`).
-- **Rigor** — multiple samples per item with item-clustered confidence intervals, a
+- **Rigor**: multiple samples per item with item-clustered confidence intervals, a
   pressure-intensity gradient for elicitation, and Benjamini-Hochberg FDR correction
   across the many model comparisons (`stats`, `experiment`).
-- **Platform** — a SQLite results store with content-addressed caching (runs are
+- **Platform**: a SQLite results store with content-addressed caching (runs are
   resumable and re-runs are free), provenance stamping, and a hard cost ceiling
   (`store`, `experiment`).
 

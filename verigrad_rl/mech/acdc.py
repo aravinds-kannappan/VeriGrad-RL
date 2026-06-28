@@ -1,4 +1,4 @@
-"""ACDC — Automated Circuit Discovery.
+"""ACDC: Automated Circuit Discovery.
 
 A faithful, dependency-free implementation of the core algorithm from Conmy,
 Mavor-Parker, Lynch, Heimersheim & Garriga-Alonso, "Towards Automated Circuit
@@ -8,8 +8,8 @@ code: github.com/ArthurConmy/Automatic-Circuit-Discovery), run on the transparen
 
 The idea, unchanged from the paper:
 
-1. Pick a *task* — a dataset of (clean, corrupt) input pairs that contrasts the
-   behavior you want to explain — and a *metric* (here, KL of the output softmax
+1. Pick a *task*: a dataset of (clean, corrupt) input pairs that contrasts the
+   behavior you want to explain, and a *metric* (here, KL of the output softmax
    from the clean run).
 2. Walk the computational graph in **reverse topological order**. For each incoming
    edge of each node, try removing it by **path-patching** that edge to the corrupt
@@ -19,7 +19,7 @@ The idea, unchanged from the paper:
 
 Because the substrate is white-box with a known answer key (``SAFETY_DAG_GROUND_TRUTH``),
 the discovery can be *validated* the way the paper validates ACDC against
-hand-identified circuits — recovering the behavior-relevant edges while pruning the
+hand-identified circuits, recovering the behavior-relevant edges while pruning the
 ones carrying no information.
 """
 
@@ -40,7 +40,7 @@ class ACDCResult:
 
     circuit_edges: List[Edge]
     pruned_edges: List[Edge]
-    faithfulness_kl: float  # KL(clean || circuit-only) — lower is more faithful
+    faithfulness_kl: float  # KL(clean || circuit-only); lower is more faithful
     full_edges: int
     tau: float
     metrics_trace: List[float] = field(default_factory=list)

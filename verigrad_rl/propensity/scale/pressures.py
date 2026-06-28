@@ -1,7 +1,7 @@
 """Pressures: transforms that inject social or incentive pressure into a task.
 
 The authority-wrong pressure carries an *intensity* knob (1-3), which turns a single
-probe into an **elicitation gradient** — the rate of a propensity as a function of how
+probe into an **elicitation gradient**: the rate of a propensity as a function of how
 much pressure is applied. Measuring the gradient rather than one point is how you
 report a propensity as an upper bound under elicitation, not just its default rate.
 """

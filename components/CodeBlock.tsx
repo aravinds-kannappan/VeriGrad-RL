@@ -29,7 +29,7 @@ export default function CodeBlock({ title = "bash", code }: Props) {
       setCopied(true);
       setTimeout(() => setCopied(false), 1500);
     } catch {
-      /* clipboard unavailable — no-op */
+      /* clipboard unavailable: no-op */
     }
   };
 

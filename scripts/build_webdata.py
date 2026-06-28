@@ -1,7 +1,7 @@
 """Emit the in-browser ML training data from the real scale run.
 
 Reads benchmark/scale/samples.jsonl (real per-sample outcomes from the
-cross-domain run) and writes docs/data.js — a compact feature matrix the site's
+cross-domain run) and writes docs/data.js, a compact feature matrix the site's
 in-browser logistic regression trains on. Reproducible:
 
     python scripts/build_webdata.py

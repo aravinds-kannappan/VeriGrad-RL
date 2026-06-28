@@ -17,22 +17,22 @@ export default function KappaSim() {
   const verdict =
     rate / 100 <= 0.03 && agree > 0.9 ? (
       <>
-        Raw agreement looks great, but κ has collapsed — the behavior is too rare to validate.{" "}
+        Raw agreement looks great, but κ has collapsed. The behavior is too rare to validate.{" "}
         <strong>This is exactly the trap that hid the spec-gaming detector bug.</strong>
       </>
     ) : k > 0.8 ? (
-      <>High κ — the graders agree well beyond chance. Trustworthy.</>
+      <>High κ: the graders agree well beyond chance. Trustworthy.</>
     ) : (
-      <>κ sits well below raw agreement — chance is doing much of the work.</>
+      <>κ sits well below raw agreement; chance is doing much of the work.</>
     );
 
   return (
     <div className="widget">
-      <h3>The κ paradox — why raw agreement lies for rare behaviors</h3>
+      <h3>The κ paradox: why raw agreement lies for rare behaviors</h3>
       <p className="muted-p">
         Two independent graders label items where the true behavior occurs at a chosen base rate.
-        Drag the rate down and watch Cohen&rsquo;s κ collapse while raw agreement stays high — the trap
-        that hid our spec-gaming detector bug.
+        Drag the rate down and watch Cohen&rsquo;s κ collapse while raw agreement stays high. That is the
+        trap that hid our spec-gaming detector bug.
       </p>
       <div className="k-grid">
         <div className="controls">

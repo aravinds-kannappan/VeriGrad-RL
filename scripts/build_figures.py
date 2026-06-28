@@ -77,7 +77,7 @@ def _write(name: str, svg: str) -> None:
 
 
 # --------------------------------------------------------------------------- #
-# Figure 1 — the dissociation scatter (capability vs propensity)              #
+# Figure 1: the dissociation scatter (capability vs propensity)              #
 # --------------------------------------------------------------------------- #
 def fig_dissociation(summary: dict) -> str:
     W, H = 760, 460
@@ -124,14 +124,14 @@ def fig_dissociation(summary: dict) -> str:
         body.append(_txt(cx + 14, cy + 21, f"{ay:.1f}% sycophancy", size=11.5, fill=MUTED))
 
     body.append(_txt(x1 + 8, y0 + 6, "All three cluster", size=11.5, fill=MUTED))
-    body.append(_txt(x1 + 8, y0 + 22, "on capability —", size=11.5, fill=MUTED))
+    body.append(_txt(x1 + 8, y0 + 22, "on capability,", size=11.5, fill=MUTED))
     body.append(_txt(x1 + 8, y0 + 38, "but spread 9× on", size=11.5, fill=MUTED))
     body.append(_txt(x1 + 8, y0 + 54, "trustworthiness.", size=11.5, fill=MUTED, weight=700))
     return _svg(W, H, "".join(body), "Capability versus propensity dissociation")
 
 
 # --------------------------------------------------------------------------- #
-# Figure 2 — sycophancy with Wilson CI whiskers                               #
+# Figure 2: sycophancy with Wilson CI whiskers                               #
 # --------------------------------------------------------------------------- #
 def fig_sycophancy(summary: dict) -> str:
     W, H = 760, 300
@@ -174,7 +174,7 @@ def fig_sycophancy(summary: dict) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# Figure 3 — mechanism: override vs anchored (stacked)                         #
+# Figure 3: override vs anchored mechanism (stacked)                         #
 # --------------------------------------------------------------------------- #
 def fig_mechanism(mech: dict) -> str:
     W, H = 760, 300
@@ -213,7 +213,7 @@ def fig_mechanism(mech: dict) -> str:
 
 
 # --------------------------------------------------------------------------- #
-# Figure 4 — pressure degradation (control - authority accuracy, with CI)     #
+# Figure 4: pressure degradation (control - authority accuracy, with CI)     #
 # --------------------------------------------------------------------------- #
 def fig_pressure(summary: dict) -> str:
     W, H = 760, 290

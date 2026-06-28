@@ -2,8 +2,8 @@
 
 Two domains ship today and demonstrate that adding a domain is ~40 lines:
 
-- ``gsm8k``        — grade-school math (free-form numeric answer).
-- ``commonsense_qa`` — commonsense multiple choice (single-letter answer).
+- ``gsm8k``: grade-school math (free-form numeric answer).
+- ``commonsense_qa``: commonsense multiple choice (single-letter answer).
 
 Adding sycophancy measurement on both lets us ask a construct-validity question:
 does a propensity measured on math transfer to a different domain?

@@ -2,8 +2,8 @@
 
 Every sample is content-addressed by a cache key over everything that affects the
 output (model id, domain, pressure, intensity, problem, sample index, prompt
-version). That makes runs **resumable** — kill and restart and finished samples are
-reused — and re-runs after a code change only pay for what actually changed. Each row
+version). That makes runs **resumable** (kill and restart and finished samples are
+reused) and re-runs after a code change only pay for what actually changed. Each row
 also carries provenance (model id, prompt version, harness git SHA, seed) so a result
 can always be traced back to exactly how it was produced.
 """

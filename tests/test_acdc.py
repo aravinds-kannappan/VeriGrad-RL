@@ -1,7 +1,7 @@
 """Tests for the automated circuit-discovery system.
 
 Two things must hold: path patching is exact (so the causal claims are real), and
-ACDC recovers the known ground-truth circuit on the transparent safety DAG — the
+ACDC recovers the known ground-truth circuit on the transparent safety DAG, the
 white-box analogue of how Conmy et al. (2023) validate ACDC against hand-found
 circuits in GPT-2 Small.
 """

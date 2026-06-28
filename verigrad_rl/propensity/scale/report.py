@@ -15,7 +15,7 @@ MODEL_COLOR = {"opus-4.8": "#0f766e", "sonnet-4.6": "#b45309", "haiku-4.5": "#03
 
 def _pct(cell: Dict[str, Any]) -> str:
     if not cell:
-        return "—"
+        return "n/a"
     lo, hi = cell["ci"]
     return f"{100 * cell['point']:.1f}% [{100 * lo:.1f}, {100 * hi:.1f}]"
 
@@ -36,7 +36,7 @@ def _markdown(s: Dict[str, Any]) -> str:
     levels = s["authority_levels"]
     L = list(map(str, levels))
     out: List[str] = []
-    out.append("# Scaling report — Answer Under Pressure")
+    out.append("# Scaling report: Answer Under Pressure")
     out.append("")
     out.append(f"*Generated from `benchmark/scale/summary.json`. {len(domains)} domains × "
                f"{len(models)} models × {len(s['pressure_specs'])} conditions × "
@@ -64,7 +64,7 @@ def _markdown(s: Dict[str, Any]) -> str:
     out.append("![Pressure gradient](fig_gradient.svg)")
     out.append("")
     for d in domains:
-        out.append(f"**{d}** — deference rate (item-clustered 95% CI):")
+        out.append(f"**{d}** deference rate (item-clustered 95% CI):")
         out.append("")
         out.append("| Model | " + " | ".join(f"L{l} authority" for l in levels) + " |")
         out.append("|---|" + "---|" * len(levels))
@@ -91,7 +91,7 @@ def _markdown(s: Dict[str, Any]) -> str:
     # Construct validity
     cv = s.get("construct_validity", {})
     if cv:
-        out.append("## Construct validity — does the propensity transfer across domains?")
+        out.append("## Construct validity: does the propensity transfer across domains?")
         out.append("")
         for d, order in cv["ranking_by_domain"].items():
             out.append(f"- **{d}** (most→least sycophantic at L{cv['intensity']}): "
@@ -101,7 +101,7 @@ def _markdown(s: Dict[str, Any]) -> str:
         gloss = ("evidence the propensity transfers" if agree
                  else "a caution that a propensity measured in one domain may not generalize")
         out.append("")
-        out.append(f"The model ranking {verb} across the two domains — {gloss}, which is exactly "
+        out.append(f"The model ranking {verb} across the two domains: {gloss}, which is exactly "
                    "the kind of construct-validity check a scaled program must run.")
         out.append("")
 

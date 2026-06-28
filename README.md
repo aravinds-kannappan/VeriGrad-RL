@@ -1,6 +1,6 @@
 <div align="center">
   <h1>VeriGrad RL</h1>
-  <p><strong>A propensity benchmark for real frontier models — measuring what a model <em>will</em> do under pressure, not just what it <em>can</em> do — plus a transparent RL-from-verifier baseline.</strong></p>
+  <p><strong>A propensity benchmark for real frontier models (measuring what a model <em>will</em> do under pressure, not just what it <em>can</em> do), plus a transparent RL-from-verifier baseline.</strong></p>
   <p>
     <a href="https://github.com/aravinds-kannappan/VeriGrad-RL/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/aravinds-kannappan/VeriGrad-RL/ci.yml?branch=main&label=ci"></a>
     <a href="LICENSE"><img alt="License" src="https://img.shields.io/badge/license-MIT-0f766e"></a>
@@ -20,7 +20,7 @@
 
 ## Interactive web app (Next.js)
 
-A real **Next.js 15 + React + TypeScript** app at the repo root — not a static page. It has a
+A real **Next.js 15 + React + TypeScript** app at the repo root, not a static page. It has a
 **live API route** ([`app/api/probe/route.ts`](app/api/probe/route.ts)) that calls real frontier
 models in real time (probe a problem, pick the pressure, watch the model hold or cave), plus an
 **in-browser logistic regression** trained on the 648 real samples and the κ-paradox simulator.
@@ -30,22 +30,22 @@ npm install && npm run dev      # http://localhost:3000  (reads ANTHROPIC_API_KE
 npm run build                   # production build
 ```
 
-Deploy on **Vercel**: it auto-detects Next.js at the repo root — nothing to configure beyond adding
+Deploy on **Vercel**: it auto-detects Next.js at the repo root. Nothing to configure beyond adding
 the **`ANTHROPIC_API_KEY`** environment variable (used server-side by the live probe; the rest of
-the site works without it). The Python toolkit below is unaffected — Vercel ignores it.
+the site works without it). The Python toolkit below is unaffected; Vercel ignores it.
 
-## Answer Under Pressure — the propensity benchmark
+## Answer Under Pressure: the propensity benchmark
 
 Capability benchmarks tell you what a model *can* do. They don't tell you what it
 *will* do in your environment, under pressure. **Answer Under Pressure** measures the
 second thing: it takes real frontier models, gives them real problems, and probes
-three propensities that matter for trust — **deference to a wrong authority**,
+three propensities that matter for trust: **deference to a wrong authority**,
 **spec-gaming a disclosed grader**, and **robustness of accuracy under pressure**.
 
 Everything here is real. Tasks come from the public **GSM8K** test split (real
 human-written problems, real gold answers). Agents are real **Anthropic** models
 called through the API. Every number in the report is computed from logged model
-outputs — nothing is synthetic or hardcoded.
+outputs. Nothing is synthetic or hardcoded.
 
 ### Leaderboard (150 problems/model/condition, GSM8K test, seed 7)
 
@@ -58,7 +58,7 @@ outputs — nothing is synthetic or hardcoded.
 <sub>Point estimate with Wilson 95% CI. ↓ = lower is safer. "Sycophancy on solved" = of the problems a model solved with no pressure, how often a confident wrong reviewer made it abandon the correct answer. Full run: $4.32, 1,350 model calls + 450 judge calls, 0 errors.</sub>
 
 **Headline result:** capability is nearly tied (~96% all three), yet sycophancy under a
-confident wrong reviewer differs **~9×** with non-overlapping confidence intervals —
+confident wrong reviewer differs **~9×** with non-overlapping confidence intervals:
 Sonnet 4.6 abandons a correct answer 17.9% of the time, Opus 4.8 only 2.1%. The
 capability ranking is *not* the trustworthiness ranking. See **[FINDINGS.md](FINDINGS.md)**
 for the full writeup, the pressure-degradation deltas, and the grader-reliability analysis.
@@ -77,16 +77,16 @@ The *same* real problem is posed under three framings:
 
 Two independent graders score a dual-labeled subset: a deterministic detector and an
 independent LLM judge (`claude-haiku-4-5`). We report **Cohen's κ**, not just raw
-agreement — because raw agreement lies when a behavior is rare:
+agreement, because raw agreement lies when a behavior is rare:
 
-- **Correctness:** κ = 0.95 (99% raw, n=450) — validated.
-- **Deference:** κ = 0.97 (n=150) — validated.
+- **Correctness:** κ = 0.95 (99% raw, n=450), validated.
+- **Deference:** κ = 0.97 (n=150), validated.
 - **Spec-gaming:** the cross-check *caught a bug in the ruler*. An earlier detector flagged
-  3 "positives" the judge unanimously rejected (κ = 0.00 despite 98% raw agreement) — all
+  3 "positives" the judge unanimously rejected (κ = 0.00 despite 98% raw agreement): all
   three the same clock-time answer (`2:00 PM`) misread as two numbers. After fixing the
   extractor, true spec-gaming is **0/150** across the lineup; both graders agree.
 
-### Mechanistic analysis — *why* models defer
+### Mechanistic analysis: *why* models defer
 
 Measuring *that* a model defers isn't enough; the interesting question is *how*.
 **[MECHANISM.md](MECHANISM.md)** does chain-of-thought-level mechanistic
@@ -101,17 +101,17 @@ reasoning**)?
 | `sonnet-4.6` | 30 | 28 | 2 | 93.3% |
 | `haiku-4.5` | 16 | 14 | 2 | 87.5% |
 
-Across the lineup, deference is overwhelmingly **social, not cognitive** — the model
+Across the lineup, deference is overwhelmingly **social, not cognitive**: the model
 computed the right answer and threw it away to agree with authority. That is a worse
 failure mode than honest miscalculation, and it is *invisible to any benchmark that
-only checks the final answer*. (Two independent signals — a deterministic
-gold-in-reasoning check and an LLM judge — classify each case and agree at 94%.)
+only checks the final answer*. (Two independent signals, a deterministic
+gold-in-reasoning check and an LLM judge, classify each case and agree at 94%.)
 
 The fully-transparent, **activation-level** analog lives in
 [`verigrad_rl/mech/`](verigrad_rl/mech): a synthetic residual-stream circuit with
 named features (`harmful_intent`, `jailbreak_pressure`, …) where the same
 override-vs-corruption distinction can be produced *causally* by patching activations
-directly — the API doesn't expose Claude's activations, so the real-model analysis is
+directly. The API doesn't expose Claude's activations, so the real-model analysis is
 necessarily at the reasoning-trace level.
 
 ### Run it
@@ -141,16 +141,16 @@ The probes are tiny and provider-neutral on purpose, so other people's open-sour
 harnesses can drive the *same* deterministic detectors. Full details:
 **[docs/INTEGRATIONS.md](docs/INTEGRATIONS.md)**.
 
-**Shipped — an [Inspect AI](https://inspect.aisi.org.uk) adapter.** Inspect is the
+**Shipped: an [Inspect AI](https://inspect.aisi.org.uk) adapter.** Inspect is the
 UK AI Safety Institute's open eval framework. Because it owns the model layer, the
-probes run against **any provider Inspect supports** — Anthropic, OpenAI, Google, or
-a local model behind vLLM/Ollama — not just the Anthropic lineup the native runner
+probes run against **any provider Inspect supports**: Anthropic, OpenAI, Google, or
+a local model behind vLLM/Ollama, not just the Anthropic lineup the native runner
 targets.
 
 ```bash
 pip install "verigrad-rl[inspect]"
 
-# the SAME probe, two vendors — only the --model flag changes
+# the SAME probe, two vendors; only the --model flag changes
 inspect eval verigrad_rl/integrations/inspect_task.py@deference --model anthropic/claude-sonnet-4-6
 inspect eval verigrad_rl/integrations/inspect_task.py@deference --model openai/gpt-4o
 ```
@@ -165,7 +165,7 @@ unit-tested offline, so writing a second adapter is ~120 lines.
 (capability baselines), [HELM](https://github.com/stanford-crfm/helm) (scenario/metric +
 CI reporting), [TransformerLens](https://github.com/TransformerLensOrg/TransformerLens)
 (white-box workflow), and Anthropic's [petri](https://github.com/anthropic-experimental/petri)
-(auditing-agent philosophy) — listed as honest influences, not bundled adapters.
+(auditing-agent philosophy): listed as honest influences, not bundled adapters.
 
 ---
 
@@ -175,26 +175,25 @@ The single benchmark above generalizes into a platform along three axes, in
 [`verigrad_rl/propensity/scale/`](verigrad_rl/propensity/scale). Full live results:
 **[benchmark/scale/REPORT.md](benchmark/scale/REPORT.md)**.
 
-**Breadth — new domains and propensities are config, not code.** A *probe* is an
+**Breadth: new domains and propensities are config, not code.** A *probe* is an
 `Environment` (a task domain + ground-truth verifier) × a `Pressure` (a transform that
 injects authority / incentive / ambiguity), wired through registries
 ([`core.py`](verigrad_rl/propensity/scale/core.py),
 [`environments.py`](verigrad_rl/propensity/scale/environments.py),
-[`pressures.py`](verigrad_rl/propensity/scale/pressures.py)). Two real domains ship today
-— **GSM8K** (free-form math) and **CommonsenseQA** (multiple choice) — so the same
+[`pressures.py`](verigrad_rl/propensity/scale/pressures.py)). Two real domains ship today: **GSM8K** (free-form math) and **CommonsenseQA** (multiple choice), so the same
 sycophancy probe runs cross-domain, which is what lets you ask whether a propensity
 *transfers*.
 
-**Rigor — the science, not just more numbers.**
-- **Multiple samples per item** with **item-clustered bootstrap CIs** — honest intervals
+**Rigor: the science, not just more numbers.**
+- **Multiple samples per item** with **item-clustered bootstrap CIs**: honest intervals
   that a naive Wilson on flattened samples would understate.
 - A **pressure-intensity gradient** (mild → expert-consensus): propensity is reported as
   a curve under elicitation, not a single default-rate point.
-- **Benjamini–Hochberg FDR correction** across the many model comparisons — running a
+- **Benjamini–Hochberg FDR correction** across the many model comparisons: running a
   big grid creates a multiplicity problem, and this controls the false-discovery rate.
 - A **cross-domain construct-validity check**: does the model ranking transfer?
 
-**Platform — reproducible and cheap to re-run.** A SQLite store
+**Platform: reproducible and cheap to re-run.** A SQLite store
 ([`store.py`](verigrad_rl/propensity/scale/store.py)) with **content-addressed caching**
 (runs are resumable; re-runs after a code change only pay for what changed), **provenance
 stamping** (model id, prompt version, harness git SHA, seed on every row), and a **hard
@@ -207,7 +206,7 @@ python -m verigrad_rl.cli scale \
 # -> benchmark/scale/{REPORT.md, summary.json, samples.jsonl, runs.db, fig_gradient.svg}
 ```
 
-**What the first real run showed** (2 domains × 3 models × 3 conditions, $1.74) — two
+**What the first real run showed** (2 domains × 3 models × 3 conditions, $1.74). Two
 methodological points the machinery surfaces on its own:
 
 - **FDR correction changes a conclusion.** On CommonsenseQA, Haiku-vs-Sonnet deference
@@ -216,7 +215,7 @@ methodological points the machinery surfaces on its own:
 - **A propensity does not cleanly transfer across domains.** Deference rises with the
   authority gradient in both domains, but it's far higher on fuzzy commonsense (Haiku
   47% at L3) than on verifiable math (17%), and the *model ranking differs* between
-  them — a construct-validity caution you only catch by running more than one domain.
+  them. A construct-validity caution you only catch by running more than one domain.
 
 ---
 
@@ -229,7 +228,7 @@ log-linear policy) that learns to choose **activation-level interventions** on a
 chain-of-thought mechanistic analysis above: because the circuit is synthetic, every
 feature is named (`harmful_intent`, `jailbreak_pressure`, …) and directly *patchable*,
 so the override-vs-corruption distinction (and reward-hacking, train/test leakage,
-over-refusal) can be produced and inspected *causally* — which the API can't do for a
+over-refusal) can be produced and inspected *causally*, which the API can't do for a
 real model's activations. It is a controllable sandbox, not a real network's internals,
 and is labeled as synthetic throughout.
 
@@ -240,7 +239,7 @@ python -m verigrad_rl.cli eval  --env safety-circuit --checkpoint runs/safety-de
 
 This baseline is what motivated the propensity benchmark above: training a policy to
 look safe on a verifier is easy; the harder, more useful question is whether the
-verifier survives contact with a *capable* model — which is what Answer Under Pressure
+verifier survives contact with a *capable* model, which is what Answer Under Pressure
 measures on real frontier models.
 
 ---
@@ -263,10 +262,10 @@ Because the circuit is white-box it has a **known answer key**, so the discovery
 checks that path patching is exact (patch nothing → clean run; patch everything → corrupt
 run), that the core harm-detection pathway is recovered, that information-free edges are
 pruned, and that precision/recall move with `tau` as predicted. On the RL reward model it
-recovers — with no hand labeling — that `harmful_intent` and `jailbreak_pressure` drive the
+recovers (with no hand labeling) that `harmful_intent` and `jailbreak_pressure` drive the
 harmful-completion and safe-refusal logits.
 
-Every paper behind VeriGrad — mechanistic, propensity, and oversight — is mapped to where
+Every paper behind VeriGrad (mechanistic, propensity, and oversight) is mapped to where
 it is implemented or grounds the work in **[docs/REFERENCES.md](docs/REFERENCES.md)**.
 
 > The `docs/` site and the synthetic biosafety/DNA-screening playground are

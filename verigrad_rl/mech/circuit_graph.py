@@ -3,9 +3,9 @@
 This is the substrate the automated circuit-discovery system runs on. A
 ``CircuitGraph`` is an explicit DAG of named nodes; every node knows its parents
 and the function that turns parent activations into its own. Because the graph is
-fully white-box, *path patching* — the causal primitive from Goldowsky-Dill et al.,
+fully white-box, *path patching*, the causal primitive from Goldowsky-Dill et al.,
 "Localizing Model Behavior with Path Patching" (Redwood Research, arXiv:2304.05969,
-2023) — has an exact, testable implementation here rather than an approximation.
+2023), has an exact, testable implementation here rather than an approximation.
 
 Edge patching (the form ACDC uses): the activation flowing along edge ``(u -> v)``
 is either ``u``'s value on the *clean* input (edge kept) or on the *corrupt* input
@@ -130,7 +130,7 @@ class CircuitGraph:
         return [acts[o] for o in self.outputs]
 
     def kl_from_clean(self, clean_acts: Activations, other_acts: Activations) -> float:
-        """KL(softmax(clean outputs) || softmax(other outputs)) — the ACDC metric."""
+        """KL(softmax(clean outputs) || softmax(other outputs)): the ACDC metric."""
 
         return kl_divergence(self.output_logits(clean_acts), self.output_logits(other_acts))
 
@@ -230,7 +230,7 @@ SAFETY_DAG_GROUND_TRUTH: Tuple[Edge, ...] = (
     ("guard", "answer_logit"),
 )
 
-# Edges out of inputs held constant across the contrast — a correct run prunes them.
+# Edges out of inputs held constant across the contrast; a correct run prunes them.
 SAFETY_DAG_DISTRACTORS: Tuple[Edge, ...] = (
     ("refusal_cue", "guard"),
     ("noise", "refuse_logit"),

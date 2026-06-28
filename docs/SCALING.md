@@ -4,27 +4,27 @@ A propensity result is only worth acting on if it survives more models, more
 domains, more pressure, and a re-run. This page describes the scaling machinery
 that already ships and the axes it is built to grow along.
 
-## What ships today — `verigrad_rl/propensity/scale`
+## What ships today: `verigrad_rl/propensity/scale`
 
 The scalable runner sweeps `probes × models × tasks × samples` and is built around
 three properties:
 
 - **Breadth.** Domains are pluggable: each registered environment (`gsm8k`,
   `commonsense_qa`, …) just has to yield `(problem, gold)` pairs. Pressure is a
-  spec list — `("authority_wrong", {"intensity": 1..3})` — so you add a new probe
+  spec list, `("authority_wrong", {"intensity": 1..3})`, so you add a new probe
   or a new escalation level without touching the runner.
 - **Rigor.** Aggregation uses **item-clustered bootstrap CIs** (multiple samples
   per problem are not independent), builds the **pressure-intensity gradient** per
   model × domain, and corrects model-vs-model comparisons with **Benjamini–Hochberg
   FDR**. This is what flips the CommonsenseQA Haiku-vs-Sonnet result from "significant"
-  (raw *p* = 0.026) to "not significant" (*q* = 0.052) — see `FINDINGS.md`.
+  (raw *p* = 0.026) to "not significant" (*q* = 0.052). See `FINDINGS.md`.
 - **Platform.** Every sample is **content-addressed** (`store.py`) by everything
-  that affects its output — model id, domain, pressure, intensity, problem, sample
+  that affects its output: model id, domain, pressure, intensity, problem, sample
   index, prompt version. That buys three things at once:
-  - **Resumability** — kill a run and restart; finished samples are reused.
-  - **Incremental re-runs** — change one probe and you only pay to recompute what
+  - **Resumability**: kill a run and restart; finished samples are reused.
+  - **Incremental re-runs**: change one probe and you only pay to recompute what
     actually changed.
-  - **Provenance** — each row carries model id, prompt version, harness git SHA,
+  - **Provenance**: each row carries model id, prompt version, harness git SHA,
     and seed, so any number traces back to exactly how it was produced.
 - **A hard cost ceiling.** `--budget` stops the run before it crosses a dollar
   limit; the SQLite store doubles as a cost ledger from measured token usage.
@@ -40,7 +40,7 @@ verigrad scale \
 
 ## The axes it grows along
 
-### 1. More providers — without rewriting the runner
+### 1. More providers without rewriting the runner
 
 The native runner targets Anthropic. The new **Inspect adapter**
 (`verigrad_rl/integrations/inspect_task.py`) lifts that ceiling: because Inspect
@@ -53,14 +53,14 @@ matter of changing `--model anthropic/... → openai/...`. See
 
 Add an environment that yields `(problem, gold)` and register it. Math (GSM8K) and
 commonsense (CommonsenseQA) ship; code, retrieval-QA, and tool-use are natural next
-domains — the finding that *a propensity measured on math does not cleanly transfer
+domains: the finding that *a propensity measured on math does not cleanly transfer
 to commonsense* is the whole reason breadth matters.
 
 ### 3. More pressure types
 
 Deference, spec-gaming, and robustness ship. The probe interface is a prompt
-template plus a deterministic detector, so new propensities — flattery-seeking,
-false-premise acceptance, confidence miscalibration under stakes — drop in next to
+template plus a deterministic detector, so new propensities (flattery-seeking,
+false-premise acceptance, confidence miscalibration under stakes) drop in next to
 the existing three and inherit the clustered-CI + FDR pipeline for free.
 
 ### 4. More scale, safely
@@ -72,7 +72,7 @@ the existing three and inherit the clustered-CI + FDR pipeline for free.
 - **Statistical power.** `--samples k` raises samples-per-item; clustered CIs keep
   the error bars honest as `k` grows.
 - **Reliability at scale.** The grader cross-check (Cohen's κ, dual-labeling) is the
-  guard against a bigger run quietly drifting on a broken detector — it already
+  guard against a bigger run quietly drifting on a broken detector: it already
   caught one bug in our own ruler (`FINDINGS.md`).
 
 ## Non-goals

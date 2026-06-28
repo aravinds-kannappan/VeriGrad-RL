@@ -1,9 +1,9 @@
 """Emit data for the Next.js app from the real runs (reproducible).
 
 Writes:
-  web/lib/samples.json   — 648 real cross-domain samples for the in-browser ML
-  web/lib/problems.json  — a handful of real GSM8K problems for the live probe demo
-  web/public/assets/     — the generated SVG figures
+  web/lib/samples.json: 648 real cross-domain samples for the in-browser ML
+  web/lib/problems.json: a handful of real GSM8K problems for the live probe demo
+  web/public/assets/: the generated SVG figures
 
     python scripts/build_web_data.py
 """

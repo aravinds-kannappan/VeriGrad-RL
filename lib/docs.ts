@@ -54,7 +54,7 @@ export function getDoc(slug: string): DocItem | undefined {
 }
 
 function rewriteLinks(html: string): string {
-  // <a href="..."> — keep http/anchors; map .md to in-site docs; else point at GitHub.
+  // <a href="...">: keep http/anchors; map .md to in-site docs; else point at GitHub.
   html = html.replace(/href="([^"]+)"/g, (_m, href: string) => {
     if (/^(https?:|#|mailto:)/.test(href)) return `href="${href}"`;
     const clean = href.replace(/^\.?\/?/, "").replace(/^(\.\.\/)+/, "");
@@ -65,7 +65,7 @@ function rewriteLinks(html: string): string {
     }
     return `href="${REPO}/blob/main/${clean}"`;
   });
-  // <img src="..."> — relative images resolve from the raw GitHub tree.
+  // <img src="...">: relative images resolve from the raw GitHub tree.
   html = html.replace(/src="([^"]+)"/g, (_m, src: string) => {
     if (/^(https?:|data:|\/)/.test(src)) return `src="${src}"`;
     return `src="${RAW}/${src.replace(/^\.?\/?/, "")}"`;

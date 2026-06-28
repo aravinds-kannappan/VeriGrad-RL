@@ -3,12 +3,12 @@
 VeriGrad's propensity probes are intentionally tiny and provider-neutral: a probe
 is a prompt template plus a *deterministic* detector that reads the model's text
 and returns a label. That design lets the **same** detectors be driven by other
-people's open-source harnesses instead of only our native runner — which is the
+people's open-source harnesses instead of only our native runner, which is the
 difference between a one-off microsite and a tool that lives in the ecosystem.
 
 ## Shipped
 
-### Inspect AI (UK AI Safety Institute) — `verigrad_rl/integrations/inspect_task.py`
+### Inspect AI (UK AI Safety Institute): `verigrad_rl/integrations/inspect_task.py`
 
 [Inspect](https://inspect.aisi.org.uk) is the open evaluation framework from the
 UK AI Safety Institute and the de-facto standard for safety evals. We ship a real
@@ -23,7 +23,7 @@ pip install "verigrad-rl[inspect]"
 inspect eval verigrad_rl/integrations/inspect_task.py@deference \
     --model anthropic/claude-sonnet-4-6 -T n_tasks=150
 
-# Same probe, OpenAI — nothing else changes
+# Same probe, OpenAI; nothing else changes
 inspect eval verigrad_rl/integrations/inspect_task.py@deference \
     --model openai/gpt-4o -T n_tasks=150
 
@@ -49,7 +49,7 @@ Inspect on `seed=7` matches `verigrad propensity --seed 7`.
 
 ### Real public datasets
 
-Tasks come from **GSM8K** (Cobbe et al., 2021) and **CommonsenseQA** — downloaded
+Tasks come from **GSM8K** (Cobbe et al., 2021) and **CommonsenseQA**, downloaded
 from the official sources and cached, never generated or modified. The gold answer
 is parsed from the dataset's own marker. See `verigrad_rl/propensity/dataset.py`.
 
@@ -57,7 +57,7 @@ is parsed from the dataset's own marker. See `verigrad_rl/propensity/dataset.py`
 
 Models under test and the independent reliability judge are real Anthropic models
 called through the API (`anthropic>=0.40`). Every dollar figure in the report is
-*measured* token usage × published list price — the harness never invents a number.
+*measured* token usage × published list price. The harness never invents a number.
 
 ## Patterned after / compatible by design
 
@@ -71,7 +71,7 @@ as influences and interop targets, not shipped integrations.
 | [lm-evaluation-harness](https://github.com/EleutherAI/lm-evaluation-harness) (EleutherAI) | The `control` task is a capability baseline; the label records export cleanly to a harness-style results table. |
 | [HELM](https://github.com/stanford-crfm/helm) (Stanford CRFM) | Scenario/metric separation and confidence-interval reporting follow HELM's holistic-evaluation style. |
 | [TransformerLens](https://github.com/TransformerLensOrg/TransformerLens) | The activation-level RL-from-verifier baseline (`verigrad_rl/mech`) targets the same white-box, mechanistic-interpretability workflow. |
-| [petri](https://github.com/anthropic-experimental/petri) (Anthropic) | Auditing-agent philosophy — probe what a model *will* do under pressure, not just what it *can* do. |
+| [petri](https://github.com/anthropic-experimental/petri) (Anthropic) | Auditing-agent philosophy: probe what a model *will* do under pressure, not just what it *can* do. |
 
 ## Adding your own adapter
 

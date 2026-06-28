@@ -2,7 +2,7 @@
 
 ## Ecosystem & interoperability
 
-- [x] **Inspect AI adapter** — run every probe through UK AISI's Inspect against any provider.
+- [x] **Inspect AI adapter**: run every probe through UK AISI's Inspect against any provider.
 - [ ] Export benchmark results to an Inspect `.eval` log so native runs open in Inspect View.
 - [ ] `lm-evaluation-harness` task definition for the `control` capability baseline.
 - [ ] A `garak`-style detector plugin exposing the deterministic propensity detectors.

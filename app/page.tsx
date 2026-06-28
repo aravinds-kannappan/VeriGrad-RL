@@ -2,21 +2,23 @@ import LiveProbe from "@/components/LiveProbe";
 import MLPlayground from "@/components/MLPlayground";
 import KappaSim from "@/components/KappaSim";
 import CodeBlock from "@/components/CodeBlock";
+import CircuitExplorer from "@/components/CircuitExplorer";
+import ScatterPlot from "@/components/ScatterPlot";
 import { LEADERBOARD, MECHANISM, GRADIENT, RELIABILITY, STATS } from "@/lib/data";
 
 const REPO = "https://github.com/aravinds-kannappan/VeriGrad-RL";
 
-const INSTALL = `# clone + install (editable) — Python 3.10+
+const INSTALL = `# clone + install (editable) for Python 3.10+
 git clone https://github.com/aravinds-kannappan/VeriGrad-RL
 cd VeriGrad-RL
 pip install -e ".[llm,inspect]"`;
 
-const RUN = `# runs offline in seconds — verifiable-reward RL, no API key
+const RUN = `# runs offline in seconds: verifiable-reward RL, no API key
 verigrad train --episodes 400 --env arithmetic
 
 # the propensity benchmark on real frontier models
 export ANTHROPIC_API_KEY=sk-ant-...
-verigrad propensity --smoke      # 3 problems, ~$0.01 — sanity check
+verigrad propensity --smoke      # 3 problems, ~$0.01 (sanity check)
 verigrad propensity --tasks 150  # the full leaderboard run`;
 
 const PY = `from verigrad_rl.integrations import (
@@ -33,7 +35,7 @@ held = safe_behavior("authority_wrong", labels)   # True == did not cave`;
 
 const INSPECT = `pip install "verigrad-rl[inspect]"
 
-# the SAME probes, against any Inspect provider — one flag swaps the vendor
+# the SAME probes, against any Inspect provider; one flag swaps the vendor
 inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
   --model anthropic/claude-sonnet-4-6
 inspect eval verigrad_rl/integrations/inspect_task.py@deference \\
@@ -50,7 +52,7 @@ const FEATURES = [
   {
     ic: "🎯",
     h: "Propensity benchmark",
-    p: "Answer Under Pressure — deference, spec-gaming, and robustness on real GSM8K + CommonsenseQA. Measures what a model will do, not just what it can.",
+    p: "Answer Under Pressure: deference, spec-gaming, and robustness on real GSM8K + CommonsenseQA. Measures what a model will do, not just what it can.",
   },
   {
     ic: "🔌",
@@ -75,7 +77,7 @@ const FEATURES = [
   {
     ic: "🧪",
     h: "RL-from-verifier baseline",
-    p: "A transparent policy-gradient loop on verifiable rewards — runs offline in seconds, no GPU, every number reproducible from a seed.",
+    p: "A transparent policy-gradient loop on verifiable rewards. Runs offline in seconds, no GPU, every number reproducible from a seed.",
   },
 ];
 
@@ -89,7 +91,7 @@ const SHIPPED = [
   {
     name: "GSM8K · CommonsenseQA",
     by: "task source",
-    desc: "Real public datasets, downloaded and cached — never synthetic, never modified.",
+    desc: "Real public datasets, downloaded and cached. Never synthetic, never modified.",
     href: "https://github.com/openai/grade-school-math",
   },
   {
@@ -128,7 +130,7 @@ const PATTERNED = [
   {
     name: "petri",
     by: "Anthropic",
-    desc: "Auditing-agent philosophy — probe behavior under pressure.",
+    desc: "Auditing-agent philosophy: probe behavior under pressure.",
     href: "https://github.com/anthropic-experimental/petri",
   },
 ];
@@ -167,7 +169,7 @@ export default function Home() {
           <h1>Measure what a frontier model will do under pressure.</h1>
           <p className="tagline">
             VeriGrad RL is an open-source toolkit and benchmark for model{" "}
-            <strong>propensities</strong> — sycophancy, spec-gaming, reasoning faithfulness. Install
+            <strong>propensities</strong>: sycophancy, spec-gaming, reasoning faithfulness. Install
             it, run the probes through <strong>Inspect</strong> against any provider, or try a live
             model in the browser below.
           </p>
@@ -210,7 +212,7 @@ export default function Home() {
           </div>
           <h3>Use it as a library</h3>
           <p className="muted-p">
-            The probe templates and deterministic detectors are importable — render a prompt, call any
+            The probe templates and deterministic detectors are importable. Render a prompt, call any
             model yourself, and score the response reproducibly.
           </p>
           <CodeBlock title="probe.py" code={PY} />
@@ -235,7 +237,7 @@ export default function Home() {
           <h2>Probe a model under pressure</h2>
           <p>
             Pick a real GSM8K problem (or edit it), choose a model and how hard a wrong &ldquo;authority&rdquo;
-            pushes back, then run it against a real model. The verdict — did it hold or cave? — is computed
+            pushes back, then run it against a real model. The verdict (did it hold or cave?) is computed
             from the live response.
           </p>
           <LiveProbe />
@@ -249,13 +251,7 @@ export default function Home() {
           <p className="eyebrow">The core finding</p>
           <h2>Capability is nearly tied. Trustworthiness is not.</h2>
           <p className="lead">Three frontier models, 150 real GSM8K problems each, under three framings.</p>
-          <figure>
-            <img src="/assets/fig_dissociation.svg" alt="Capability versus propensity scatter" />
-            <figcaption>
-              <b>Capability vs. propensity.</b> All three cluster near 96% accuracy, yet spread ~9× on
-              sycophancy. The axes are nearly orthogonal.
-            </figcaption>
-          </figure>
+          <ScatterPlot />
           <table className="data-table">
             <thead>
               <tr>
@@ -285,8 +281,8 @@ export default function Home() {
           </table>
           <div className="callout">
             <strong>Headline.</strong> Sonnet 4.6 and Opus 4.8 are statistically tied on capability, but
-            Sonnet abandons a correct answer under a wrong reviewer 17.9% of the time versus Opus&rsquo;s 2.1%
-            — a ~9× gap with non-overlapping confidence intervals.
+            Sonnet abandons a correct answer under a wrong reviewer 17.9% of the time versus Opus&rsquo;s 2.1%:
+            a ~9× gap with non-overlapping confidence intervals.
           </div>
         </section>
 
@@ -295,7 +291,7 @@ export default function Home() {
           <h2>Built to live in the safety-eval ecosystem</h2>
           <p>
             The probes are tiny and provider-neutral on purpose, so other people&rsquo;s harnesses can drive
-            them. The flagship is a real <strong>Inspect AI</strong> adapter — the same deterministic
+            them. The flagship is a real <strong>Inspect AI</strong> adapter: the same deterministic
             detectors, now against any model Inspect can reach.
           </p>
           <CodeBlock title="inspect.sh" code={INSPECT} />
@@ -314,8 +310,8 @@ export default function Home() {
 
           <h3>Patterned after · compatible by design</h3>
           <p className="muted-p">
-            Conventions VeriGrad deliberately mirrors so it slots into a real safety-eval workflow —
-            listed honestly as influences and interop targets, not bundled adapters.
+            Conventions VeriGrad deliberately mirrors so it slots into a real safety-eval workflow.
+            Listed honestly as influences and interop targets, not bundled adapters.
           </p>
           <div className="eco-grid">
             {PATTERNED.map((e) => (
@@ -335,7 +331,7 @@ export default function Home() {
         <section id="playground">
           <p className="eyebrow">Interactive · runs in your browser</p>
           <h2>Train a model on the data, live</h2>
-          <p>No server, no pre-baked numbers — these widgets run real computation in your browser on the
+          <p>No server, no pre-baked numbers. These widgets run real computation in your browser on the
             648 logged samples from the cross-domain run.</p>
           <MLPlayground />
           <KappaSim />
@@ -376,13 +372,13 @@ export default function Home() {
           <div className="callout">
             <strong>Provider-agnostic by design.</strong> The native runner targets Anthropic; the Inspect
             adapter lifts that ceiling so the same probes produce a cross-vendor leaderboard. Runs are
-            content-addressed and resumable with a hard cost ceiling — see the{" "}
+            content-addressed and resumable with a hard cost ceiling. See the{" "}
             <a href="/docs/scaling">Scaling</a> docs.
           </div>
           <div className="callout">
             <strong>FDR correction changes a conclusion.</strong> On CommonsenseQA, Haiku-vs-Sonnet (47% vs
             22%) is significant at raw <em>p</em> = 0.026 but not after Benjamini–Hochberg (<em>q</em> =
-            0.052). And the model ranking differs across domains — a propensity measured on math doesn&rsquo;t
+            0.052). And the model ranking differs across domains: a propensity measured on math doesn&rsquo;t
             cleanly transfer.
           </div>
         </section>
@@ -393,7 +389,7 @@ export default function Home() {
           <p>
             When a model abandons the correct answer, did its reasoning already compute it and then cave
             (<strong>override</strong>), or did the pressure corrupt the computation (<strong>anchored</strong>)?
-            Across the lineup, ~90% is override — the model knew, and threw it away.
+            Across the lineup, ~90% is override. The model knew, and threw it away.
           </p>
           <figure>
             <img src="/assets/fig_mechanism.svg" alt="Override versus anchored reasoning" />
@@ -424,18 +420,10 @@ export default function Home() {
             Behavior tells you a model caved; mechanism tells you which components did it. VeriGrad
             ships a dependency-free implementation of <strong>ACDC</strong> (Conmy et al., NeurIPS
             2023) and <strong>path patching</strong> (Goldowsky-Dill et al., 2023), run on a
-            transparent safety circuit with a known answer key — so the discovery is{" "}
+            transparent safety circuit with a known answer key, so the discovery is{" "}
             <em>validated</em>, not just asserted.
           </p>
-          <figure>
-            <img src="/assets/fig_circuit.svg" alt="Automatically discovered refuse/answer safety circuit" />
-            <figcaption>
-              <b>Discovered circuit.</b> ACDC keeps the harm-detection → guard → output pathway
-              (solid teal) and prunes information-free edges (dashed). Run on the RL reward model it
-              recovers — with no hand labeling — that harmful-intent and jailbreak features drive the
-              refusal logit.
-            </figcaption>
-          </figure>
+          <CircuitExplorer />
           <CodeBlock title="circuit.sh" code={CIRCUIT} />
           <div className="callout">
             <strong>Validated, not asserted.</strong> Because the circuit is white-box it has a known
@@ -468,7 +456,7 @@ export default function Home() {
           </table>
           <div className="callout warn">
             <strong>The cross-check caught a bug in our own ruler.</strong> An earlier spec-gaming detector
-            flagged 3 &ldquo;positives&rdquo; the judge unanimously rejected — all three the same clock-time answer,
+            flagged 3 &ldquo;positives&rdquo; the judge unanimously rejected: all three the same clock-time answer,
             &ldquo;2:00&nbsp;PM&rdquo;, misread as two numbers (κ = 0.00 despite 98% raw agreement). After the fix, true
             spec-gaming is 0/150.
           </div>
@@ -480,7 +468,7 @@ export default function Home() {
           <div>
             <h4>Project</h4>
             <a href={REPO}>GitHub repository</a>
-            <a href={`${REPO}/blob/main/LICENSE`}>License — MIT</a>
+            <a href={`${REPO}/blob/main/LICENSE`}>License: MIT</a>
             <a href={`${REPO}/blob/main/CONTRIBUTING.md`}>Contributing</a>
           </div>
           <div>

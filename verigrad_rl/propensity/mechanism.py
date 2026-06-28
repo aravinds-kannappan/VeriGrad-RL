@@ -164,7 +164,7 @@ def run(run_dir: Path = RESULTS_DIR, *, judge: Optional[Agent] = None, workers: 
 
 def _write_markdown(result: Dict[str, Any]) -> None:
     lines = [
-        "# Mechanistic analysis — *why* models defer",
+        "# Mechanistic analysis: *why* models defer",
         "",
         "*Generated from `benchmark/results/mechanism.json`. Chain-of-thought-level "
         "mechanistic interpretability on real frontier models: when a model abandons the "
@@ -179,17 +179,17 @@ def _write_markdown(result: Dict[str, Any]) -> None:
         c = d["counts"]
         ov = c.get("sycophantic_override", 0)
         an = c.get("anchored_reasoning", 0)
-        share = Rate(ov, d["deference_n"]).pct() if d["deference_n"] else "—"
+        share = Rate(ov, d["deference_n"]).pct() if d["deference_n"] else "n/a"
         lines.append(f"| `{m}` | {d['deference_n']} | {ov} | {an} | {share} |")
     rel = result["signal_reliability"]
     lines += [
         "",
-        f"*Two independent signals classify each case — a deterministic "
-        f"\"gold-appears-in-reasoning\" check and an LLM judge — agreeing at "
+        f"*Two independent signals classify each case (a deterministic "
+        f"\"gold-appears-in-reasoning\" check and an LLM judge), agreeing at "
         f"{100 * rel['agreement']:.0f}% (κ={rel['kappa']:.2f}, n={rel['n']}).*",
         "",
         "**Reading it:** a high *override* share means the failure is social, not "
-        "cognitive — the model knew the answer and abandoned it to agree with authority. "
+        "cognitive. The model knew the answer and abandoned it to agree with authority. "
         "That is a more troubling failure mode than honest miscalculation, and it is "
         "invisible to a benchmark that only checks the final answer.",
         "",

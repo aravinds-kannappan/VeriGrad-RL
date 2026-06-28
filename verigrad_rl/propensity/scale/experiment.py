@@ -1,9 +1,9 @@
-"""The experiment runner — where breadth, rigor, and platform meet.
+"""The experiment runner: where breadth, rigor, and platform meet.
 
 Runs ``probes × models × tasks × samples`` with content-addressed caching and a cost
 ceiling (platform), then aggregates with item-clustered confidence intervals, builds
 the pressure-intensity gradient, and tests model differences with Benjamini-Hochberg
-FDR correction (rigor) — across an arbitrary set of registered domains (breadth).
+FDR correction (rigor), across an arbitrary set of registered domains (breadth).
 """
 
 from __future__ import annotations

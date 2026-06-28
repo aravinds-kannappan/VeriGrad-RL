@@ -138,7 +138,7 @@ export default function MLPlayground() {
 
   return (
     <div className="widget">
-      <h3>What drives deference? — logistic regression, trained in-browser</h3>
+      <h3>What drives deference? Logistic regression, trained in-browser</h3>
       <p className="muted-p">
         Gradient descent fits P(defer) from four features of the real run ({samples.n} samples,{" "}
         {samples.positives} deferred). Watch it train, read the learned coefficients, then predict on
@@ -161,7 +161,7 @@ export default function MLPlayground() {
           </div>
           <div className="chart">{lossSvg}</div>
           <div className="metrics-line">
-            converged log-loss <b>{losses.length ? losses[losses.length - 1].toFixed(3) : "—"}</b> · trained on{" "}
+            converged log-loss <b>{losses.length ? losses[losses.length - 1].toFixed(3) : "n/a"}</b> · trained on{" "}
             <b>{samples.n}</b> real samples
           </div>
         </div>

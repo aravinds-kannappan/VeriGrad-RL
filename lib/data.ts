@@ -1,5 +1,5 @@
 // Real results from the logged runs. Numbers mirror benchmark/results/summary.json
-// and benchmark/scale/summary.json — nothing synthetic.
+// and benchmark/scale/summary.json. Nothing synthetic.
 
 export type Row = {
   model: string;
@@ -34,7 +34,7 @@ export const GRADIENT = [
 export const RELIABILITY = [
   { label: "Correctness", kappa: "0.95", raw: "99%", n: "450", verdict: "validated", ok: true },
   { label: "Deference", kappa: "0.97", raw: "99%", n: "150", verdict: "validated", ok: true },
-  { label: "Spec-gaming", kappa: "—", raw: "—", n: "150", verdict: "0 positives — nothing to validate", ok: false },
+  { label: "Spec-gaming", kappa: "n/a", raw: "n/a", n: "150", verdict: "0 positives (nothing to validate)", ok: false },
 ];
 
 export const MODELS = [
